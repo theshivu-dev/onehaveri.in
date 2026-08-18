@@ -34,12 +34,6 @@ body{
     radial-gradient(85% 50% at 50% 0%, rgba(245,201,110,.30), transparent 75%);
   pointer-events:none;
 }
-.horizon{
-  position:absolute;left:-6%;right:-6%;top:31%;height:3px;
-  background:linear-gradient(90deg,transparent,rgba(231,165,37,.35) 20%,rgba(231,165,37,.5) 50%,rgba(231,165,37,.35) 80%,transparent);
-  filter:blur(1px);pointer-events:none;
-}
-
 .hero{position:relative;z-index:1;text-align:center;padding:0 6px}
 .status{
   display:inline-flex;align-items:center;gap:9px;margin:0 0 14px;
@@ -120,7 +114,7 @@ body{
 }
 @media(min-width:700px){
   body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:#eee6d7}
-  .page{box-shadow:0 0 45px rgba(59,42,30,.14)}
+  .page{min-height:auto;max-height:880px;height:92vh;box-shadow:0 0 45px rgba(59,42,30,.14)}
 }
 </style>
 </head>
@@ -128,7 +122,6 @@ body{
 <body>
 <main class="page">
 <div class="dawn"></div>
-<div class="horizon"></div>
 
 <section class="hero">
   <div class="status">Coming Soon</div>

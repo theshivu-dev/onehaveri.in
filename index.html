@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FBF1DE">
+<title>One Haveri — Coming Soon</title>
+<style>
+:root{
+  --cream:#FBF1DE; --cream-deep:#F3E3C4; --card:#FFFCF5; --card-warm:#FEF6E4;
+  --gold:#C77F16; --gold-soft:#E7A525;
+  --terracotta:#B0452B; --ink:#3B2A1E; --muted:#6D5946;
+  --olive:#5F7345; --line:rgba(59,42,30,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;background:var(--cream)}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--ink);-webkit-font-smoothing:antialiased;
+}
+.page{
+  width:100%;max-width:430px;min-height:100svh;margin:0 auto;
+  padding:max(16px,env(safe-area-inset-top)) 18px max(16px,env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,3.4svh,26px);
+  position:relative;overflow:hidden;
+  background:var(--cream);
+}
+
+/* soft dawn light instead of a hard disc */
+.dawn{
+  position:absolute;inset:-10% -10% auto -10%;height:62%;
+  background:
+    radial-gradient(58% 60% at 50% 0%, rgba(231,165,37,.55), transparent 68%),
+    radial-gradient(85% 50% at 50% 0%, rgba(245,201,110,.30), transparent 75%);
+  pointer-events:none;
+}
+.horizon{
+  position:absolute;left:-6%;right:-6%;top:31%;height:3px;
+  background:linear-gradient(90deg,transparent,rgba(231,165,37,.35) 20%,rgba(231,165,37,.5) 50%,rgba(231,165,37,.35) 80%,transparent);
+  filter:blur(1px);pointer-events:none;
+}
+
+.hero{position:relative;z-index:1;text-align:center;padding:0 6px}
+.status{
+  display:inline-flex;align-items:center;gap:9px;margin:0 0 14px;
+  color:var(--terracotta);font-size:10px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase;
+}
+.status:before,.status:after{content:"";width:22px;height:1px;background:rgba(176,69,43,.5)}
+.hero-heading{
+  margin:0 auto;max-width:390px;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:clamp(23px,7vw,29px);line-height:1.3;font-weight:600;
+  color:var(--ink);
+}
+.divider{width:58px;height:9px;margin:11px auto 10px;position:relative}
+.divider:before,.divider:after{content:"";position:absolute;top:4px;width:22px;height:1px;background:var(--gold-soft)}
+.divider:before{left:0}.divider:after{right:0}
+.divider span{position:absolute;left:50%;top:1px;width:7px;height:7px;transform:translateX(-50%);border-radius:50%;background:var(--gold-soft)}
+.intro{margin:0 auto;max-width:340px;color:var(--muted);font-size:13px;line-height:1.5}
+
+.ideas{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.card{
+  min-width:0;border-radius:16px;padding:13px 7px 11px;text-align:center;
+  background:linear-gradient(165deg,var(--card-warm),var(--card));
+  border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(59,42,30,.06);
+}
+.icon{
+  width:32px;height:32px;margin:0 auto 8px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+}
+.icon svg{width:16px;height:16px}
+.gold{background:linear-gradient(155deg,rgba(231,165,37,.24),rgba(231,165,37,.10));color:var(--gold)}
+.red{background:linear-gradient(155deg,rgba(176,69,43,.20),rgba(176,69,43,.08));color:var(--terracotta)}
+.green{background:linear-gradient(155deg,rgba(95,115,69,.22),rgba(95,115,69,.09));color:var(--olive)}
+.card h2{
+  margin:0 0 6px;font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:clamp(14px,4.2vw,17px);line-height:1.25;font-weight:600;
+}
+.card p{margin:0;color:var(--muted);font-size:10.4px;line-height:1.4}
+.card:nth-child(1) h2{color:var(--gold)}
+.card:nth-child(2) h2{color:var(--terracotta)}
+.card:nth-child(3) h2{color:var(--olive)}
+
+.join{
+  position:relative;z-index:1;padding:14px 14px;display:flex;align-items:flex-start;gap:12px;
+  background:linear-gradient(160deg,var(--card-warm),var(--card));
+  border:1px dashed rgba(176,69,43,.3);border-radius:16px;
+}
+.join-icon{
+  flex:0 0 40px;width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(155deg,rgba(176,69,43,.16),rgba(231,165,37,.14));
+  display:flex;align-items:center;justify-content:center;color:var(--terracotta);
+}
+.join-icon svg{width:20px;height:20px}
+.join-copy{min-width:0}
+.join h2{
+  margin:0 0 5px;font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:14.5px;line-height:1.25;font-weight:600;color:var(--ink);
+}
+.join p{margin:0;color:var(--muted);font-size:11.2px;line-height:1.42}
+.join .coming{display:inline-block;margin-top:7px;color:var(--terracotta);font-weight:700;font-size:10.5px;letter-spacing:.2px}
+
+.bottom{position:relative;z-index:1;text-align:center;color:rgba(109,89,70,.75);font-size:9.5px;letter-spacing:.2px}
+
+@media(max-height:680px){
+  .page{gap:12px;padding-top:12px;padding-bottom:12px}
+  .status{margin-bottom:10px}
+  .hero-heading{font-size:22px}
+  .divider{margin:7px auto}
+  .intro{font-size:12px}
+  .card{padding:10px 5px}
+  .icon{width:27px;height:27px;margin-bottom:6px;border-radius:9px}
+  .icon svg{width:14px;height:14px}
+  .card h2{font-size:13.5px;margin-bottom:4px}
+  .card p{font-size:9.4px}
+  .join{padding:11px 12px}
+  .join-icon{width:34px;height:34px;flex-basis:34px}
+  .join p{font-size:10.3px}.join h2{font-size:13.5px}
+}
+@media(min-width:700px){
+  body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:#eee6d7}
+  .page{box-shadow:0 0 45px rgba(59,42,30,.14)}
+}
+</style>
+</head>
+
+<body>
+<main class="page">
+<div class="dawn"></div>
+<div class="horizon"></div>
+
+<section class="hero">
+  <div class="status">Coming Soon</div>
+
+  <h1 class="hero-heading">ಹಾವೇರಿಯ ಬದುಕು, ಹಾವೇರಿಯವರ ಮಾತು.</h1>
+
+  <div class="divider"><span></span></div>
+
+  <p class="intro">
+    Haveri has countless stories, voices and ideas.<br>
+    This is where they come together.
+  </p>
+</section>
+
+<section class="ideas" aria-label="What this space is about">
+
+  <article class="card">
+    <div class="icon gold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8A8.5 8.5 0 0 1 12.5 20a8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8.5Z"/>
+      </svg>
+    </div>
+    <h2>ಏನಾಗುತ್ತಿದೆ?</h2>
+    <p>Stories, people, places and experiences that make Haveri what it is.</p>
+  </article>
+
+  <article class="card">
+    <div class="icon red">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12s3.5-7 9-7 9 7 9 7-3.5 7-9 7-9-7-9-7Z"/>
+        <circle cx="12" cy="12" r="2.7"/>
+      </svg>
+    </div>
+    <h2>ನಮಗೆ ಮುಖ್ಯವಾದುದು</h2>
+    <p>Voices, concerns, questions and things that deserve attention.</p>
+  </article>
+
+  <article class="card">
+    <div class="icon green">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/>
+      </svg>
+    </div>
+    <h2>ಕನಸುಗಳು</h2>
+    <p>Ideas, possibilities, solutions and small steps for tomorrow.</p>
+  </article>
+
+</section>
+
+<section class="join">
+  <div class="join-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8.5" cy="10" r="3.2"/>
+      <circle cx="16.2" cy="12.2" r="2.6"/>
+      <path d="M3.2 19.5c.6-3 2.7-4.6 5.3-4.6s4.7 1.6 5.3 4.6"/>
+      <path d="M13.8 15.4c1.9.2 3.4 1.6 3.9 4.1"/>
+    </svg>
+  </div>
+
+  <div class="join-copy">
+    <h2>ನೀವೂ ಜೊತೆಯಾಗಿರಿ</h2>
+    <p>
+      ಪತ್ರಕರ್ತರಿರಲಿ, ಹೊಸ ಐಡಿಯಾ ಇರುವ ವಿದ್ಯಾರ್ಥಿಯಿರಲಿ, ತಮ್ಮ ಕಥೆ ಹೇಳಬೇಕೆನ್ನಿಸುವ ಅಂಗಡಿಯವರಿರಲಿ,
+      ಸುತ್ತಮುತ್ತ ಏನಾದರೂ ಗಮನಿಸಿದ ನೆರೆಹೊರೆಯವರಿರಲಿ — ಪ್ರತಿಯೊಬ್ಬರ ಮಾತಿಗೂ ಇಲ್ಲಿ ಜಾಗ ಇದೆ.
+    </p>
+    <span class="coming">Contribution platform — In Progress.</span>
+  </div>
+</section>
+
+<div class="bottom">A work in progress, for Haveri.</div>
+</main>
+</body>
+</html>

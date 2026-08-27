@@ -1,81 +1,51 @@
-.onehaveri-bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: max(18px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  z-index: 800;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px;
-  background: rgba(255, 252, 245, 0.96);
-  border: 1px solid rgba(59, 42, 30, 0.10);
-  border-radius: 999px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow:
-    0 6px 20px rgba(59, 42, 30, 0.12),
-    0 2px 8px rgba(59, 42, 30, 0.06);
-  transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-.onehaveri-bottom-nav a {
-  position: relative;
-  width: 46px;
-  height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: #6D5946;
-  border-radius: 50%;
-  transition: background .2s ease, color .2s ease;
-}
+  const links = [
+    {
+      href: "/",
+      label: "Home",
+      // TODO: return true when this really is the OneHaveri landing/home page
+      isActive: function () {
+        return false;
+      },
+      outline: `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>`,
+      filled: `<path fill="currentColor" d="M12 2.5 2.5 10.3V21a1 1 0 0 0 1 1H9v-7h6v7h5.5a1 1 0 0 0 1-1V10.3L12 2.5Z"/>`
+    },
+    {
+      href: "/new-post.html",
+      label: "New post",
+      // TODO: return true when the new-post page/panel is actually open
+      isActive: function () {
+        return false;
+      },
+      outline: `<rect x="4" y="4" width="16" height="16" rx="5"/><path d="M12 8v8M8 12h8"/>`,
+      filled: `<rect x="4" y="4" width="16" height="16" rx="5" fill="currentColor"/><path d="M12 8v8M8 12h8" stroke="#FFFCF5" stroke-width="2" stroke-linecap="round"/>`
+    },
+    {
+      href: "/profile.html",
+      label: "Profile",
+      // TODO: return true when viewing the profile page, or the account panel is open
+      isActive: function () {
+        return false;
+      },
+      outline: `<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6"/>`,
+      filled: `<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6" fill="currentColor"/>`
+    }
+  ];
 
-.onehaveri-bottom-nav a:hover {
-  background: rgba(176, 69, 43, 0.06);
-}
+  const nav = document.createElement("nav");
+  nav.className = "onehaveri-bottom-nav";
 
-.onehaveri-bottom-nav a.active {
-  color: #B0452B;
-  background: rgba(176, 69, 43, 0.10);
-}
+  nav.innerHTML = links.map(link => {
+    const isActive = link.isActive();
+    return `
+      <a href="${link.href}" aria-label="${link.label}" class="${isActive ? "active" : ""}">
+        <svg class="icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${link.outline}</svg>
+        <svg class="icon-filled" viewBox="0 0 24 24">${link.filled}</svg>
+      </a>
+    `;
+  }).join("");
 
-.onehaveri-bottom-nav svg {
-  width: 22px;
-  height: 22px;
-}
+  document.body.appendChild(nav);
 
-.onehaveri-bottom-nav a .icon-filled {
-  display: none;
-}
-
-.onehaveri-bottom-nav a.active .icon-outline {
-  display: none;
-}
-
-.onehaveri-bottom-nav a.active .icon-filled {
-  display: block;
-}
-
-body.survey-is-open .onehaveri-bottom-nav {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateX(-50%) translateY(20px);
-}
-
-@media (max-width: 480px) {
-  .onehaveri-bottom-nav {
-    gap: 4px;
-    padding: 6px;
-  }
-  .onehaveri-bottom-nav a {
-    width: 42px;
-    height: 42px;
-  }
-  .onehaveri-bottom-nav svg {
-    width: 20px;
-    height: 20px;
-  }
-}
+});

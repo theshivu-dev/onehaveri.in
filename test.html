@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OneHaveri — Auth Test</title>
+</head>
+<body>
+
+  <button id="loginBtn">Continue with Google</button>
+  <pre id="status"></pre>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+    const supabase = createClient(
+      'https://zdgbtjelxhriggjavecp.supabase.co',
+      'sb_publishable_G2vSbiWDeNBPcJCQb0GEUg_S9GvaCVO'
+    )
+
+    document.getElementById('loginBtn').onclick = async () => {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google'
+      })
+      if (error) {
+        document.getElementById('status').textContent = 'Error: ' + error.message
+      }
+    }
+
+    // After Google redirects back here, check if a session exists
+    supabase.auth.getSession().then(({ data }) => {
+      document.getElementById('status').textContent =
+        data.session
+          ? 'Signed in as: ' + data.session.user.email
+          : 'Not signed in yet'
+    })
+  </script>
+
+</body>
+</html>

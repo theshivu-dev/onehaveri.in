@@ -28,7 +28,7 @@ body {
 
 .onehaveri-bottom-nav {
     position: fixed;
-    bottom: max(var(--nav-gap-from-edge), env(safe-area-inset-bottom));
+    bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom));
     left: 50%;
     transform: translateX(-50%);
     z-index: 800;

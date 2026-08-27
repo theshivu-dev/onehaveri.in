@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FBF1DE">
+<title>One Haveri — Coming Soon</title>
+
+<style>
+:root{
+  --cream:#FBF1DE;
+  --cream-deep:#F3E3C4;
+  --card:#FFFCF5;
+  --card-warm:#FEF6E4;
+  --gold:#C77F16;
+  --gold-soft:#E7A525;
+  --terracotta:#B0452B;
+  --ink:#3B2A1E;
+  --muted:#6D5946;
+  --olive:#5F7345;
+  --line:rgba(59,42,30,.10);
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--cream);
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+
+.page{
+  width:100%;
+  max-width:430px;
+  height:100svh;
+  margin:0 auto;
+  padding:max(10px,env(safe-area-inset-top))
+          18px
+          max(10px,env(safe-area-inset-bottom));
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:clamp(5px,1.3svh,12px);
+  position:relative;
+  overflow:hidden;
+  background:var(--cream);
+}
+
+/* soft dawn light */
+.dawn{
+  position:absolute;
+  inset:-10% -10% auto -10%;
+  height:62%;
+  background:
+    radial-gradient(58% 60% at 50% 0%, rgba(231,165,37,.55), transparent 68%),
+    radial-gradient(85% 50% at 50% 0%, rgba(245,201,110,.30), transparent 75%);
+  pointer-events:none;
+}
+
+.hero{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  padding:0 6px;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin:0 0 8px;
+  color:var(--terracotta);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:2.2px;
+  text-transform:uppercase;
+}
+
+.status:before,
+.status:after{
+  content:"";
+  width:22px;
+  height:1px;
+  background:rgba(176,69,43,.5);
+}
+
+.hero-heading{
+  margin:0 auto;
+  max-width:390px;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:clamp(19px,6vw,25px);
+  line-height:1.24;
+  font-weight:600;
+  color:var(--ink);
+}
+
+.tagline{
+  margin:8px auto 0;
+  max-width:320px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-style:italic;
+  font-weight:700;
+  font-size:clamp(14.5px,4.4vw,17px);
+  line-height:1.3;
+  color:var(--terracotta);
+  letter-spacing:.1px;
+}
+
+.tagline:before,
+.tagline:after{
+  content:"";
+  flex:0 0 14px;
+  height:2px;
+  border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--gold-soft));
+}
+
+.tagline:after{
+  background:linear-gradient(90deg,var(--gold-soft),transparent);
+}
+
+.divider{
+  width:58px;
+  height:9px;
+  margin:6px auto 6px;
+  position:relative;
+}
+
+.divider:before,
+.divider:after{
+  content:"";
+  position:absolute;
+  top:4px;
+  width:22px;
+  height:1px;
+  background:var(--gold-soft);
+}
+
+.divider:before{left:0}
+.divider:after{right:0}
+
+.divider span{
+  position:absolute;
+  left:50%;
+  top:1px;
+  width:7px;
+  height:7px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:var(--gold-soft);
+}
+
+.intro{
+  margin:0 auto;
+  max-width:340px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.4;
+}
+
+.ideas{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+}
+
+.card{
+  min-width:0;
+  border-radius:16px;
+  padding:9px 6px 8px;
+  text-align:center;
+  background:linear-gradient(165deg,var(--card-warm),var(--card));
+  border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(59,42,30,.06);
+}
+
+.icon{
+  width:26px;
+  height:26px;
+  margin:0 auto 5px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.icon svg{
+  width:13px;
+  height:13px;
+}
+
+.gold{
+  background:linear-gradient(155deg,rgba(231,165,37,.24),rgba(231,165,37,.10));
+  color:var(--gold);
+}
+
+.red{
+  background:linear-gradient(155deg,rgba(176,69,43,.20),rgba(176,69,43,.08));
+  color:var(--terracotta);
+}
+
+.green{
+  background:linear-gradient(155deg,rgba(95,115,69,.22),rgba(95,115,69,.09));
+  color:var(--olive);
+}
+
+.card h2{
+  margin:0 0 3px;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:clamp(12.5px,3.8vw,14.5px);
+  line-height:1.2;
+  font-weight:600;
+}
+
+.card p{
+  margin:0;
+  color:var(--muted);
+  font-size:9.3px;
+  line-height:1.32;
+}
+
+.card:nth-child(1) h2{color:var(--gold)}
+.card:nth-child(2) h2{color:var(--terracotta)}
+.card:nth-child(3) h2{color:var(--olive)}
+
+
+/* ==============================
+   SURVEY INVITATION
+   ============================== */
+
+.survey-invite{
+  position:relative;
+  z-index:1;
+  text-align:center;
+}
+
+.survey-button{
+  border:1px solid rgba(176,69,43,.25);
+  background:rgba(255,252,245,.82);
+  color:var(--terracotta);
+  border-radius:999px;
+  padding:7px 14px;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(59,42,30,.05);
+  transition:.2s ease;
+}
+
+.survey-button:hover{
+  transform:translateY(-1px);
+  background:var(--card);
+}
+
+.survey-button:active{
+  transform:translateY(0);
+}
+
+
+/* ==============================
+   JOIN
+   ============================== */
+
+.join{
+  position:relative;
+  z-index:1;
+  padding:10px 12px;
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  background:linear-gradient(160deg,var(--card-warm),var(--card));
+  border:1px dashed rgba(176,69,43,.3);
+  border-radius:16px;
+}
+
+.join-icon{
+  flex:0 0 32px;
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  background:linear-gradient(155deg,rgba(176,69,43,.16),rgba(231,165,37,.14));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--terracotta);
+}
+
+.join-icon svg{
+  width:16px;
+  height:16px;
+}
+
+.join-copy{
+  min-width:0;
+}
+
+.join h2{
+  margin:0 0 3px;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:13px;
+  line-height:1.2;
+  font-weight:600;
+  color:var(--ink);
+}
+
+.join p{
+  margin:0;
+  color:var(--muted);
+  font-size:10.2px;
+  line-height:1.32;
+}
+
+.join .coming{
+  display:inline-block;
+  margin-top:5px;
+  color:var(--terracotta);
+  font-weight:700;
+  font-size:9.6px;
+  letter-spacing:.2px;
+}
+
+.join a{
+  color:var(--terracotta);
+  font-weight:600;
+}
+
+.bottom{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  color:rgba(109,89,70,.75);
+  font-size:9px;
+  letter-spacing:.2px;
+}
+
+
+/* ==============================
+   SURVEY MODAL
+   ============================== */
+
+.survey-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(45,32,24,.48);
+  backdrop-filter:blur(5px);
+}
+
+.survey-overlay.show{
+  display:flex;
+}
+
+.survey-modal{
+  width:100%;
+  max-width:520px;
+  max-height:80svh;
+  overflow:auto;
+  background:var(--card);
+  border-radius:22px;
+  box-shadow:0 24px 70px rgba(0,0,0,.25);
+  position:relative;
+  animation:surveyIn .25s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+@keyframes surveyIn{
+  from{
+    opacity:0;
+    transform:translateY(15px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.survey-header{
+  padding:20px 20px 12px;
+  border-bottom:1px solid var(--line);
+  flex:0 0 auto;
+}
+
+.survey-label{
+  color:var(--terracotta);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+
+.survey-title{
+  margin:0;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:22px;
+  line-height:1.35;
+}
+
+.survey-subtitle{
+  margin:7px 0 0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.survey-close{
+  position:absolute;
+  right:14px;
+  top:14px;
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:50%;
+  background:rgba(59,42,30,.06);
+  color:var(--muted);
+  font-size:20px;
+  cursor:pointer;
+}
+
+.survey-progress{
+  height:4px;
+  background:rgba(59,42,30,.08);
+  flex:0 0 auto;
+}
+
+.survey-progress-bar{
+  height:100%;
+  width:0%;
+  background:var(--terracotta);
+  transition:width .25s ease;
+}
+
+.survey-body{
+  padding:22px 20px;
+  overflow-y:auto;
+  flex:1 1 auto;
+  min-height:0;
+}
+
+.question-icon{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  margin-bottom:10px;
+  background:linear-gradient(155deg,rgba(231,165,37,.22),rgba(176,69,43,.10));
+}
+
+.question-number{
+  color:var(--terracotta);
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:9px;
+}
+
+.question-text{
+  margin:0 0 17px;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:19px;
+  line-height:1.45;
+}
+
+.question-help{
+  margin:-9px 0 14px;
+  color:var(--muted);
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.option-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.option{
+  position:relative;
+}
+
+.option.half{
+  flex:1 1 calc(50% - 4px);
+  min-width:120px;
+}
+
+.option.full{
+  flex:1 1 100%;
+}
+
+.option input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.option label{
+  display:block;
+  padding:11px 13px;
+  border:1px solid rgba(59,42,30,.12);
+  border-radius:12px;
+  background:#fffdf8;
+  color:var(--ink);
+  font-size:12px;
+  line-height:1.4;
+  cursor:pointer;
+  transition:.15s ease;
+  height:100%;
+}
+
+.option label:hover{
+  border-color:rgba(176,69,43,.35);
+}
+
+.option input:checked + label{
+  border-color:var(--terracotta);
+  background:rgba(176,69,43,.07);
+  box-shadow:inset 0 0 0 1px rgba(176,69,43,.12);
+}
+
+.other-input{
+  display:none;
+  width:100%;
+  margin-top:8px;
+  border:1px solid rgba(59,42,30,.14);
+  border-radius:11px;
+  padding:10px 12px;
+  background:#fffdf8;
+  color:var(--ink);
+  font:inherit;
+  font-size:12px;
+  outline:none;
+}
+
+.other-input.show{
+  display:block;
+}
+
+.other-input:focus{
+  border-color:var(--terracotta);
+  box-shadow:0 0 0 3px rgba(176,69,43,.08);
+}
+
+.text-answer{
+  width:100%;
+  min-height:115px;
+  resize:vertical;
+  border:1px solid rgba(59,42,30,.14);
+  border-radius:13px;
+  padding:12px;
+  background:#fffdf8;
+  color:var(--ink);
+  font:inherit;
+  font-size:12px;
+  line-height:1.5;
+  outline:none;
+}
+
+.text-answer:focus{
+  border-color:var(--terracotta);
+  box-shadow:0 0 0 3px rgba(176,69,43,.08);
+}
+
+.survey-footer{
+  padding:12px 20px 18px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex:0 0 auto;
+}
+
+.survey-nav{
+  display:flex;
+  gap:8px;
+  margin-left:auto;
+}
+
+.nav-button{
+  border:0;
+  border-radius:11px;
+  padding:10px 17px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.nav-back{
+  background:rgba(59,42,30,.07);
+  color:var(--muted);
+}
+
+.nav-next{
+  background:var(--terracotta);
+  color:white;
+}
+
+.nav-next:hover{
+  filter:brightness(.96);
+}
+
+.survey-note{
+  margin-top:12px;
+  color:var(--muted);
+  font-size:9.5px;
+  line-height:1.45;
+  text-align:center;
+}
+
+.thank-you{
+  padding:35px 24px 30px;
+  text-align:center;
+}
+
+.thank-you-icon{
+  width:54px;
+  height:54px;
+  margin:0 auto 14px;
+  border-radius:50%;
+  background:rgba(95,115,69,.12);
+  color:var(--olive);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+}
+
+.thank-you h2{
+  margin:0 0 9px;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:22px;
+}
+
+.thank-you p{
+  margin:0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+}
+
+.thank-you button{
+  margin-top:20px;
+  border:0;
+  border-radius:11px;
+  padding:10px 20px;
+  background:var(--terracotta);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+
+
+/* ==============================
+   INVITATION POPUP
+   ============================== */
+
+.invitation-overlay{
+  position:fixed;
+  inset:0;
+  z-index:900;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  padding:18px;
+  background:rgba(45,32,24,.20);
+}
+
+.invitation-overlay.show{
+  display:flex;
+}
+
+.invitation{
+  width:100%;
+  max-width:430px;
+  background:var(--card);
+  border:1px solid rgba(59,42,30,.10);
+  border-radius:20px;
+  padding:19px 18px 16px;
+  box-shadow:0 15px 45px rgba(59,42,30,.22);
+  animation:inviteUp .3s ease;
+}
+
+@keyframes inviteUp{
+  from{
+    opacity:0;
+    transform:translateY(25px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.invitation-tag{
+  color:var(--terracotta);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.invitation h2{
+  margin:6px 0 6px;
+  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  font-size:19px;
+  line-height:1.35;
+}
+
+.invitation p{
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.invitation-actions{
+  display:flex;
+  gap:8px;
+  margin-top:14px;
+}
+
+.invitation-actions button{
+  flex:1;
+  border-radius:10px;
+  padding:10px 8px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.invite-later{
+  border:1px solid rgba(59,42,30,.12);
+  background:#fffdf8;
+  color:var(--muted);
+}
+
+.invite-start{
+  border:0;
+  background:var(--terracotta);
+  color:white;
+}
+
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+
+@media(max-height:760px){
+
+  .page{
+    gap:5px;
+    padding-top:8px;
+    padding-bottom:8px;
+  }
+
+  .status{
+    margin-bottom:5px;
+    font-size:9px;
+  }
+
+  .hero-heading{
+    font-size:18px;
+  }
+
+  .divider{
+    margin:3px auto;
+  }
+
+  .tagline{
+    margin:4px auto 0;
+    font-size:12.5px;
+    gap:6px;
+  }
+
+  .tagline:before,
+  .tagline:after{
+    flex-basis:9px;
+  }
+
+  .intro{
+    font-size:11px;
+    line-height:1.32;
+  }
+
+  .card{
+    padding:7px 4px;
+  }
+
+  .icon{
+    width:21px;
+    height:21px;
+    margin-bottom:3px;
+    border-radius:7px;
+  }
+
+  .icon svg{
+    width:11px;
+    height:11px;
+  }
+
+  .card h2{
+    font-size:11.5px;
+    margin-bottom:2px;
+  }
+
+  .card p{
+    font-size:8.4px;
+    line-height:1.25;
+  }
+
+  .survey-button{
+    padding:6px 12px;
+    font-size:9.5px;
+  }
+
+  .join{
+    padding:8px 9px;
+    gap:7px;
+  }
+
+  .join-icon{
+    width:26px;
+    height:26px;
+    flex-basis:26px;
+  }
+
+  .join-icon svg{
+    width:13px;
+    height:13px;
+  }
+
+  .join p{
+    font-size:9.2px;
+    line-height:1.28;
+  }
+
+  .join h2{
+    font-size:11.5px;
+  }
+
+  .join .coming{
+    font-size:8.6px;
+    margin-top:3px;
+  }
+
+  .bottom{
+    font-size:8px;
+  }
+}
+
+@media(min-width:700px){
+
+  body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#eee6d7;
+  }
+
+  .page{
+    height:min(880px,92vh);
+    box-shadow:0 0 45px rgba(59,42,30,.14);
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+<main class="page">
+
+<div class="dawn"></div>
+
+
+<!-- =========================
+     EXISTING HERO
+     ========================= -->
+
+<section class="hero">
+
+  <div class="status">Coming Soon</div>
+
+  <h1 class="hero-heading">
+    ಹಾವೇರಿಯ ಬದುಕು, ಹಾವೇರಿಯವರ ಮಾತು.
+  </h1>
+
+  <p class="tagline">Don't wait. Stand for your place.</p>
+
+  <div class="divider">
+    <span></span>
+  </div>
+
+  <p class="intro">
+    Haveri has countless stories, voices and ideas.<br>
+    This is where they come together.
+  </p>
+
+</section>
+
+
+<!-- =========================
+     EXISTING THREE CARDS
+     ========================= -->
+
+<section class="ideas" aria-label="What this space is about">
+
+  <article class="card">
+
+    <div class="icon gold">
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round">
+
+        <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8A8.5 8.5 0 0 1 12.5 20a8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8.5Z"/>
+
+      </svg>
+    </div>
+
+    <h2>ಏನಾಗುತ್ತಿದೆ?</h2>
+
+    <p>
+      Stories, people, places and experiences that make Haveri what it is.
+    </p>
+
+  </article>
+
+
+  <article class="card">
+
+    <div class="icon red">
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round">
+
+        <path d="M3 12s3.5-7 9-7 9 7 9 7-3.5 7-9 7-9-7-9-7Z"/>
+        <circle cx="12" cy="12" r="2.7"/>
+
+      </svg>
+    </div>
+
+    <h2>ನಮಗೆ ಮುಖ್ಯವಾದುದು</h2>
+
+    <p>
+      Voices, concerns, questions and things that deserve attention.
+    </p>
+
+  </article>
+
+
+  <article class="card">
+
+    <div class="icon green">
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round">
+
+        <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/>
+
+      </svg>
+    </div>
+
+    <h2>ಕನಸುಗಳು</h2>
+
+    <p>
+      Ideas, possibilities, solutions and small steps for tomorrow.
+    </p>
+
+  </article>
+
+</section>
+
+
+<!-- =========================
+     SURVEY BUTTON
+     ========================= -->
+
+<section class="survey-invite">
+
+  <button
+    type="button"
+    class="survey-button"
+    onclick="openSurvey()">
+
+    📋 ಸಮೀಕ್ಷೆ: ಹಾವೇರಿಯ ಬಗ್ಗೆ ನಿಮ್ಮ ಮಾತು ಹಂಚಿಕೊಳ್ಳಿ (2–3 ನಿಮಿಷ)
+
+  </button>
+
+</section>
+
+
+<!-- =========================
+     JOIN SECTION
+     ========================= -->
+
+<section class="join">
+
+  <div class="join-icon" aria-hidden="true">
+
+    <svg viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round">
+
+      <circle cx="8.5" cy="10" r="3.2"/>
+      <circle cx="16.2" cy="12.2" r="2.6"/>
+      <path d="M3.2 19.5c.6-3 2.7-4.6 5.3-4.6s4.7 1.6 5.3 4.6"/>
+      <path d="M13.8 15.4c1.9.2 3.4 1.6 3.9 4.1"/>
+
+    </svg>
+
+  </div>
+
+
+  <div class="join-copy">
+
+    <h2>ನೀವೂ ಜೊತೆಯಾಗಿರಿ</h2>
+
+    <p>
+      ಪತ್ರಕರ್ತರಿರಲಿ, ಹೊಸ ಐಡಿಯಾ ಇರುವ ವಿದ್ಯಾರ್ಥಿಯಿರಲಿ,
+      ತಮ್ಮ ಕಥೆ ಹೇಳಬೇಕೆನ್ನಿಸುವ ಅಂಗಡಿಯವರಿರಲಿ,
+      ಸುತ್ತಮುತ್ತ ಏನಾದರೂ ಗಮನಿಸಿದ ನೆರೆಹೊರೆಯವರಿರಲಿ —
+      ಪ್ರತಿಯೊಬ್ಬರ ಮಾತಿಗೂ ಇಲ್ಲಿ ಜಾಗ ಇದೆ.
+    </p>
+
+    <span class="coming">
+      Contribution platform — In Progress.
+    </span>
+
+    <p>
+      If you would like to contribute in any way towards expanding
+      this shared vision for Haveri, reach out to us at
+      <a href="mailto:contact@onehaveri.in">
+        contact@onehaveri.in
+      </a>.
+    </p>
+
+  </div>
+
+</section>
+
+
+<div class="bottom">
+  A work in progress, for Haveri.
+</div>
+
+</main>
+
+
+
+<!-- ============================================================
+     AUTOMATIC INVITATION — APPEARS AFTER 8 SECONDS
+     ============================================================ -->
+
+<div
+  id="invitationOverlay"
+  class="invitation-overlay"
+  aria-hidden="true">
+
+  <div class="invitation">
+
+    <div class="invitation-tag">
+      OneHaveri Survey
+    </div>
+
+    <h2>
+      ಹಾವೇರಿಯ ಬಗ್ಗೆ ನಿಮ್ಮ ಮಾತು ಹಂಚಿಕೊಳ್ಳುತ್ತೀರಾ?
+    </h2>
+
+    <p>
+      OneHaveri ಇನ್ನೂ ಆರಂಭದ ಹಂತದಲ್ಲಿದೆ.
+      ಹಾವೇರಿಯಲ್ಲಿ ಏನು ಚೆನ್ನಾಗಿದೆ, ಏನು ಇನ್ನಷ್ಟು ಉತ್ತಮವಾಗಬೇಕು
+      ಮತ್ತು ಮುಂದೆ ಏನು ಬದಲಾಗಬೇಕು ಎಂಬುದನ್ನು ತಿಳಿದುಕೊಳ್ಳಲು
+      ನಿಮ್ಮ ಅಭಿಪ್ರಾಯ ನಮಗೆ ಮುಖ್ಯ.
+      <br><br>
+      <strong>2–3 ನಿಮಿಷ ಮಾತ್ರ.</strong>
+    </p>
+
+    <div class="invitation-actions">
+
+      <button
+        type="button"
+        class="invite-later"
+        onclick="closeInvitation()">
+
+        ಈಗ ಬೇಡ
+
+      </button>
+
+      <button
+        type="button"
+        class="invite-start"
+        onclick="startSurveyFromInvitation()">
+
+        ಹೌದು, ಹೇಳುತ್ತೇನೆ
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     SURVEY MODAL
+     ============================================================ -->
+
+<div
+  id="surveyOverlay"
+  class="survey-overlay"
+  aria-hidden="true">
+
+  <div class="survey-modal">
+
+    <button
+      type="button"
+      class="survey-close"
+      aria-label="Close survey"
+      onclick="closeSurvey()">
+
+      ×
+
+    </button>
+
+
+    <div class="survey-header">
+
+      <div class="survey-label">
+        OneHaveri • ನಿಮ್ಮ ಮಾತು
+      </div>
+
+      <h2 class="survey-title">
+        ಹಾವೇರಿಯನ್ನು ನೀವು ಹೇಗೆ ನೋಡುತ್ತೀರಿ?
+      </h2>
+
+      <p class="survey-subtitle">
+        ನಿಮ್ಮ ಅಭಿಪ್ರಾಯ, ನಿಮ್ಮ ಅನುಭವ ಮತ್ತು ನಿಮ್ಮ ideas —
+        ಎಲ್ಲವನ್ನೂ ಮುಕ್ತವಾಗಿ ಹಂಚಿಕೊಳ್ಳಿ.
+      </p>
+
+    </div>
+
+
+    <div class="survey-progress">
+
+      <div
+        id="surveyProgressBar"
+        class="survey-progress-bar">
+      </div>
+
+    </div>
+
+
+    <div class="survey-body" id="surveyBody">
+
+      <div
+        id="questionContainer">
+      </div>
+
+      <div class="survey-note">
+        ಹೆಸರು ಅಥವಾ Email ಕೊಡುವುದು ಅಗತ್ಯವಿಲ್ಲ.
+      </div>
+
+    </div>
+
+
+    <div class="survey-footer">
+
+      <div></div>
+
+      <div class="survey-nav">
+
+        <button
+          type="button"
+          id="backButton"
+          class="nav-button nav-back"
+          onclick="previousQuestion()">
+
+          ಹಿಂದೆ
+
+        </button>
+
+        <button
+          type="button"
+          id="nextButton"
+          class="nav-button nav-next"
+          onclick="nextQuestion()">
+
+          ಮುಂದೆ
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<script>
+
+/* ============================================================
+   ONEHAVERI SURVEY
+   ------------------------------------------------------------
+   Google Apps Script submission endpoint
+   ============================================================ */
+
+const SURVEY_SUBMIT_URL =
+  "https://script.google.com/macros/s/AKfycbx_94YnyiO8rRD6_834aVhgDMNw1G2GTpmqIh-zOHqd-YTE9ZvqEFMDanYl9oUioNwxIw/exec";
+
+const SURVEY_VERSION = "v1.0";
+
+
+/* ------------------------------------------------------------
+   Survey questions
+   ------------------------------------------------------------ */
+
+const OTHER_LABEL = "ಬೇರೆ";
+
+const surveyQuestions = [
+
+  {
+    id: "connection",
+    type: "multi",
+    icon: "🔗",
+    question: "ನಿಮಗೆ ಹಾವೇರಿಯ ಜೊತೆ ಯಾವ ರೀತಿಯ ಸಂಪರ್ಕ ಇದೆ?",
+    help: "ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚು ಆಯ್ಕೆ ಮಾಡಬಹುದು.",
+    options: [
+      "ನಾನು ಹಾವೇರಿಯಲ್ಲಿ ವಾಸಿಸುತ್ತಿದ್ದೇನೆ",
+      "ನನ್ನ ಮೂಲ ಹಾವೇರಿ",
+      "ಹಾವೇರಿಯಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತೇನೆ",
+      "ಹಾವೇರಿಯಲ್ಲಿ ಓದಿದ್ದೇನೆ / ಓದುತ್ತಿದ್ದೇನೆ",
+      "ನನ್ನ ಕುಟುಂಬ / ಸಂಬಂಧಿಕರು ಹಾವೇರಿಯಲ್ಲಿದ್ದಾರೆ",
+      "ಆಗಾಗ ಹಾವೇರಿಗೆ ಬರುತ್ತೇನೆ",
+      "ನೇರ ಸಂಪರ್ಕ ಇಲ್ಲ, OneHaveri ಬಗ್ಗೆ ತಿಳಿಯಲು ಬಂದಿದ್ದೇನೆ",
+      "ಬೇರೆ"
+    ]
+  },
+
+
+  {
+    id: "visit_reason",
+    type: "multi",
+    icon: "🚪",
+    question: "ನೀವು OneHaveriಗೆ ಇಂದು ಬಂದಿದ್ದು ಹೇಗೆ / ಏಕೆ?",
+    help: "ನಿಮಗೆ ಸರಿಹೊಂದುವಷ್ಟು ಆಯ್ಕೆ ಮಾಡಬಹುದು.",
+    options: [
+      "ಹಾವೇರಿಯ ಬಗ್ಗೆ ಮಾಹಿತಿ ನೋಡಲು",
+      "Local news / updates ನೋಡಲು",
+      "ಯಾವುದೊ ವಿಷಯ ಹುಡುಕುತ್ತಿದ್ದೆ",
+      "ಯಾರೋ link ಕಳುಹಿಸಿದ್ದರು",
+      "Social mediaನಲ್ಲಿ ನೋಡಿದೆ",
+      "OneHaveri ಬಗ್ಗೆ ಕುತೂಹಲವಿತ್ತು",
+      "ನನ್ನ idea / ವಿಷಯ ಹಂಚಿಕೊಳ್ಳಲು",
+      "ಹಾವೇರಿಗೆ ಸಂಬಂಧಿಸಿದ ಸಮಸ್ಯೆ / ವಿಷಯದ ಬಗ್ಗೆ ಮಾತನಾಡಲು",
+      "Volunteer / contribute ಮಾಡಲು",
+      "ಹೀಗೆ ನೋಡೋಣ ಅಂತ ಬಂದೆ 😄",
+      "ಬೇರೆ"
+    ]
+  },
+
+
+  {
+    id: "haveri_in_one_line",
+    type: "text",
+    icon: "✍️",
+    question: "ಒಂದು ಸಾಲಿನಲ್ಲಿ ಹೇಳಬೇಕೆಂದರೆ — ನಿಮಗೆ ಹಾವೇರಿ ಹೇಗನಿಸುತ್ತದೆ?",
+    help: "ನಿಮ್ಮದೇ ಮಾತಿನಲ್ಲಿ ಹೇಳಿ.",
+    placeholder: "ನನ್ನ ಹಾವೇರಿ ಎಂದರೆ..."
+  },
+
+
+  {
+    id: "haveri_strengths",
+    type: "multi",
+    max: 4,
+    icon: "⭐",
+    question: "ಹಾವೇರಿಯಲ್ಲಿ ನಿಮಗೆ ಹೆಚ್ಚು ಇಷ್ಟವಾಗುವ / ಹೆಮ್ಮೆಪಡುವ ವಿಷಯಗಳು ಯಾವುವು?",
+    help: "ಗರಿಷ್ಠ 4 ಆಯ್ಕೆ ಮಾಡಿ.",
+    options: [
+      "ಇಲ್ಲಿನ ಜನರು / ಜನರ ಸ್ವಭಾವ",
+      "ಶಿಕ್ಷಣ",
+      "ಕೃಷಿ",
+      "ವ್ಯಾಪಾರ / ಉದ್ಯಮ",
+      "ಉದ್ಯೋಗ / ಕೆಲಸದ ಅವಕಾಶಗಳು",
+      "ಆರೋಗ್ಯ ಸೇವೆಗಳು",
+      "ಸಂಸ್ಕೃತಿ ಮತ್ತು ಪರಂಪರೆ",
+      "ಇತಿಹಾಸ",
+      "ದೇವಾಲಯಗಳು / ಧಾರ್ಮಿಕ ಸ್ಥಳಗಳು",
+      "ಪ್ರವಾಸೋದ್ಯಮ",
+      "ಪ್ರಕೃತಿ",
+      "ಆಹಾರ / ಸ್ಥಳೀಯ ರುಚಿಗಳು",
+      "ಕ್ರೀಡೆ",
+      "ಕಲೆ / ಸಾಹಿತ್ಯ",
+      "ಸ್ಥಳೀಯ ಪ್ರತಿಭೆಗಳು",
+      "ಸಣ್ಣ ವ್ಯಾಪಾರಗಳು",
+      "ಶಾಂತವಾದ ಜೀವನ",
+      "ಸಾರ್ವಜನಿಕ ಸೇವೆಗಳು",
+      "ನಗರ / ಸುತ್ತಮುತ್ತಲಿನ ಸಂಪರ್ಕ",
+      "ಬೇರೆ"
+    ]
+  },
+
+
+  {
+    id: "needs_attention",
+    type: "multi",
+    max: 5,
+    icon: "📌",
+    question: "ಹಾವೇರಿಯಲ್ಲಿ ಇನ್ನಷ್ಟು ಗಮನ ಕೊಡಬೇಕಾದ ವಿಷಯಗಳು ಯಾವುವು ಎಂದು ನಿಮಗೆ ಅನಿಸುತ್ತದೆ?",
+    help: "ಗರಿಷ್ಠ 5 ಆಯ್ಕೆ ಮಾಡಿ.",
+    options: [
+      "ಶಿಕ್ಷಣ",
+      "ಉದ್ಯೋಗ / ಉದ್ಯೋಗಾವಕಾಶಗಳು",
+      "ಯುವಕರಿಗೆ ಅವಕಾಶಗಳು",
+      "ಆರೋಗ್ಯ ಸೇವೆಗಳು",
+      "ಕೈಗೆಟುಕುವ / ಉತ್ತಮ ಆರೋಗ್ಯ ಸೇವೆಗಳ ಲಭ್ಯತೆ",
+      "ಕೃಷಿ ಮತ್ತು ರೈತರಿಗೆ ಸಂಬಂಧಿಸಿದ ಅವಕಾಶಗಳು",
+      "ವ್ಯಾಪಾರ / ಉದ್ಯಮ",
+      "ಮನೆ / ವಸತಿ",
+      "ಕುಡಿಯುವ ನೀರು",
+      "ಸ್ವಚ್ಛತೆ",
+      "ಕಸ ನಿರ್ವಹಣೆ",
+      "ಚರಂಡಿ / ಒಳಚರಂಡಿ",
+      "ರಸ್ತೆಗಳ ಗುಣಮಟ್ಟ",
+      "ಪಾದಚಾರಿ ಮಾರ್ಗ / ನಡೆದು ಹೋಗುವ ಸೌಲಭ್ಯ",
+      "ಸಾರ್ವಜನಿಕ ಸಾರಿಗೆ",
+      "ರೈಲು ಸಂಪರ್ಕ",
+      "Traffic / parking",
+      "Street lights",
+      "ಸಾರ್ವಜನಿಕ ಸ್ಥಳಗಳು / ಉದ್ಯಾನಗಳು",
+      "ಮಕ್ಕಳಿಗೆ / ಕುಟುಂಬಗಳಿಗೆ recreation",
+      "ಮಹಿಳೆಯರ ಸುರಕ್ಷತೆ",
+      "ಮಕ್ಕಳ ಸುರಕ್ಷತೆ",
+      "ಪರಿಸರ",
+      "ಸರ್ಕಾರಿ ಸೇವೆಗಳು",
+      "ಸರ್ಕಾರಿ ಕಚೇರಿಗಳ ಸ್ಪಂದನೆ",
+      "ಸಾರ್ವಜನಿಕರಿಗೆ ಸರಿಯಾದ ಮಾಹಿತಿ ಸಿಗುವುದು",
+      "Online / digital services",
+      "ಪಾರದರ್ಶಕತೆ / ಹೊಣೆಗಾರಿಕೆ",
+      "ಲಂಚ / ಭ್ರಷ್ಟಾಚಾರ ಕಡಿಮೆಯಾಗಬೇಕು",
+      "ಪ್ರವಾಸೋದ್ಯಮ",
+      "ಕ್ರೀಡೆ / ಮನರಂಜನೆ",
+      "ಬೇರೆ"
+    ]
+  },
+
+
+  {
+    id: "main_concern",
+    type: "text",
+    icon: "💭",
+    question: "ಹಾವೇರಿಯ ಬಗ್ಗೆ ನಿಮಗೆ ಹೆಚ್ಚು ಕಾಳಜಿ ಮೂಡಿಸುವ ವಿಷಯ ಯಾವುದಾದರೂ ಇದೆಯೇ?",
+    help: "ನಿಮ್ಮದೇ ಮಾತಿನಲ್ಲಿ ಹೇಳಿ. ಸಣ್ಣ ವಿಷಯವಾಗಿದ್ದರೂ ಪರವಾಗಿಲ್ಲ.",
+    placeholder: "ನನ್ನ ಗಮನ ಸೆಳೆಯುವ ವಿಷಯ..."
+  },
+
+
+  {
+    id: "three_changes",
+    type: "text",
+    icon: "🔧",
+    question: "ನಿಮಗೆ ಒಂದು ಅವಕಾಶ ಸಿಕ್ಕರೆ, ಹಾವೇರಿಯಲ್ಲಿ ಮೊದಲು ಯಾವ 3 ವಿಷಯಗಳನ್ನು ಬದಲಾಯಿಸುತ್ತೀರಿ?",
+    help: "ಮೂರು ವಿಷಯಗಳನ್ನು ಒಂದೊಂದಾಗಿ ಬರೆಯಬಹುದು.",
+    placeholder: "1. ...\n2. ...\n3. ..."
+  },
+
+
+  {
+    id: "future_haveri",
+    type: "multi",
+    max: 5,
+    icon: "🌅",
+    question: "ಮುಂದಿನ 5–10 ವರ್ಷಗಳಲ್ಲಿ ಹಾವೇರಿ ಹೇಗಿರಬೇಕು ಎಂದು ನೀವು ಬಯಸುತ್ತೀರಿ?",
+    help: "ಗರಿಷ್ಠ 5 ಆಯ್ಕೆ ಮಾಡಿ.",
+    options: [
+      "ಉತ್ತಮ ಉದ್ಯೋಗಾವಕಾಶಗಳು",
+      "ಉತ್ತಮ ಶಿಕ್ಷಣ",
+      "ಉತ್ತಮ ಆರೋಗ್ಯ ಸೇವೆಗಳು",
+      "ಸ್ವಚ್ಛ ಮತ್ತು ಸುಂದರ ನಗರ",
+      "ಉತ್ತಮ ರಸ್ತೆಗಳು",
+      "ಉತ್ತಮ ಸಾರ್ವಜನಿಕ ಸಾರಿಗೆ",
+      "ಸುರಕ್ಷಿತ ನಗರ",
+      "ಉತ್ತಮ ಮನೆ / ವಸತಿ ಅವಕಾಶಗಳು",
+      "ಉತ್ತಮ ಕುಡಿಯುವ ನೀರು",
+      "ಉತ್ತಮ ಕಸ / ಸ್ವಚ್ಛತೆ ವ್ಯವಸ್ಥೆ",
+      "ಉತ್ತಮ ಸಾರ್ವಜನಿಕ ಸ್ಥಳಗಳು",
+      "ಯುವಕರಿಗೆ ಹೆಚ್ಚಿನ ಅವಕಾಶಗಳು",
+      "ಮಹಿಳೆಯರಿಗೆ ಹೆಚ್ಚಿನ ಅವಕಾಶಗಳು",
+      "ಉತ್ತಮ business opportunities",
+      "ಕೃಷಿಗೆ ಉತ್ತಮ ಅವಕಾಶಗಳು",
+      "ಉತ್ತಮ ಪ್ರವಾಸೋದ್ಯಮ",
+      "ಕ್ರೀಡೆ / recreationಗೆ ಹೆಚ್ಚಿನ ಅವಕಾಶ",
+      "ಉತ್ತಮ ಪರಿಸರ",
+      "ಸುಲಭವಾದ ಸರ್ಕಾರಿ ಸೇವೆಗಳು",
+      "ಹೆಚ್ಚು ಪಾರದರ್ಶಕ ಮತ್ತು ಹೊಣೆಗಾರ ಆಡಳಿತ",
+      "ಭ್ರಷ್ಟಾಚಾರ ಮುಕ್ತ",
+      "ಸ್ಥಳೀಯ ಪ್ರತಿಭೆಗಳಿಗೆ ಹೆಚ್ಚಿನ ಅವಕಾಶ",
+      "ಬೇರೆ"
+    ]
+  },
+
+
+  {
+    id: "onehaveri_use",
+    type: "multi",
+    icon: "🧭",
+    question: "OneHaveri ಯಾವ ರೀತಿಯಲ್ಲಿ ನಿಮಗೆ ಉಪಯೋಗವಾಗಬೇಕು ಎಂದು ನೀವು ಬಯಸುತ್ತೀರಿ?",
+    help: "ನಿಮಗೆ ಇಷ್ಟವಾದಷ್ಟು ಆಯ್ಕೆ ಮಾಡಿ.",
+    options: [
+      "ಹಾವೇರಿಯ Local news ತಿಳಿದುಕೊಳ್ಳಲು",
+      "ಹಾವೇರಿಯಲ್ಲಿ ಏನಾಗುತ್ತಿದೆ ಎಂಬ updates ಪಡೆಯಲು",
+      "ಸಾರ್ವಜನಿಕ ಸಮಸ್ಯೆಗಳ ಬಗ್ಗೆ ತಿಳಿದುಕೊಳ್ಳಲು",
+      "ಸರ್ಕಾರಿ / ಸಾರ್ವಜನಿಕ ಸೇವೆಗಳ ಮಾಹಿತಿ ಪಡೆಯಲು",
+      "ಸ್ಥಳೀಯ businesses ಹುಡುಕಲು",
+      "ಸ್ಥಳೀಯ businesses ಪರಿಚಯಿಸಲು",
+      "ಸ್ಥಳೀಯ ಜನರ stories ತಿಳಿದುಕೊಳ್ಳಲು",
+      "ಸ್ಥಳೀಯ ಪ್ರತಿಭೆಗಳನ್ನು ಪರಿಚಯಿಸಲು",
+      "Jobs / opportunities ಬಗ್ಗೆ ತಿಳಿದುಕೊಳ್ಳಲು",
+      "Events / ಕಾರ್ಯಕ್ರಮಗಳ ಮಾಹಿತಿ ಪಡೆಯಲು",
+      "ಹಾವೇರಿಯ ಇತಿಹಾಸ / ಸಂಸ್ಕೃತಿ ತಿಳಿದುಕೊಳ್ಳಲು",
+      "ಪ್ರವಾಸಿ ತಾಣಗಳ ಬಗ್ಗೆ ತಿಳಿದುಕೊಳ್ಳಲು",
+      "ನನ್ನ idea ಹಂಚಿಕೊಳ್ಳಲು",
+      "ನನ್ನ ಸಮಸ್ಯೆ / ವಿಷಯದ ಬಗ್ಗೆ ಮಾತನಾಡಲು",
+      "ಜನರು ಮತ್ತು organisations ಸಂಪರ್ಕಿಸಲು",
+      "ಬೇರೆ"
+    ]
+  },
+
+
+  {
+    id: "contribute",
+    type: "multi",
+    icon: "🤝",
+    question: "OneHaveri ಜೊತೆ ನೀವು ಹೇಗೆ contribute ಮಾಡಲು ಇಷ್ಟಪಡುತ್ತೀರಿ?",
+    help: "ನಿಮಗೆ ಸರಿಹೊಂದುವಷ್ಟು ಆಯ್ಕೆ ಮಾಡಬಹುದು.",
+    options: [
+      "💡 Idea / suggestion ನೀಡಲು",
+      "✍️ Article / content ಬರೆಯಲು",
+      "📷 Photo / video ಹಂಚಿಕೊಳ್ಳಲು",
+      "📰 Local information ಹಂಚಿಕೊಳ್ಳಲು",
+      "🤝 Volunteer ಆಗಿ ಸಹಾಯ ಮಾಡಲು",
+      "🏪 ನನ್ನ business ಬಗ್ಗೆ ಮಾಹಿತಿ ನೀಡಲು",
+      "🏢 ನನ್ನ organisation / institution ಬಗ್ಗೆ ಮಾಹಿತಿ ನೀಡಲು",
+      "💻 Technical ಆಗಿ ಸಹಾಯ ಮಾಡಲು",
+      "📣 OneHaveri ಬಗ್ಗೆ ಇನ್ನಷ್ಟು ಜನರಿಗೆ ತಿಳಿಸಲು",
+      "ಈಗ ನೋಡುತ್ತಾ ಇರಲು",
+      "ಮುಂದೆ ನೋಡೋಣ",
+      "ಬೇರೆ"
+    ]
+  },
+
+
+  {
+    id: "final_thought",
+    type: "text",
+    icon: "🙏",
+    question: "ಹಾವೇರಿ ಅಥವಾ OneHaveri ಬಗ್ಗೆ ಇನ್ನೇನಾದರೂ ಹೇಳಬೇಕೆನಿಸುತ್ತಿದೆಯಾ?",
+    help: "Praise ಆಗಿರಲಿ, criticism ಆಗಿರಲಿ, suggestion ಆಗಿರಲಿ — ನಿಮ್ಮ ಮಾತು ಇಲ್ಲಿ welcome.",
+    placeholder: "ನಿಮ್ಮ ಮಾತು..."
+  }
+
+];
+
+
+/* ============================================================
+   Survey state
+   ============================================================ */
+
+let currentQuestion = 0;
+
+let surveyAnswers = {};
+
+/* Holds the pending 8-second auto-invitation timer so it can
+   be cancelled if the survey is opened manually beforehand. */
+let invitationTimer = null;
+
+
+/* ============================================================
+   Open / close
+   ============================================================ */
+
+function openSurvey(){
+
+  /* Cancel the automatic 8-second invitation if it hasn't
+     fired yet, so it can never appear once the survey is
+     already open (e.g. the user clicked the survey button
+     before the 8 seconds were up). */
+  if(invitationTimer){
+    clearTimeout(invitationTimer);
+    invitationTimer = null;
+  }
+
+  document.getElementById("surveyOverlay").classList.add("show");
+  document.getElementById("surveyOverlay").setAttribute("aria-hidden","false");
+
+  /* Reset footer/progress visibility in case the previous
+     session ended on the thank-you screen, which hides them. */
+  document.querySelector(".survey-footer").style.display = "";
+  document.querySelector(".survey-progress").style.display = "";
+
+  currentQuestion = 0;
+
+  renderQuestion();
+
+}
+
+
+function closeSurvey(){
+
+  document.getElementById("surveyOverlay").classList.remove("show");
+  document.getElementById("surveyOverlay").setAttribute("aria-hidden","true");
+
+}
+
+
+function closeInvitation(){
+
+  document.getElementById("invitationOverlay").classList.remove("show");
+  document.getElementById("invitationOverlay").setAttribute("aria-hidden","true");
+
+}
+
+
+function startSurveyFromInvitation(){
+
+  closeInvitation();
+  openSurvey();
+
+}
+
+
+/* ============================================================
+   Render current question
+   ============================================================ */
+
+function renderQuestion(){
+
+  const q = surveyQuestions[currentQuestion];
+
+  const container = document.getElementById("questionContainer");
+
+  const progress =
+    ((currentQuestion + 1) / surveyQuestions.length) * 100;
+
+  document.getElementById("surveyProgressBar").style.width =
+    progress + "%";
+
+
+  let html = `
+
+    ${q.icon ? `<div class="question-icon">${q.icon}</div>` : ""}
+
+    <div class="question-number">
+      ${currentQuestion + 1} / ${surveyQuestions.length}
+    </div>
+
+    <h3 class="question-text">
+      ${q.question}
+    </h3>
+
+    ${q.help ? `
+      <p class="question-help">
+        ${q.help}
+      </p>
+    ` : ""}
+
+  `;
+
+
+  if(q.type === "text"){
+
+    const existing =
+      surveyAnswers[q.id] || "";
+
+    html += `
+
+      <textarea
+        id="textAnswer"
+        class="text-answer"
+        placeholder="${q.placeholder || ""}"
+      >${escapeHtml(existing)}</textarea>
+
+    `;
+
+  }
+
+
+  if(q.type === "multi"){
+
+    const selected =
+      surveyAnswers[q.id] || [];
+
+    /* Group short options together and long options together
+       (keeping each group's original relative order) so short
+       options always pack two-per-row instead of being stranded
+       next to a full-width option, maximising space use.
+       "ಬೇರೆ" (Other) is a catch-all, not a regular option, so
+       it always stays last regardless of its length. */
+    const regularOptions = q.options.filter(o => o !== OTHER_LABEL);
+    const hasOther = q.options.includes(OTHER_LABEL);
+
+    const shortOptions = regularOptions.filter(o => o.length <= 20);
+    const longOptions = regularOptions.filter(o => o.length > 20);
+    const orderedOptions = shortOptions.concat(longOptions);
+
+    if(hasOther){
+      orderedOptions.push(OTHER_LABEL);
+    }
+
+    html += `<div class="option-list">`;
+
+    orderedOptions.forEach((option,index)=>{
+
+      const checked =
+        selected.includes(option) ? "checked" : "";
+
+      const widthClass =
+        option.length <= 20 ? "half" : "full";
+
+      html += `
+
+        <div class="option ${widthClass}">
+
+          <input
+            type="checkbox"
+            id="option_${index}"
+            value="${escapeHtml(option)}"
+            ${checked}
+            onchange="handleOptionChange('${q.id}', '${escapeJs(option)}', this.checked)"
+          >
+
+          <label for="option_${index}">
+            ${escapeHtml(option)}
+          </label>
+
+        </div>
+
+      `;
+
+    });
+
+    html += `</div>`;
+
+    /* "ಬೇರೆ" (Other) free-text field */
+    if(q.options.includes(OTHER_LABEL)){
+
+      const otherChecked = selected.includes(OTHER_LABEL);
+      const otherText = surveyAnswers[q.id + "_otherText"] || "";
+
+      html += `
+
+        <textarea
+          id="otherInput_${q.id}"
+          class="other-input${otherChecked ? " show" : ""}"
+          placeholder="ದಯವಿಟ್ಟು ವಿವರಿಸಿ..."
+          oninput="handleOtherInput('${q.id}', this.value)"
+        >${escapeHtml(otherText)}</textarea>
+
+      `;
+
+    }
+
+  }
+
+
+  container.innerHTML = html;
+
+
+  document.getElementById("backButton").style.visibility =
+    currentQuestion === 0 ? "hidden" : "visible";
+
+
+  document.getElementById("nextButton").textContent =
+    currentQuestion === surveyQuestions.length - 1
+      ? "ಮುಗಿಸಿ"
+      : "ಮುಂದೆ";
+
+
+  const text =
+    document.getElementById("textAnswer");
+
+  if(text){
+
+    text.addEventListener("input", function(){
+
+      surveyAnswers[q.id] = this.value;
+
+    });
+
+  }
+
+  /* Reset scroll position to the top of the question
+     every time a question is rendered (next/back/open). */
+  const body = document.getElementById("surveyBody");
+  if(body){
+    body.scrollTop = 0;
+  }
+
+}
+
+
+/* ============================================================
+   Multi-select handling
+   ============================================================ */
+
+function handleOptionChange(id, option, checked){
+
+  if(!surveyAnswers[id]){
+    surveyAnswers[id] = [];
+  }
+
+  const q =
+    surveyQuestions.find(item => item.id === id);
+
+
+  if(checked){
+
+    if(q.max && surveyAnswers[id].length >= q.max){
+
+      event.target.checked = false;
+
+      alert(
+        "ಗರಿಷ್ಠ " +
+        q.max +
+        " ಆಯ್ಕೆಗಳನ್ನು ಮಾತ್ರ ಮಾಡಬಹುದು."
+      );
+
+      return;
+    }
+
+    if(!surveyAnswers[id].includes(option)){
+      surveyAnswers[id].push(option);
+    }
+
+  }else{
+
+    surveyAnswers[id] =
+      surveyAnswers[id].filter(item => item !== option);
+
+  }
+
+  /* Show/hide the free-text field when "ಬೇರೆ" is toggled */
+  if(option === OTHER_LABEL){
+
+    const otherField = document.getElementById("otherInput_" + id);
+
+    if(otherField){
+      otherField.classList.toggle("show", checked);
+      if(checked){
+        otherField.focus();
+      }
+    }
+
+  }
+
+}
+
+
+function handleOtherInput(id, value){
+
+  surveyAnswers[id + "_otherText"] = value;
+
+}
+
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+
+function saveCurrentTextAnswer(){
+
+  const q = surveyQuestions[currentQuestion];
+
+  const text =
+    document.getElementById("textAnswer");
+
+  if(text){
+
+    surveyAnswers[q.id] =
+      text.value.trim();
+
+  }
+
+}
+
+
+function nextQuestion(){
+
+  saveCurrentTextAnswer();
+
+
+  if(currentQuestion < surveyQuestions.length - 1){
+
+    currentQuestion++;
+
+    renderQuestion();
+
+    return;
+
+  }
+
+
+  finishSurvey();
+
+}
+
+
+function previousQuestion(){
+
+  saveCurrentTextAnswer();
+
+  if(currentQuestion > 0){
+
+    currentQuestion--;
+
+    renderQuestion();
+
+  }
+
+}
+
+
+/* ============================================================
+   Finish survey
+   ============================================================ */
+
+async function finishSurvey(){
+
+  saveCurrentTextAnswer();
+
+  /* Keep a local safety copy while we test. */
+  saveResponseLocally(surveyAnswers);
+
+  const nextButton = document.getElementById("nextButton");
+  const backButton = document.getElementById("backButton");
+
+  if(nextButton){
+    nextButton.disabled = true;
+    nextButton.textContent = "ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ…";
+  }
+
+  if(backButton){
+    backButton.disabled = true;
+  }
+
+  /*
+   * Send the completed survey to Google Apps Script.
+   *
+   * no-cors is used because the Apps Script endpoint does not
+   * expose a CORS response that this page can read. The POST
+   * request itself is still sent to the Web App.
+   */
+  const payload = {
+    source: "onehaveri.in",
+    survey_version: SURVEY_VERSION,
+    submitted_at_client: new Date().toISOString(),
+    answers: surveyAnswers
+  };
+
+  try{
+
+    await fetch(SURVEY_SUBMIT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload),
+      keepalive: true
+    });
+
+    console.log("OneHaveri Survey submitted:", payload);
+
+    localStorage.setItem(
+      "onehaveri_survey_completed",
+      "true"
+    );
+
+    showThankYou();
+
+  }catch(error){
+
+    console.error("OneHaveri Survey submission failed:", error);
+
+    if(nextButton){
+      nextButton.disabled = false;
+      nextButton.textContent = "ಮತ್ತೆ ಕಳುಹಿಸಿ";
+    }
+
+    if(backButton){
+      backButton.disabled = false;
+    }
+
+    alert(
+      "ಸಮೀಕ್ಷೆ ಕಳುಹಿಸುವಾಗ ತೊಂದರೆ ಉಂಟಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+    );
+  }
+
+}
+
+
+/* ============================================================
+   Local safety copy
+   ------------------------------------------------------------
+   Every completed submission is also appended to this browser's
+   localStorage under "onehaveri_survey_responses".
+
+   This is only a testing/safety copy. The official submission
+   destination is now Google Apps Script / Google Sheets.
+   ============================================================ */
+
+const RESPONSES_KEY = "onehaveri_survey_responses";
+
+function saveResponseLocally(answers){
+
+  let stored = [];
+
+  try{
+    stored = JSON.parse(localStorage.getItem(RESPONSES_KEY)) || [];
+  }catch(e){
+    stored = [];
+  }
+
+  stored.push({
+    submitted_at: new Date().toISOString(),
+    answers: answers
+  });
+
+  try{
+    localStorage.setItem(RESPONSES_KEY, JSON.stringify(stored));
+  }catch(e){
+    console.warn("Could not save survey response locally:", e);
+  }
+
+}
+
+function downloadSurveyResponses(){
+
+  let stored = [];
+
+  try{
+    stored = JSON.parse(localStorage.getItem(RESPONSES_KEY)) || [];
+  }catch(e){
+    stored = [];
+  }
+
+  if(stored.length === 0){
+    console.log("No survey responses stored on this device yet.");
+    return;
+  }
+
+  const blob = new Blob(
+    [JSON.stringify(stored, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "onehaveri_survey_responses.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+/* ============================================================
+   Thank-you screen
+   ============================================================ */
+
+function showThankYou(){
+
+  const container =
+    document.getElementById("questionContainer");
+
+  container.innerHTML = `
+
+    <div class="thank-you">
+
+      <div class="thank-you-icon">
+        ✓
+      </div>
+
+      <h2>
+        ಧನ್ಯವಾದಗಳು! 🙏
+      </h2>
+
+      <p>
+        ನಿಮ್ಮ ಮಾತು OneHaveri ಮುಂದೆ ಯಾವ ದಿಕ್ಕಿನಲ್ಲಿ
+        ಸಾಗಬೇಕು ಎಂಬುದನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.
+        <br><br>
+        ಹಾವೇರಿಗಾಗಿ ನಿಮ್ಮ ಸಮಯ ಕೊಟ್ಟಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು.
+      </p>
+
+      <button
+        type="button"
+        onclick="closeSurvey()">
+
+        ಮುಚ್ಚಿ
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  document.querySelector(".survey-footer").style.display =
+    "none";
+
+  document.querySelector(".survey-progress").style.display =
+    "none";
+
+}
+
+
+/* ============================================================
+   Utility
+   ============================================================ */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJs(value){
+
+  return String(value)
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/\n/g," ");
+
+}
+
+
+/* ============================================================
+   Automatic 8-second invitation
+   ============================================================ */
+
+window.addEventListener("load", function(){
+
+  const completed =
+    localStorage.getItem(
+      "onehaveri_survey_completed"
+    );
+
+
+  /*
+   * Only show the automatic invitation if this browser
+   * hasn't already completed the survey.
+   */
+
+  if(completed !== "true"){
+
+    invitationTimer = setTimeout(function(){
+
+      /* Guard: if the survey was opened manually in the
+         meantime, or has since been completed, don't show
+         the invitation popup at all. */
+      const surveyOpen =
+        document.getElementById("surveyOverlay").classList.contains("show");
+
+      const nowCompleted =
+        localStorage.getItem("onehaveri_survey_completed") === "true";
+
+      if(surveyOpen || nowCompleted){
+        return;
+      }
+
+      document
+        .getElementById("invitationOverlay")
+        .classList.add("show");
+
+      document
+        .getElementById("invitationOverlay")
+        .setAttribute("aria-hidden","false");
+
+    }, 8000);
+
+  }
+
+});
+
+
+/* ============================================================
+   ESC key closes popup
+   ============================================================ */
+
+document.addEventListener("keydown", function(e){
+
+  if(e.key === "Escape"){
+
+    closeInvitation();
+    closeSurvey();
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>

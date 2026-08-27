@@ -1,16 +1,34 @@
 /* =====================================
    OneHaveri Floating Bottom Navigation
    ===================================== */
+
+:root {
+  --nav-height: 44px;
+  --nav-padding-y: 12px;
+  --nav-gap-from-edge: 20px;
+  --nav-total-h: calc(var(--nav-height) + (var(--nav-padding-y) * 2));
+  --nav-clearance: calc(var(--nav-total-h) + var(--nav-gap-from-edge) + env(safe-area-inset-bottom));
+}
+
+/* Reserve space on every page that loads this file, so the nav
+   never sits on top of real content — footer text, last card,
+   end of a scrolled list, all automatically clear it. */
+body {
+  padding-bottom: var(--nav-clearance);
+}
+
 .onehaveri-bottom-nav {
     position: fixed;
-    bottom: 20px;
+    bottom: max(var(--nav-gap-from-edge), env(safe-area-inset-bottom));
     left: 50%;
     transform: translateX(-50%);
     z-index: 800;
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 16px;
+    padding: var(--nav-padding-y) 16px;
+    width: max-content;
+    max-width: calc(100vw - 36px);
     background: rgba(248, 243, 235, 0.96);
     border: 1px solid rgba(191, 103, 55, 0.15);
     border-radius: 999px;
@@ -18,10 +36,12 @@
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.08),
         0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: opacity .2s ease, transform .2s ease;
 }
+
 .onehaveri-bottom-nav a {
     width: 44px;
-    height: 44px;
+    height: var(--nav-height);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,8 +73,6 @@
     height: 22px;
 }
 
-/* Icon state toggle: outline shown by default,
-   filled shown only when the link has .active */
 .onehaveri-bottom-nav a .icon-filled {
     display: none;
 }
@@ -65,10 +83,34 @@
     display: block;
 }
 
+/* ============================================================
+   FUTURE HOOKS — not active yet, kept as a placeholder.
+   When you're ready for scroll-based shrink/fade, add JS that
+   toggles these classes on .onehaveri-bottom-nav and the
+   transitions above will animate it automatically.
+   ============================================================ */
+.onehaveri-bottom-nav.is-compact {
+    transform: translateX(-50%) scale(.9);
+    opacity: .85;
+}
+.onehaveri-bottom-nav.is-faded {
+    opacity: .35;
+}
+.onehaveri-bottom-nav.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(20px);
+}
+
+body.survey-is-open .onehaveri-bottom-nav {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(20px);
+}
+
 @media (max-width: 768px) {
     .onehaveri-bottom-nav {
-        bottom: 12px;
-        padding: 10px 14px;
         gap: 12px;
     }
 }

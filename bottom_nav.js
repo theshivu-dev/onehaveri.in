@@ -1,12 +1,33 @@
+/* ============================================================
+   OneHaveri — Supabase client
+   Requires the Supabase UMD script tag loaded BEFORE this file:
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+   <script src="bottom_nav.js?v=3"></script>
+
+   Passkeys are a Supabase beta feature — opt-in required via
+   auth.experimental.passkey. Needs supabase-js v2.105.0+.
+   ============================================================ */
+
+const SUPABASE_URL = "https://zdgbtjelxhriggjavecp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_PASTE_YOUR_FULL_KEY_HERE";
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    experimental: { passkey: true }
+  }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ----------------------------------------------------------
+     Bottom nav links (Home / New post unchanged from before)
+     ---------------------------------------------------------- */
   const links = [
     {
       href: "/",
       label: "Home",
-      // TODO: return true when this really is the OneHaveri landing/home page
       isActive: function () {
-        return false;
+        return false; // TODO: return true when this is the real landing page
       },
       outline: `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>`,
       filled: `<path fill="currentColor" d="M12 2.5 2.5 10.3V21a1 1 0 0 0 1 1H9v-7h6v7h5.5a1 1 0 0 0 1-1V10.3L12 2.5Z"/>`
@@ -14,17 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       href: "/new-post.html",
       label: "New post",
-      // TODO: return true when the new-post page/panel is actually open
       isActive: function () {
-        return false;
+        return false; // TODO: return true when the new-post page/panel is open
       },
       outline: `<rect x="4" y="4" width="16" height="16" rx="5"/><path d="M12 8v8M8 12h8"/>`,
       filled: `<rect x="4" y="4" width="16" height="16" rx="5" fill="currentColor"/><path d="M12 8v8M8 12h8" stroke="#FFFCF5" stroke-width="2" stroke-linecap="round"/>`
     },
     {
-      href: "/profile.html",
-      label: "Profile",
-      // TODO: return true when viewing the profile page, or the account panel is open
+      href: "#",
+      label: "Account",
+      // active state for this one is driven by session, not this stub —
+      // see refreshAuthUI() below
       isActive: function () {
         return false;
       },
@@ -47,5 +68,168 @@ document.addEventListener("DOMContentLoaded", () => {
   }).join("");
 
   document.body.appendChild(nav);
+
+  const accountLink = nav.querySelector('a[aria-label="Account"]');
+
+  accountLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    openAuthPanel();
+  });
+
+  /* ----------------------------------------------------------
+     Auth panel (built once, content swapped on open/refresh)
+     ---------------------------------------------------------- */
+
+  const overlay = document.createElement("div");
+  overlay.id = "ohAuthOverlay";
+  overlay.className = "oh-auth-overlay";
+  overlay.setAttribute("aria-hidden", "true");
+
+  overlay.innerHTML = `
+    <div class="oh-auth-panel">
+      <button type="button" class="oh-auth-close" aria-label="Close">×</button>
+      <div class="oh-auth-tag">OneHaveri Account</div>
+      <div id="ohAuthBody"></div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  overlay.querySelector(".oh-auth-close").addEventListener("click", closeAuthPanel);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeAuthPanel();
+  });
+
+  function openAuthPanel() {
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+    renderAuthBody();
+  }
+
+  function closeAuthPanel() {
+    overlay.classList.remove("show");
+    overlay.setAttribute("aria-hidden", "true");
+  }
+
+  /* ----------------------------------------------------------
+     Signed-out / signed-in panel content
+     ---------------------------------------------------------- */
+
+  function renderAuthBody() {
+    sb.auth.getSession().then(({ data }) => {
+      const session = data.session;
+      const body = document.getElementById("ohAuthBody");
+
+      if (session) {
+        body.innerHTML = `
+          <h3 class="oh-auth-title">Signed in</h3>
+          <p class="oh-auth-sub">${session.user.email || "Your account"}</p>
+
+          <button type="button" class="oh-auth-btn oh-auth-passkey" id="ohAddPasskeyBtn">
+            ${passkeyIconSvg()}
+            Add a passkey to this device
+          </button>
+
+          <button type="button" class="oh-auth-btn oh-auth-signout" id="ohSignOutBtn">
+            Sign out
+          </button>
+
+          <div class="oh-auth-status" id="ohAuthStatus"></div>
+        `;
+
+        document.getElementById("ohAddPasskeyBtn").addEventListener("click", async () => {
+          const { error } = await sb.auth.registerPasskey();
+          if (error) {
+            showStatus(error.message, true);
+          } else {
+            showStatus("Passkey added — you can use it to sign in faster next time.", false);
+          }
+        });
+
+        document.getElementById("ohSignOutBtn").addEventListener("click", async () => {
+          await sb.auth.signOut();
+          closeAuthPanel();
+          refreshAuthUI();
+        });
+
+      } else {
+        body.innerHTML = `
+          <h3 class="oh-auth-title">Sign in to OneHaveri</h3>
+          <p class="oh-auth-sub">Save your contributions and come back anytime.</p>
+
+          <button type="button" class="oh-auth-btn oh-auth-google" id="ohGoogleBtn">
+            ${googleIconSvg()}
+            Continue with Google
+          </button>
+
+          <button type="button" class="oh-auth-btn oh-auth-passkey" id="ohPasskeyBtn">
+            ${passkeyIconSvg()}
+            Sign in with passkey
+          </button>
+
+          <p class="oh-auth-note">No account yet? Continuing with Google creates one automatically.</p>
+          <div class="oh-auth-status" id="ohAuthStatus"></div>
+        `;
+
+        document.getElementById("ohGoogleBtn").addEventListener("click", async () => {
+          const { error } = await sb.auth.signInWithOAuth({
+            provider: "google",
+            options: { redirectTo: window.location.href }
+          });
+          if (error) showStatus(error.message, true);
+        });
+
+        document.getElementById("ohPasskeyBtn").addEventListener("click", async () => {
+          const { error } = await sb.auth.signInWithPasskey();
+          if (error) {
+            showStatus("No passkey found on this device — try Continue with Google instead.", true);
+          } else {
+            closeAuthPanel();
+            refreshAuthUI();
+          }
+        });
+      }
+    });
+  }
+
+  function showStatus(message, isError) {
+    const status = document.getElementById("ohAuthStatus");
+    if (!status) return;
+    status.textContent = message;
+    status.className = "oh-auth-status" + (isError ? " oh-auth-status-error" : "");
+  }
+
+  /* ----------------------------------------------------------
+     Session-driven icon state (filled = signed in)
+     ---------------------------------------------------------- */
+
+  function refreshAuthUI() {
+    sb.auth.getSession().then(({ data }) => {
+      accountLink.classList.toggle("active", !!data.session);
+    });
+  }
+
+  refreshAuthUI();
+  sb.auth.onAuthStateChange(() => refreshAuthUI());
+
+  /* ----------------------------------------------------------
+     Inline icon markup
+     ---------------------------------------------------------- */
+
+  function googleIconSvg() {
+    return `<svg viewBox="0 0 48 48" width="18" height="18">
+      <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.7l6-6C34 6.5 29.3 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.4-3.5z"/>
+      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 18.9 13 24 13c2.8 0 5.3 1 7.3 2.7l6-6C34 6.5 29.3 4.5 24 4.5c-7.6 0-14.1 4.3-17.4 10.6z"/>
+      <path fill="#4CAF50" d="M24 43.5c5.2 0 9.9-1.9 13.5-5.1l-6.2-5.2C29.3 34.7 26.8 35.5 24 35.5c-5.3 0-9.7-3.4-11.3-8.1l-6.6 5.1C9.8 39.1 16.4 43.5 24 43.5z"/>
+      <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.5l6.2 5.2C39.7 34.8 43.5 30 43.5 24c0-1.2-.1-2.4-.4-3.5z"/>
+    </svg>`;
+  }
+
+  function passkeyIconSvg() {
+    return `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="8" r="4"/>
+      <path d="M10.5 11 20 20.5M17 17l2-2M14 14l2-2"/>
+    </svg>`;
+  }
 
 });

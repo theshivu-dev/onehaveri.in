@@ -1,15 +1,14 @@
 /* ============================================================
    OneHaveri — Supabase client
-   Requires the Supabase UMD script tag loaded BEFORE this file:
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-   <script src="bottom_nav.js?v=3"></script>
+   Requires the Supabase UMD script tag loaded BEFORE this file
+   (already added in home_ip.html).
 
    Passkeys are a Supabase beta feature — opt-in required via
    auth.experimental.passkey. Needs supabase-js v2.105.0+.
    ============================================================ */
 
 const SUPABASE_URL = "https://zdgbtjelxhriggjavecp.supabase.co";
-const SUPABASE_KEY = "sb_publishable_PASTE_YOUR_FULL_KEY_HERE";
+const SUPABASE_KEY = "sb_publishable_G2vSbiWDeNBPcJCQb0GEUg_S9GvaCVO";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
@@ -19,15 +18,12 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ----------------------------------------------------------
-     Bottom nav links (Home / New post unchanged from before)
-     ---------------------------------------------------------- */
   const links = [
     {
       href: "/",
       label: "Home",
       isActive: function () {
-        return false; // TODO: return true when this is the real landing page
+        return false;
       },
       outline: `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>`,
       filled: `<path fill="currentColor" d="M12 2.5 2.5 10.3V21a1 1 0 0 0 1 1H9v-7h6v7h5.5a1 1 0 0 0 1-1V10.3L12 2.5Z"/>`
@@ -36,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       href: "/new-post.html",
       label: "New post",
       isActive: function () {
-        return false; // TODO: return true when the new-post page/panel is open
+        return false;
       },
       outline: `<rect x="4" y="4" width="16" height="16" rx="5"/><path d="M12 8v8M8 12h8"/>`,
       filled: `<rect x="4" y="4" width="16" height="16" rx="5" fill="currentColor"/><path d="M12 8v8M8 12h8" stroke="#FFFCF5" stroke-width="2" stroke-linecap="round"/>`
@@ -44,8 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       href: "#",
       label: "Account",
-      // active state for this one is driven by session, not this stub —
-      // see refreshAuthUI() below
       isActive: function () {
         return false;
       },
@@ -75,10 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     openAuthPanel();
   });
-
-  /* ----------------------------------------------------------
-     Auth panel (built once, content swapped on open/refresh)
-     ---------------------------------------------------------- */
 
   const overlay = document.createElement("div");
   overlay.id = "ohAuthOverlay";
@@ -110,10 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.classList.remove("show");
     overlay.setAttribute("aria-hidden", "true");
   }
-
-  /* ----------------------------------------------------------
-     Signed-out / signed-in panel content
-     ---------------------------------------------------------- */
 
   function renderAuthBody() {
     sb.auth.getSession().then(({ data }) => {
@@ -199,10 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
     status.className = "oh-auth-status" + (isError ? " oh-auth-status-error" : "");
   }
 
-  /* ----------------------------------------------------------
-     Session-driven icon state (filled = signed in)
-     ---------------------------------------------------------- */
-
   function refreshAuthUI() {
     sb.auth.getSession().then(({ data }) => {
       accountLink.classList.toggle("active", !!data.session);
@@ -211,10 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   refreshAuthUI();
   sb.auth.onAuthStateChange(() => refreshAuthUI());
-
-  /* ----------------------------------------------------------
-     Inline icon markup
-     ---------------------------------------------------------- */
 
   function googleIconSvg() {
     return `<svg viewBox="0 0 48 48" width="18" height="18">

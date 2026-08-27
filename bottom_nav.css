@@ -1,76 +1,68 @@
 /* =====================================
    OneHaveri Floating Bottom Navigation
    ===================================== */
-
 .onehaveri-bottom-nav {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-
     z-index: 800;
-
     display: flex;
     align-items: center;
     gap: 14px;
-
     padding: 12px 16px;
-
     background: rgba(248, 243, 235, 0.96);
     border: 1px solid rgba(191, 103, 55, 0.15);
-
     border-radius: 999px;
-
     backdrop-filter: blur(8px);
-
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.08),
         0 2px 8px rgba(0, 0, 0, 0.04);
 }
-
 .onehaveri-bottom-nav a {
     width: 44px;
     height: 44px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     text-decoration: none;
-
     color: #8b5e3c;
     border-radius: 50%;
-
     transition: all 0.2s ease;
 }
-
 .onehaveri-bottom-nav a:hover {
     background: rgba(191, 103, 55, 0.08);
 }
-
 .onehaveri-bottom-nav a.active {
     color: #bf6737;
+    background: rgba(191, 103, 55, 0.10);
 }
-
 .onehaveri-bottom-nav .create-post {
     width: 54px;
     height: 54px;
-
     margin-top: -8px;
-
     background: #bf6737;
     color: white;
-
     box-shadow: 0 6px 16px rgba(191, 103, 55, 0.25);
 }
-
 .onehaveri-bottom-nav .create-post:hover {
     background: #a8542b;
 }
-
 .onehaveri-bottom-nav svg {
     width: 22px;
     height: 22px;
+}
+
+/* Icon state toggle: outline shown by default,
+   filled shown only when the link has .active */
+.onehaveri-bottom-nav a .icon-filled {
+    display: none;
+}
+.onehaveri-bottom-nav a.active .icon-outline {
+    display: none;
+}
+.onehaveri-bottom-nav a.active .icon-filled {
+    display: block;
 }
 
 @media (max-width: 768px) {

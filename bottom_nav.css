@@ -14,8 +14,9 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   --nav-height: 44px;
   --nav-padding-y: 12px;
   --nav-gap-from-edge: 20px;
+  --nav-safe-bottom: env(safe-area-inset-bottom, 0px);
   --nav-total-h: calc(var(--nav-height) + (var(--nav-padding-y) * 2));
-  --nav-clearance: calc(var(--nav-total-h) + var(--nav-gap-from-edge) + env(safe-area-inset-bottom));
+  --nav-clearance: calc(var(--nav-total-h) + var(--nav-gap-from-edge) + var(--nav-safe-bottom));
 }
 
 /* Reserve space on every page that loads this file, so the nav

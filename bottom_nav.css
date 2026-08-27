@@ -1,0 +1,113 @@
+/* ======================================
+   OneHaveri Floating Bottom Navigation
+   ====================================== */
+
+.onehaveri-bottom-nav {
+    pos*tion: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+
+    width: fit-content;
+    min-width: 260px;
+    padding: 12px 22px;
+
+    background: rgba(248, 243, 235, 0.96);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(180, 145, 110, 0.15);
+    border-radius: 999px;
+
+    box-shadow:
+        0 8px 30px rgba(85, 58, 35, 0.12),
+        0 2px 10px rgba(85, 58, 35, 0.06);
+
+    z-index: 1000;
+}
+
+/* Navigation Items */
+
+.onehaveri-bottom-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    text-decoration: none;
+    color: #8d5a30;
+
+    border-radius: 50%;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+/* Hover */
+
+.onehaveri-bottom-nav a:hover {
+    background-color: rgba(191, 103, 55, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Active */
+
+.onehaveri-bottom-nav a.active {
+    color: #bf6737;
+}
+
+/* Center Create Button */
+
+.onehaveri-bottom-nav .create-post {
+    width: 54px;
+    height: 54px;
+
+    background: #bf6737;
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 18px rgba(191, 103, 55, 0.25);
+
+    transform: translateY(-8px);
+}
+
+.onehaveri-bottom-nav .create-post:hover {
+    background: #a8562a;
+    color: #ffffff;
+}
+
+/* SVG/Icon Size */
+
+.onehaveri-bottom-nav svg,
+.onehaveri-bottom-nav i {
+    font-size: 1.3rem;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .onehaveri-bottom-nav {
+        bottom: 14px;
+        min-width: 220px;
+        gap: 1.25rem;
+        padding: 10px 18px;
+    }
+
+    .onehaveri-bottom-nav a {
+        width: 42px;
+        height: 42px;
+    }
+
+    .onehaveri-bottom-nav .create-post {
+        width: 50px;
+        height: 50px;
+    }
+}

@@ -881,14 +881,15 @@ body{
 @media(min-width:700px){
 
   body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
     min-height:100vh;
     background:#eee6d7;
   }
 
   .page{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
     height:min(880px,92vh);
     box-shadow:0 0 45px rgba(59,42,30,.14);
   }

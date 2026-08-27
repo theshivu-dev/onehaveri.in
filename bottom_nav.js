@@ -1,33 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const path = window.location.pathname;
 
-    const nav = document.createElement("nav");
-    nav.className = "onehaveri-bottom-nav";
+  const links = [
+    {
+      href: "/",
+      label: "Home",
+      match: (p) => p === "/" || p.endsWith("/index.html"),
+      outline: `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>`,
+      filled: `<path fill="currentColor" d="M12 2.5 2.5 10.3V21a1 1 0 0 0 1 1H9v-7h6v7h5.5a1 1 0 0 0 1-1V10.3L12 2.5Z"/>`
+    },
+    {
+      href: "/new-post.html",
+      label: "New post",
+      match: (p) => p.endsWith("/new-post.html"),
+      outline: `<rect x="4" y="4" width="16" height="16" rx="5"/><path d="M12 8v8M8 12h8"/>`,
+      filled: `<rect x="4" y="4" width="16" height="16" rx="5" fill="currentColor"/><path d="M12 8v8M8 12h8" stroke="#FFFCF5" stroke-width="2" stroke-linecap="round"/>`
+    },
+    {
+      href: "/profile.html",
+      label: "Profile",
+      match: (p) => p.endsWith("/profile.html"),
+      outline: `<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6"/>`,
+      filled: `<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6" fill="currentColor"/>`
+    }
+  ];
 
-    nav.innerHTML = `
+  const nav = document.createElement("nav");
+  nav.className = "onehaveri-bottom-nav";
 
-        /
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 10L12 3L21 10"></path>
-                <path d="M5 10V20H19V10"></path>
-            </svg>
-        </a>
-
-        /new-post.html
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 5V19"></path>
-                <path d="M5 12H19"></path>
-            </svg>
-        </a>
-
-        /profile.html
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 20C4 16 7 14 12 14C17 14 20 16 20 20"></path>
-            </svg>
-        </a>
-
+  nav.innerHTML = links.map(link => {
+    const isActive = link.match(path);
+    return `
+      <a href="${link.href}" aria-label="${link.label}" class="${isActive ? "active" : ""}">
+        <svg class="icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${link.outline}</svg>
+        <svg class="icon-filled" viewBox="0 0 24 24">${link.filled}</svg>
+      </a>
     `;
+  }).join("");
 
-    document.body.appendChild(nav);
-
+  document.body.appendChild(nav);
 });

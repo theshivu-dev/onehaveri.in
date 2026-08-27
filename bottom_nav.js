@@ -123,14 +123,15 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="oh-auth-status" id="ohAuthStatus"></div>
         `;
 
-        document.getElementById("ohAddPasskeyBtn").addEventListener("click", async () => {
-          const { error } = await sb.auth.registerPasskey();
-          if (error) {
-            showStatus(error.message, true);
-          } else {
-            showStatus("Passkey added — you can use it to sign in faster next time.", false);
-          }
-        });
+document.getElementById("ohAddPasskeyBtn").addEventListener("click", async () => {
+  const { error } = await sb.auth.registerPasskey();
+  if (error) {
+    showStatus(error.message, true);
+  } else {
+    showStatus("Passkey added — you can use it to sign in faster next time.", false);
+    setTimeout(closeAuthPanel, 1400);
+  }
+});
 
         document.getElementById("ohSignOutBtn").addEventListener("click", async () => {
           await sb.auth.signOut();

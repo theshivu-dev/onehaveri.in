@@ -65,14 +65,14 @@ body {
     border: 1px solid rgba(191, 103, 55, 0.15);
     
     /* Changed from 999px to make it flat on top and rounded on the bottom */
-    border-radius: 0 0 16px 16px; 
+/*    border-radius: 0 0 16px 16px; 
     
     backdrop-filter: blur(8px);
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.08),
         0 2px 8px rgba(0, 0, 0, 0.04);
     transition: opacity .2s ease, transform .2s ease;
-}
+} */
 
 .onehaveri-bottom-nav a {
     width: 44px;

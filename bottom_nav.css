@@ -49,7 +49,7 @@ body {
 } */
 .onehaveri-bottom-nav {
     position: fixed;
-    bottom: 0;  /* Pins the panel to the top */
+    bottom: 10;  /* Pins the panel to the top */
     /* bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom)); -> REMOVED */
     left: 50%;
     transform: translateX(-50%);

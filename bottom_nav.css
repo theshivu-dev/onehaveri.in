@@ -26,7 +26,7 @@ body {
   padding-bottom: var(--nav-clearance);
 }
 
-.onehaveri-bottom-nav {
+/*.onehaveri-bottom-nav {
     position: fixed;
     bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom));
     left: 50%;
@@ -41,6 +41,31 @@ body {
     background: rgba(248, 243, 235, 0.96);
     border: 1px solid rgba(191, 103, 55, 0.15);
     border-radius: 999px;
+    backdrop-filter: blur(8px);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: opacity .2s ease, transform .2s ease;
+} */
+.onehaveri-bottom-nav {
+    position: fixed;
+    top: 0;  /* Pins the panel to the top */
+    /* bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom)); -> REMOVED */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 800;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: var(--nav-padding-y) 16px;
+    width: max-content;
+    max-width: calc(100vw - 36px);
+    background: rgba(248, 243, 235, 0.96);
+    border: 1px solid rgba(191, 103, 55, 0.15);
+    
+    /* Changed from 999px to make it flat on top and rounded on the bottom */
+    border-radius: 0 0 16px 16px; 
+    
     backdrop-filter: blur(8px);
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.08),

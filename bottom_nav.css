@@ -26,9 +26,10 @@ body {
   padding-bottom: var(--nav-clearance);
 }
 
-/*.onehaveri-bottom-nav {
+.onehaveri-bottom-nav {
     position: fixed;
-    bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom));
+ /*   bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom)); */
+  bottom: calc((var(--nav-gap-from-edge) * 1px) + var(--nav-safe-bottom, 0px));
     left: 50%;
     transform: translateX(-50%);
     z-index: 800;
@@ -46,12 +47,12 @@ body {
         0 4px 20px rgba(0, 0, 0, 0.08),
         0 2px 8px rgba(0, 0, 0, 0.04);
     transition: opacity .2s ease, transform .2s ease;
-} */
-.onehaveri-bottom-nav {
+} 
+/* .onehaveri-bottom-nav {
     position: fixed;
     bottom: 10;  /* Pins the panel to the top */
     /* bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom)); -> REMOVED */
-    left: 50%;
+/*    left: 50%;
     transform: translateX(-50%);
     z-index: 800;
     display: flex;

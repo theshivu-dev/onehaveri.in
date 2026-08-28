@@ -28,9 +28,9 @@ body {
 
 .onehaveri-bottom-nav {
     position: fixed;
- /*   bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom)); */
+    bottom: calc(var(--nav-gap-from-edge) + var(--nav-safe-bottom)); 
 /*  bottom: calc((var(--nav-gap-from-edge) * 1px) + var(--nav-safe-bottom, 0px)); */
-   bottom: 10px;
+  /* bottom: 10px; */
     left: 50%;
     transform: translateX(-50%);
     z-index: 800;

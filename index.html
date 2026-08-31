@@ -1,14 +1,43 @@
 <!DOCTYPE html>
 <html lang="kn">
 <head>
-       <link rel="stylesheet" href="partners.css?v=1">    
+<!-- ================================================================
+     One Haveri — home_ip.html
+     ----------------------------------------------------------------
+     This is the IN-PROGRESS working page (not the public landing
+     page — that's index.html). Structure, top to bottom:
+
+       1. <style>  — page look & feel. Named constants are in the
+                      :root block right below; change a value there
+                      instead of hunting for repeated numbers.
+       2. <body>   — hero, 3 info cards, survey button, join
+                      section, footer.
+       3. Popups   — the "take our survey" invitation popup and the
+                      full survey modal (many questions, defined as
+                      data further down in the <script>).
+       4. <script> — survey question data + all survey/popup logic.
+
+     The floating bottom nav (Home / New post / Account) and the
+     sign-in panel live in separate files — bottom_nav.css and
+     bottom_nav.js — so they can be reused on future pages without
+     copy-pasting this whole file.
+     ================================================================ -->
+    
+     <link rel="stylesheet" href="partners.css?v=1">     
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FBF1DE">
 <title>One Haveri — Coming Soon</title>
 
 <style>
+/* ----------------------------------------------------------------
+   NAMED CONSTANTS
+   Change a value here to update it everywhere it's used on this
+   page. Grouped by what they control.
+   ---------------------------------------------------------------- */
 :root{
+
+  /* ---- Palette ---- */
   --cream:#FBF1DE;
   --cream-deep:#F3E3C4;
   --card:#FFFCF5;
@@ -20,7 +49,13 @@
   --muted:#6D5946;
   --olive:#5F7345;
   --line:rgba(59,42,30,.10);
+
+  /* ---- Shared shapes, reused across cards / buttons / panels ---- */
+  --radius-card: 16px;      /* the 3 info cards, survey button banner, join box */
+  --radius-pill: 999px;     /* fully-rounded buttons like the survey button */
+  --shadow-card: 0 6px 18px rgba(59,42,30,.06);  /* soft lift under cards */
 }
+
 
 *{box-sizing:border-box}
 
@@ -180,12 +215,12 @@ body{
 
 .card{
   min-width:0;
-  border-radius:16px;
+  border-radius:var(--radius-card);
   padding:9px 6px 8px;
   text-align:center;
   background:linear-gradient(165deg,var(--card-warm),var(--card));
   border:1px solid var(--line);
-  box-shadow:0 6px 18px rgba(59,42,30,.06);
+  box-shadow:var(--shadow-card);
 }
 
 .icon{
@@ -252,7 +287,7 @@ body{
   border:1px solid rgba(176,69,43,.25);
   background:rgba(255,252,245,.82);
   color:var(--terracotta);
-  border-radius:999px;
+  border-radius:var(--radius-pill);
   padding:7px 14px;
   font-size:10px;
   font-weight:700;
@@ -284,7 +319,7 @@ body{
   gap:9px;
   background:linear-gradient(160deg,var(--card-warm),var(--card));
   border:1px dashed rgba(176,69,43,.3);
-  border-radius:16px;
+  border-radius:var(--radius-card);
 }
 
 .join-icon{
@@ -355,7 +390,7 @@ body{
 .survey-overlay{
   position:fixed;
   inset:0;
-  z-index:1000;
+  z-index:1200;
   display:none;
   align-items:center;
   justify-content:center;
@@ -676,12 +711,23 @@ body{
 .invitation-overlay{
   position:fixed;
   inset:0;
-  z-index:900;
+  z-index:1100;
   display:none;
   align-items:flex-end;
   justify-content:center;
-  padding:18px;
+
+  /*
+   * The larger bottom padding keeps the invitation above
+   * the centralized floating bottom navigation.
+   */
+  padding:
+    18px
+    18px
+    max(110px, calc(env(safe-area-inset-bottom) + 100px));
+
   background:rgba(45,32,24,.20);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
 }
 
 .invitation-overlay.show{
@@ -870,19 +916,21 @@ body{
 @media(min-width:700px){
 
   body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
     min-height:100vh;
     background:#eee6d7;
   }
 
   .page{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
     height:min(880px,92vh);
     box-shadow:0 0 45px rgba(59,42,30,.14);
   }
 }
 </style>
+
 </head>
 
 
@@ -1007,13 +1055,17 @@ body{
   </button>
 
 </section>
-
+<div
+  id="partners-container"
+  data-partner="nammashale">
+</div>
 
 <!-- =========================
      JOIN SECTION
      ========================= -->
 
 <section class="join">
+
 
   <div class="join-icon" aria-hidden="true">
 
@@ -1057,7 +1109,12 @@ body{
   </div>
 
 </section>
+     <!-- ============================================================
+     PARTNER INITIATIVES
+     Content rendered by partners.js
+     ============================================================ -->
 
+<div id="partners-container"></div>
 
 <div class="bottom">
   A work in progress, for Haveri.
@@ -2135,6 +2192,11 @@ document.addEventListener("keydown", function(e){
 });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
+
+
+  <!-- Place script right before closing body -->
+  <script src="partners.js?v=1"></script>
 </body>
 </html>

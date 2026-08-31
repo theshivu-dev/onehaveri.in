@@ -1,0 +1,127 @@
+/* ==========================================================================
+   GLOBAL PARTNER CARD STYLES
+   ========================================================================== */
+.partner-card {
+  max-width: 420px;
+  margin: 16px auto;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.partner-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.partner-brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.partner-badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.partner-title {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.partner-description {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.partner-card-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.partner-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.partner-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.partner-subtext {
+  font-size: 0.7rem;
+}
+
+/* ==========================================================================
+   PARTNER 1: NAMMASHALE THEME
+   ========================================================================== */
+.partner-1-nammashale {
+  background-color: #fdfbf7;
+  border: 1.5px solid #ebd99f;
+}
+
+.partner-1-nammashale .partner-card-header {
+  border-bottom: 1px dashed #e2d5b6;
+}
+
+.partner-1-nammashale .partner-brand-text {
+  color: #181818;
+}
+
+.partner-1-nammashale .partner-brand-highlight {
+  color: #181818;
+  background-color: #ffd400;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.partner-1-nammashale .partner-badge {
+  background-color: #fff3b0;
+  color: #5c4d00;
+}
+
+.partner-1-nammashale .partner-title {
+  color: #1a1a1a;
+}
+
+.partner-1-nammashale .partner-description {
+  color: #555555;
+}
+
+.partner-1-nammashale .partner-btn {
+  background-color: #181818;
+  color: #ffd400;
+}
+
+.partner-1-nammashale .partner-subtext {
+  color: #888888;
+}
+
+/* ==========================================================================
+   PARTNER 2: FUTURE PARTNER THEME
+   ========================================================================== */
+/* Add CSS rules for .partner-2-future here */

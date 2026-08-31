@@ -1,0 +1,76 @@
+/* ==========================================================================
+   PARTNER DATA & RENDERER
+   ========================================================================== */
+
+const PARTNERS_DATA = {
+  // PARTNER 1: NammaShale
+  "nammashale": {
+    brandText: "Namma",
+    brandHighlight: "ಶಾಲೆ",
+    badge: "ಉಪಯುಕ್ತ ಇನಿಶಿಯೇಟಿವ್",
+    title: "ಕರ್ನಾಟಕ ಸರ್ಕಾರಿ ಶಾಲೆಗಳ ನಕ್ಷೆ",
+    description: "ಕರ್ನಾಟಕದ ಸರ್ಕಾರಿ ಶಾಲೆಗಳ ಸೌಲಭ್ಯಗಳು ಮತ್ತು ಸಮಸ್ಯೆಗಳನ್ನು ತಿಳಿಯಲು ಹಾಗೂ ಸಾರ್ವಜನಿಕವಾಗಿ ವರದಿ ಮಾಡಲು ರೂಪಿಸಲಾದ ನಕ್ಷೆ.",
+    linkUrl: "https://nammashale.in",
+    linkText: "nammashale.in ಪರಿಶೀಲಿಸಿ",
+    subtext: "ಸಾರ್ವಜನಿಕ ಸಹಭಾಗಿತ್ವದ ಉದ್ಯಮ",
+    themeClass: "partner-1-nammashale"
+  }
+  
+  /* PARTNER 2: ADD FUTURE PARTNERS HERE
+  , "future-id": {
+    brandText: "Future",
+    brandHighlight: "Initiative",
+    badge: "ವಿವರಣೆ",
+    title: "ಶೀರ್ಷಿಕೆ",
+    description: "ವಿವರಣೆ...",
+    linkUrl: "https://example.com",
+    linkText: "Check Website",
+    subtext: "ಸಣ್ಣ ವಿವರಣೆ",
+    themeClass: "partner-2-future"
+  }
+  */
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderPartnerInitiatives();
+});
+
+function renderPartnerInitiatives() {
+  const partnerContainers = document.querySelectorAll("[data-partner]");
+
+  partnerContainers.forEach((container) => {
+    const partnerKey = container.getAttribute("data-partner");
+    const data = PARTNERS_DATA[partnerKey];
+
+    if (!data) return;
+
+    // Build markup entirely in JS
+    container.className = `partner-card ${data.themeClass}`;
+    container.innerHTML = `
+      <div class="partner-card-header">
+        <div class="partner-brand">
+          <span class="partner-brand-text">${data.brandText}</span>
+          <span class="partner-brand-highlight">${data.brandHighlight}</span>
+        </div>
+        <span class="partner-badge">${data.badge}</span>
+      </div>
+
+      <div class="partner-card-body">
+        <h3 class="partner-title">${data.title}</h3>
+        <p class="partner-description">${data.description}</p>
+      </div>
+
+      <div class="partner-card-footer">
+        <a href="${data.linkUrl}" target="_blank" rel="noopener noreferrer" class="partner-btn">
+          <span>${data.linkText}</span>
+          <svg class="partner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+        <span class="partner-subtext">${data.subtext}</span>
+      </div>
+    `;
+  });
+}

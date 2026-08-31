@@ -1,80 +1,130 @@
 /* ==========================================================================
-   PARTNERS — GLOBAL CONTAINER
+   PARTNERS — COMPACT ONEHAVERI PARTNER CARD
+   --------------------------------------------------------------------------
+   Partner content is intentionally styled as part of the OneHaveri page.
+   Only the Nammaಶಾಲೆ wordmark borrows the partner's own brand treatment.
    ========================================================================== */
 
-/* ==========================================================================
-   PARTNERS — GLOBAL CONTAINER
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   PAGE FLOW
+   --------------------------------------------------------------------------
+   home_ip.html is intentionally a viewport-height design, but its content
+   can grow beyond the viewport once partner/content sections are added.
+   Override only the page wrapper here so the document can scroll naturally.
+   -------------------------------------------------------------------------- */
 
-#partners-container {
-  width: 100%;
-  margin: 0;
-  padding: 0;
+body .page{
+  height:auto;
+  min-height:100svh;
+  overflow:visible;
 }
 
-/* ==========================================================================
-   GLOBAL PARTNER CARD
-   ========================================================================== */
 
-/* ==========================================================================
-   PARTNER CARD — GLOBAL
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   PARTNER CONTAINER
+   -------------------------------------------------------------------------- */
 
-.partner-card {
-  width: 100%;
-  margin: 0;
-
-  padding: 10px 12px;
-
-  border-radius: 13px;
-  box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+#partners-container{
+  width:100%;
+  margin:0;
+  padding:0;
+  position:relative;
+  z-index:1;
 }
 
-/* ==========================================================================
-   GLOBAL PARTNER BRAND
-   ========================================================================== */
 
-.partner-brand {
-  display: flex;
-  align-items: baseline;
+/* --------------------------------------------------------------------------
+   PARTNER CARD — ONEHAVERI THEME
+   -------------------------------------------------------------------------- */
+
+.partner-card{
+  width:100%;
+  margin:0;
+  padding:8px 11px;
+
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+
+  border-radius:14px;
+  box-sizing:border-box;
+
+  background:linear-gradient(160deg,var(--card-warm),var(--card));
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+}
+
+
+/* --------------------------------------------------------------------------
+   HEADER
+   -------------------------------------------------------------------------- */
+
+.partner-card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+
+/* --------------------------------------------------------------------------
+   NAMMASHALE BRAND
+   --------------------------------------------------------------------------
+   Only this wordmark treatment comes from Nammaಶಾಲೆ's visual identity:
+   Namma = black, ಶಾಲೆ = yellow, both bold and compact.
+   The whole wordmark is the link; there is no separate website-link row.
+   -------------------------------------------------------------------------- */
+
+.partner-brand{
+  display:inline-flex;
+  align-items:baseline;
+  width:max-content;
 
   font-family:
+    Arial Black,
     system-ui,
     -apple-system,
     "Segoe UI",
     sans-serif;
 
-  font-size: 20px;
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: -0.8px;
+  font-size:19px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-0.9px;
+  text-decoration:none;
 }
 
-.partner-brand-text {
-  color: #181818;
+.partner-brand:hover{
+  text-decoration:none;
 }
 
-.partner-brand-highlight {
-  color: #181818;
-  background: #ffd400;
+.partner-brand-text{
+  color:#181818;
+}
 
-  margin-left: 3px;
-  padding: 2px 5px;
+.partner-brand-highlight{
+  color:#FFD400;
+  margin-left:3px;
+}
 
-  border-radius: 3px;
+.partner-brand-link:focus-visible{
+  outline:2px solid var(--gold-soft);
+  outline-offset:3px;
+  border-radius:4px;
 }
 
 
-/* ==========================================================================
-   GLOBAL PARTNER CONTENT
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   SMALL BADGE
+   -------------------------------------------------------------------------- */
 
-.partner-title {
-  margin: 1px 0 0;
+.partner-badge{
+  flex:0 0 auto;
+  padding:3px 7px;
+  border:1px solid rgba(176,69,43,.16);
+  border-radius:999px;
+  background:rgba(255,252,245,.72);
+  color:var(--terracotta);
 
   font-family:
     "Noto Serif Kannada",
@@ -82,96 +132,62 @@
     "Tunga",
     serif;
 
-  font-size: 13px;
-  line-height: 1.25;
-  font-weight: 700;
-}
-
-.partner-description {
-  margin: 0;
-
-  font-size: 9.5px;
-  line-height: 1.35;
+  font-size:8px;
+  line-height:1.15;
+  font-weight:700;
+  white-space:nowrap;
 }
 
 
-/* ==========================================================================
-   GLOBAL PARTNER BUTTON
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   CONTENT
+   -------------------------------------------------------------------------- */
 
-.partner-btn {
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-
-  margin-top: 2px;
-  padding: 7px 12px;
-
-  border-radius: 18px;
-
-  text-decoration: none;
-
-  font-size: 10px;
-  font-weight: 800;
-
-  box-sizing: border-box;
+.partner-card-body{
+  min-width:0;
 }
 
-.partner-icon {
-  width: 13px;
-  height: 13px;
+.partner-title{
+  margin:0;
+  font-family:
+    "Noto Serif Kannada",
+    "Nirmala UI",
+    "Tunga",
+    serif;
+  font-size:13px;
+  line-height:1.2;
+  font-weight:700;
+  color:var(--ink);
 }
 
-.partner-subtext {
-  text-align: center;
-
-  font-size: 8px;
-  line-height: 1.2;
+.partner-description{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:9.2px;
+  line-height:1.3;
 }
 
 
-/* ==========================================================================
-   PARTNER 1: NAMMASHALE
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   Nammaಶಾಲೆ THEME HOOK
+   -------------------------------------------------------------------------- */
 
-.partner-1-nammashale {
-  background: #fdfbf7;
-  border: 1px solid #ebd99f;
+.partner-1-nammashale{
+  background:linear-gradient(160deg,var(--card-warm),var(--card));
+  border-color:var(--line);
 }
 
-.partner-1-nammashale .partner-title {
-  color: #181818;
+.partner-1-nammashale .partner-title{
+  color:var(--ink);
 }
 
-.partner-1-nammashale .partner-description {
-  color: #555;
-}
-
-.partner-1-nammashale .partner-btn {
-  background: #181818;
-  color: #ffd400;
-}
-
-.partner-1-nammashale .partner-subtext {
-  color: #888;
+.partner-1-nammashale .partner-description{
+  color:var(--muted);
 }
 
 
-/* ==========================================================================
-   PARTNER 2: FUTURE PARTNER
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   FUTURE PARTNERS
+   -------------------------------------------------------------------------- */
 
-/*
-.partner-2-example {
-  background: #ffffff;
-  border: 1px solid #dddddd;
-}
-
-.partner-2-example .partner-btn {
-  background: #181818;
-  color: #ffffff;
-}
-*/
+/* Future partner themes can be added here without changing the page layout. */

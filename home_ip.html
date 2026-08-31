@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html lang="kn">
 <head>
-<link rel="stylesheet" href="bottom_nav.css?v=7">
+<!-- ================================================================
+     One Haveri — home_ip.html
+     ----------------------------------------------------------------
+     This is the IN-PROGRESS working page (not the public landing
+     page — that's index.html). Structure, top to bottom:
+
+       1. <style>  — page look & feel. Named constants are in the
+                      :root block right below; change a value there
+                      instead of hunting for repeated numbers.
+       2. <body>   — hero, 3 info cards, survey button, join
+                      section, footer.
+       3. Popups   — the "take our survey" invitation popup and the
+                      full survey modal (many questions, defined as
+                      data further down in the <script>).
+       4. <script> — survey question data + all survey/popup logic.
+
+     The floating bottom nav (Home / New post / Account) and the
+     sign-in panel live in separate files — bottom_nav.css and
+     bottom_nav.js — so they can be reused on future pages without
+     copy-pasting this whole file.
+     ================================================================ -->
+<link rel="stylesheet" href="bottom_nav.css?v=8">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FBF1DE">
 <title>One Haveri — Coming Soon</title>
 
 <style>
+/* ----------------------------------------------------------------
+   NAMED CONSTANTS
+   Change a value here to update it everywhere it's used on this
+   page. Grouped by what they control.
+   ---------------------------------------------------------------- */
 :root{
+
+  /* ---- Palette ---- */
   --cream:#FBF1DE;
   --cream-deep:#F3E3C4;
   --card:#FFFCF5;
@@ -20,7 +48,13 @@
   --muted:#6D5946;
   --olive:#5F7345;
   --line:rgba(59,42,30,.10);
+
+  /* ---- Shared shapes, reused across cards / buttons / panels ---- */
+  --radius-card: 16px;      /* the 3 info cards, survey button banner, join box */
+  --radius-pill: 999px;     /* fully-rounded buttons like the survey button */
+  --shadow-card: 0 6px 18px rgba(59,42,30,.06);  /* soft lift under cards */
 }
+
 
 *{box-sizing:border-box}
 
@@ -180,12 +214,12 @@ body{
 
 .card{
   min-width:0;
-  border-radius:16px;
+  border-radius:var(--radius-card);
   padding:9px 6px 8px;
   text-align:center;
   background:linear-gradient(165deg,var(--card-warm),var(--card));
   border:1px solid var(--line);
-  box-shadow:0 6px 18px rgba(59,42,30,.06);
+  box-shadow:var(--shadow-card);
 }
 
 .icon{
@@ -252,7 +286,7 @@ body{
   border:1px solid rgba(176,69,43,.25);
   background:rgba(255,252,245,.82);
   color:var(--terracotta);
-  border-radius:999px;
+  border-radius:var(--radius-pill);
   padding:7px 14px;
   font-size:10px;
   font-weight:700;
@@ -284,7 +318,7 @@ body{
   gap:9px;
   background:linear-gradient(160deg,var(--card-warm),var(--card));
   border:1px dashed rgba(176,69,43,.3);
-  border-radius:16px;
+  border-radius:var(--radius-card);
 }
 
 .join-icon{
@@ -2148,6 +2182,6 @@ document.addEventListener("keydown", function(e){
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="bottom_nav.js?v=7"></script>
+<script src="bottom_nav.js?v=8"></script>
 </body>
 </html>

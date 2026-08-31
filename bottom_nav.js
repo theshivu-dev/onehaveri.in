@@ -1,62 +1,90 @@
-/* ============================================================
-   OneHaveri — Supabase client
-   Requires the Supabase UMD script tag loaded BEFORE this file
-   (already added in home_ip.html).
+/* ================================================================
+   OneHaveri — Bottom Navigation + Account (Supabase Auth)
+   ----------------------------------------------------------------
+   This file builds the floating bottom nav and the sign-in panel,
+   and injects both into the page on load. Styling lives entirely
+   in bottom_nav.css — this file only decides WHAT to show, not
+   how it looks.
 
+   TO ADD / CHANGE A NAV LINK:
+   Edit the NAV_LINKS array below. Nothing else needs to change —
+   the rendering code loops over it automatically.
+
+   TO CHANGE WHICH LINK IS THE RAISED "CREATE" BUTTON:
+   Set isAccent: true on exactly one entry in NAV_LINKS.
+   ================================================================ */
+
+
+/* ---------------------------------------------------------------
+   Supabase project connection.
    Passkeys are a Supabase beta feature — opt-in required via
    auth.experimental.passkey. Needs supabase-js v2.105.0+.
-   ============================================================ */
-
+   --------------------------------------------------------------- */
 const SUPABASE_URL = "https://zdgbtjelxhriggjavecp.supabase.co";
 const SUPABASE_KEY = "sb_publishable_G2vSbiWDeNBPcJCQb0GEUg_S9GvaCVO";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
     experimental: { passkey: true }
   }
 });
 
+
+/* ---------------------------------------------------------------
+   Nav links, in display order.
+
+   href      — where the link goes.
+   label     — used for the accessible aria-label (screen readers)
+               and to look the link back up in code.
+   isAccent  — true for exactly one link: renders as the raised,
+               accent-colored circular button instead of a flat
+               icon (the ".create-post" style in bottom_nav.css).
+   outline / filled — two versions of the icon: "outline" shows
+               normally, "filled" swaps in when the link is active
+               (bottom_nav.css handles the swap via CSS classes).
+   --------------------------------------------------------------- */
+const NAV_LINKS = [
+  {
+    href: "/",
+    label: "Home",
+    isAccent: false,
+    outline: `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>`,
+    filled:  `<path fill="currentColor" d="M12 2.5 2.5 10.3V21a1 1 0 0 0 1 1H9v-7h6v7h5.5a1 1 0 0 0 1-1V10.3L12 2.5Z"/>`
+  },
+  {
+    href: "/new-post.html",
+    label: "New post",
+    isAccent: true,
+    outline: `<path d="M12 8v8M8 12h8"/>`,
+    filled:  `<path d="M12 8v8M8 12h8"/>`
+  },
+  {
+    href: "#",
+    label: "Account",
+    isAccent: false,
+    outline: `<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6"/>`,
+    filled:  `<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6" fill="currentColor"/>`
+  }
+];
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  const links = [
-    {
-      href: "/",
-      label: "Home",
-      isActive: function () {
-        return false;
-      },
-      outline: `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>`,
-      filled: `<path fill="currentColor" d="M12 2.5 2.5 10.3V21a1 1 0 0 0 1 1H9v-7h6v7h5.5a1 1 0 0 0 1-1V10.3L12 2.5Z"/>`
-    },
-    {
-      href: "/new-post.html",
-      label: "New post",
-      isActive: function () {
-        return false;
-      },
-      outline: `<rect x="4" y="4" width="16" height="16" rx="5"/><path d="M12 8v8M8 12h8"/>`,
-      filled: `<rect x="4" y="4" width="16" height="16" rx="5" fill="currentColor"/><path d="M12 8v8M8 12h8" stroke="#FFFCF5" stroke-width="2" stroke-linecap="round"/>`
-    },
-    {
-      href: "#",
-      label: "Account",
-      isActive: function () {
-        return false;
-      },
-      outline: `<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6"/>`,
-      filled: `<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 3-6 8-6s8 2 8 6" fill="currentColor"/>`
-    }
-  ];
-
+  /* ------------------------------------------------------------
+     Build and insert the nav bar itself.
+     ------------------------------------------------------------ */
   const nav = document.createElement("nav");
   nav.className = "onehaveri-bottom-nav";
 
-  nav.innerHTML = links.map(link => {
-    const isActive = link.isActive();
+  nav.innerHTML = NAV_LINKS.map(link => {
+    const classes = link.isAccent ? "create-post" : "";
     return `
-      <a href="${link.href}" aria-label="${link.label}" class="${isActive ? "active" : ""}">
+      <a href="${link.href}" aria-label="${link.label}" class="${classes}">
         <svg class="icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${link.outline}</svg>
-        <svg class="icon-filled" viewBox="0 0 24 24">${link.filled}</svg>
+        <svg class="icon-filled" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${link.filled}</svg>
       </a>
     `;
   }).join("");
@@ -70,6 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
     openAuthPanel();
   });
 
+
+  /* ------------------------------------------------------------
+     Build and insert the account panel (hidden until opened).
+     ------------------------------------------------------------ */
   const overlay = document.createElement("div");
   overlay.id = "ohAuthOverlay";
   overlay.className = "oh-auth-overlay";
@@ -101,6 +133,11 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.setAttribute("aria-hidden", "true");
   }
 
+
+  /* ------------------------------------------------------------
+     Render the panel's contents: signed-out (Google / passkey
+     sign-in) vs. signed-in (email, add passkey, sign out).
+     ------------------------------------------------------------ */
   function renderAuthBody() {
     sb.auth.getSession().then(({ data }) => {
       const session = data.session;
@@ -123,15 +160,17 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="oh-auth-status" id="ohAuthStatus"></div>
         `;
 
-document.getElementById("ohAddPasskeyBtn").addEventListener("click", async () => {
-  const { error } = await sb.auth.registerPasskey();
-  if (error) {
-    showStatus(error.message, true);
-  } else {
-    showStatus("Passkey added — you can use it to sign in faster next time.", false);
-    setTimeout(closeAuthPanel, 1400);
-  }
-});
+        document.getElementById("ohAddPasskeyBtn").addEventListener("click", async () => {
+          const { error } = await sb.auth.registerPasskey();
+          if (error) {
+            showStatus(error.message, true);
+          } else {
+            showStatus("Passkey added — you can use it to sign in faster next time.", false);
+            // Give the person a moment to read the confirmation
+            // before the panel closes itself.
+            setTimeout(closeAuthPanel, 1400);
+          }
+        });
 
         document.getElementById("ohSignOutBtn").addEventListener("click", async () => {
           await sb.auth.signOut();
@@ -186,6 +225,11 @@ document.getElementById("ohAddPasskeyBtn").addEventListener("click", async () =>
     status.className = "oh-auth-status" + (isError ? " oh-auth-status-error" : "");
   }
 
+
+  /* ------------------------------------------------------------
+     Keep the Account icon showing "signed in" state (filled +
+     accent color) whenever there's an active session.
+     ------------------------------------------------------------ */
   function refreshAuthUI() {
     sb.auth.getSession().then(({ data }) => {
       accountLink.classList.toggle("active", !!data.session);
@@ -195,6 +239,12 @@ document.getElementById("ohAddPasskeyBtn").addEventListener("click", async () =>
   refreshAuthUI();
   sb.auth.onAuthStateChange(() => refreshAuthUI());
 
+
+  /* ------------------------------------------------------------
+     Inline icon svgs for the auth panel's own buttons (separate
+     from the nav bar icons above, since these appear inside the
+     dynamically-built panel markup).
+     ------------------------------------------------------------ */
   function googleIconSvg() {
     return `<svg viewBox="0 0 48 48" width="18" height="18">
       <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.7l6-6C34 6.5 29.3 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.4-3.5z"/>

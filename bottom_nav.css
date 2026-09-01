@@ -1,28 +1,18 @@
 /* ================================================================
    OneHaveri — Floating Bottom Navigation + Account Panel
    ----------------------------------------------------------------
-   Loaded on every page that wants the floating bottom nav bar
-   (home_ip.html today; future pages like new-post.html, feed
-   pages, etc. should link this same file for consistency).
+   Shared component styling. Page geometry belongs to main_page.css;
+   this file only owns the bottom navigation and its account panel.
 
-   HOW TO CHANGE THE LOOK:
-   Everything you'd normally want to tweak — nav height, spacing,
-   colors, icon size — is defined once as a CSS custom property
-   in the :root block directly below. Change a value there and
-   it updates everywhere it's used, instead of hunting through
-   the file for repeated numbers.
-
-   PHASE 4B
+   PHASE 4C
    --------
-   Bottom navigation is treated as an independent fixed component.
-   It must remain visible without creating a page-width dependency,
-   must respect safe-area space, and must reserve enough document
-   clearance without controlling page height or scrolling.
+   Keep navigation clearance scoped to pages that actually contain
+   the dynamically injected bottom-nav component. The navigation
+   must not impose bottom padding on unrelated pages merely because
+   this stylesheet is loaded there.
    ================================================================ */
 
 :root{
-
-  /* ---- Layout: floating nav pill ---- */
   --nav-icon-size:        44px;
   --nav-icon-svg-size:    22px;
   --nav-padding-y:        12px;
@@ -31,33 +21,27 @@
   --nav-gap-from-edge:    16px;
   --nav-safe-bottom:      env(safe-area-inset-bottom, 0px);
   --nav-screen-gutter:    18px;
-
-  /* ---- Layout: elevated center "create" button ---- */
   --nav-accent-size:      56px;
   --nav-accent-lift:      -14px;
-
-  /* ---- Total space to reserve so page content never sits under the nav ---- */
   --nav-total-height:     calc(var(--nav-icon-size) + (var(--nav-padding-y) * 2));
   --nav-clearance:        calc(var(--nav-total-height) + var(--nav-gap-from-edge) + var(--nav-safe-bottom) + 12px);
-
-  /* ---- Colors ---- */
-  --nav-ink:               #8b5e3c;
-  --nav-accent:            #bf6737;
-  --nav-accent-dark:       #a8542b;
-  --nav-accent-tint:       rgba(191, 103, 55, 0.10);
-  --nav-bg:                rgba(248, 243, 235, 0.96);
-  --nav-border:            rgba(191, 103, 55, 0.15);
+  --nav-ink:              #8b5e3c;
+  --nav-accent:           #bf6737;
+  --nav-accent-dark:      #a8542b;
+  --nav-accent-tint:      rgba(191, 103, 55, 0.10);
+  --nav-bg:               rgba(248, 243, 235, 0.96);
+  --nav-border:           rgba(191, 103, 55, 0.15);
 }
 
 
 /* ----------------------------------------------------------------
-   Component-owned document clearance.
+   Reserve document space only when the nav has actually been
+   injected by bottom_nav.js.
 
-   This adds bottom room for the fixed nav but does NOT set a page
-   height or create a separate scrolling container. The document
-   remains the page's normal scroll surface.
+   :has() keeps this responsibility inside the component stylesheet
+   without adding a global page-level class or changing JS.
    ---------------------------------------------------------------- */
-body{
+body:has(.onehaveri-bottom-nav){
   padding-bottom: var(--nav-clearance);
 }
 
@@ -95,7 +79,6 @@ body{
   transition: opacity .2s ease, transform .2s ease;
 }
 
-/* Regular icon buttons (Home, Account) */
 .onehaveri-bottom-nav a{
   width: var(--nav-icon-size);
   height: var(--nav-icon-size);
@@ -129,7 +112,6 @@ body{
   height: var(--nav-icon-svg-size);
 }
 
-/* Outline vs. filled icon swap for the active state */
 .onehaveri-bottom-nav a .icon-filled{
   display: none;
 }
@@ -183,7 +165,6 @@ body{
   transform: translateX(-50%) translateY(20px);
 }
 
-/* Hide the nav while the full-screen survey modal is open. */
 body.survey-is-open .onehaveri-bottom-nav{
   opacity: 0;
   visibility: hidden;
@@ -240,7 +221,7 @@ body.survey-is-open .onehaveri-bottom-nav{
 }
 @keyframes ohAuthUp{
   from{ opacity: 0; transform: translateY(20px); }
-  to{   opacity: 1; transform: translateY(0); }
+  to{ opacity: 1; transform: translateY(0); }
 }
 
 .oh-auth-close{

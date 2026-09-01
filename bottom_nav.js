@@ -9,9 +9,6 @@
    TO ADD / CHANGE A NAV LINK:
    Edit the NAV_LINKS array below. Nothing else needs to change —
    the rendering code loops over it automatically.
-
-   TO CHANGE WHICH LINK IS THE RAISED "CREATE" BUTTON:
-   Set isAccent: true on exactly one entry in NAV_LINKS.
    ================================================================ */
 
 
@@ -39,9 +36,8 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
    href      — where the link goes.
    label     — used for the accessible aria-label (screen readers)
                and to look the link back up in code.
-   isAccent  — true for exactly one link: renders as the raised,
-               accent-colored circular button instead of a flat
-               icon (the ".create-post" style in bottom_nav.css).
+   isAccent  — retained for compatibility with the existing nav
+               renderer. All three current items are flat.
    outline / filled — two versions of the icon: "outline" shows
                normally, "filled" swaps in when the link is active
                (bottom_nav.css handles the swap via CSS classes).
@@ -55,11 +51,11 @@ const NAV_LINKS = [
     filled:  `<path fill="currentColor" d="M12 2.5 2.5 10.3V21a1 1 0 0 0 1 1H9v-7h6v7h5.5a1 1 0 0 0 1-1V10.3L12 2.5Z"/>`
   },
   {
-    href: "/new-post.html",
-    label: "New post",
-    isAccent: true,
-    outline: `<path d="M12 8v8M8 12h8"/>`,
-    filled:  `<path d="M12 8v8M8 12h8"/>`
+    href: "#",
+    label: "Navigation",
+    isAccent: false,
+    outline: `<path d="M5 7h14"/><path d="M5 12h14"/><path d="M5 17h14"/>`,
+    filled:  `<path d="M5 7h14"/><path d="M5 12h14"/><path d="M5 17h14"/>` 
   },
   {
     href: "#",

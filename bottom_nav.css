@@ -124,31 +124,35 @@ body:has(.onehaveri-bottom-nav){
 
 
 /* ----------------------------------------------------------------
-   Elevated center "create" button.
+   Center navigation item — styling-only transition.
+   ----------------------------------------------------------------
+   The middle item is intentionally flattened for now. Its current
+   icon and JS behaviour remain unchanged in bottom_nav.js.
+   The next controlled step will replace the current create-post
+   identity with the Navigation menu item and its final icon.
    ---------------------------------------------------------------- */
 .onehaveri-bottom-nav .create-post{
-  width: var(--nav-accent-size);
-  height: var(--nav-accent-size);
-  flex: 0 0 var(--nav-accent-size);
-  margin-top: var(--nav-accent-lift);
-  background: var(--nav-accent);
-  color: #fff;
-  box-shadow:
-    0 8px 20px rgba(191, 103, 55, 0.35),
-    0 2px 6px rgba(191, 103, 55, 0.20);
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+  flex: 0 0 var(--nav-icon-size);
+  margin-top: 0;
+  background: transparent;
+  color: var(--nav-ink);
+  box-shadow: none;
 }
 
 .onehaveri-bottom-nav .create-post svg{
-  width: calc(var(--nav-icon-svg-size) + 2px);
-  height: calc(var(--nav-icon-svg-size) + 2px);
+  width: var(--nav-icon-svg-size);
+  height: var(--nav-icon-svg-size);
 }
 
 .onehaveri-bottom-nav .create-post:hover{
-  background: var(--nav-accent-dark);
+  background: var(--nav-accent-tint);
+  color: var(--nav-ink);
 }
 
 .onehaveri-bottom-nav .create-post:active{
-  transform: scale(.94);
+  transform: scale(.92);
 }
 
 

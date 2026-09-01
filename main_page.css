@@ -10,12 +10,12 @@
    Component CSS belongs with the component (for example partners.css,
    bottom_nav.css). Larger future components may receive their own file.
 
-   PHASE 2
+   PHASE 4A
    --------
-   This file is now linked by home_ip.html and owns the page shell,
-   shared page tokens, responsive page geometry and page background.
-   The page is intentionally fluid in width and content-driven in
-   height. Component behaviour remains with its own component files.
+   Responsive page geometry is fluid across phones, tablets and
+   laptops/desktops. The page is content-driven in height and does not
+   use a fixed viewport canvas. Mobile is the primary audience, but the
+   layout is deliberately not mobile-constrained.
    ================================================================ */
 
 :root{
@@ -36,8 +36,10 @@
   --radius-pill:999px;
   --shadow-card:0 6px 18px rgba(59,42,30,.06);
 
-  /* Responsive page geometry. */
-  --page-max-width:1200px;
+  /* Responsive page geometry. This is a desktop-capable canvas, not a
+     phone-sized wrapper. The max is a readability boundary only; the
+     page itself remains width:100% and can shrink naturally below it. */
+  --page-max-width:1440px;
   --page-gutter:clamp(16px,3vw,48px);
 }
 
@@ -71,10 +73,11 @@ body{
    Important design decision:
 
    - Width is fluid, not phone-sized.
-   - The page may use a wider desktop canvas.
+   - The page can use a wider desktop canvas up to the readability cap.
    - Height is content-driven, not locked to one viewport.
-   - min-height keeps a short page visually fillable.
-   - Overflow remains normal so the document can grow and scroll.
+   - min-height only makes short pages fill the visible screen.
+   - There is no fixed height, so additional sections can grow the page.
+   - Normal document overflow is preserved so the page can scroll.
    - Bottom navigation clearance remains the responsibility of
      bottom_nav.css; it is deliberately not duplicated here.
    ---------------------------------------------------------------- */
@@ -117,9 +120,10 @@ body{
 /* ----------------------------------------------------------------
    RESPONSIVE PAGE GEOMETRY
    ----------------------------------------------------------------
-   Mobile remains the primary audience, but there is no hard mobile
-   width ceiling. Desktop gets a wider usable canvas while preserving
-   comfortable gutters.
+   There is intentionally no mobile-only width rule here. The same
+   fluid shell is used from narrow phones through large screens.
+   Desktop adjustments change spacing only; they do not introduce a
+   second layout system.
    ---------------------------------------------------------------- */
 
 @media (min-width:769px){

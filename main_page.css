@@ -7,12 +7,12 @@
    Component CSS belongs with the component (for example partners.css,
    bottom_nav.css). Larger future components may receive their own file.
 
-   PHASE 1
+   PHASE 2
    --------
-   This file is created as the new page-shell home for responsive layout.
-   It is NOT linked from home_ip.html yet. The existing inline CSS remains
-   authoritative until the next controlled phase removes the old shell
-   rules and links this file.
+   This file is now linked by home_ip.html and owns the page shell,
+   shared page tokens, responsive page geometry and page background.
+   The page is intentionally fluid in width and content-driven in
+   height. Component behaviour remains with its own component files.
    ================================================================ */
 
 :root{

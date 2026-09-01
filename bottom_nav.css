@@ -11,44 +11,51 @@
    in the :root block directly below. Change a value there and
    it updates everywhere it's used, instead of hunting through
    the file for repeated numbers.
+
+   PHASE 4B
+   --------
+   Bottom navigation is treated as an independent fixed component.
+   It must remain visible without creating a page-width dependency,
+   must respect safe-area space, and must reserve enough document
+   clearance without controlling page height or scrolling.
    ================================================================ */
 
 :root{
 
   /* ---- Layout: floating nav pill ---- */
-  --nav-icon-size:        44px;   /* diameter of each regular icon button */
-  --nav-icon-svg-size:    22px;   /* size of the svg glyph inside each icon */
-  --nav-padding-y:        12px;   /* pill's vertical inner padding */
-  --nav-padding-x:        16px;   /* pill's horizontal inner padding */
-  --nav-gap:              14px;   /* space between icons */
-  --nav-gap-from-edge:    16px;   /* distance from the bottom of the screen */
-  --nav-safe-bottom:      env(safe-area-inset-bottom, 0px); /* iPhone home-bar area */
+  --nav-icon-size:        44px;
+  --nav-icon-svg-size:    22px;
+  --nav-padding-y:        12px;
+  --nav-padding-x:        16px;
+  --nav-gap:              14px;
+  --nav-gap-from-edge:    16px;
+  --nav-safe-bottom:      env(safe-area-inset-bottom, 0px);
+  --nav-screen-gutter:    18px;
 
   /* ---- Layout: elevated center "create" button ---- */
-  --nav-accent-size:      56px;   /* diameter of the raised center button */
-  --nav-accent-lift:      -14px;  /* how far it pops up above the pill */
+  --nav-accent-size:      56px;
+  --nav-accent-lift:      -14px;
 
   /* ---- Total space to reserve so page content never sits under the nav ---- */
   --nav-total-height:     calc(var(--nav-icon-size) + (var(--nav-padding-y) * 2));
   --nav-clearance:        calc(var(--nav-total-height) + var(--nav-gap-from-edge) + var(--nav-safe-bottom) + 12px);
 
-  /* ---- Colors ----
-     Kept self-contained (not reusing home_ip.html's --terracotta
-     etc.) so this file works consistently on any future page,
-     even one that doesn't define the same palette inline. */
-  --nav-ink:               #8b5e3c;   /* default icon color */
-  --nav-accent:            #bf6737;   /* active / accent color */
-  --nav-accent-dark:       #a8542b;   /* accent hover shade */
-  --nav-accent-tint:       rgba(191, 103, 55, 0.10); /* active icon background */
+  /* ---- Colors ---- */
+  --nav-ink:               #8b5e3c;
+  --nav-accent:            #bf6737;
+  --nav-accent-dark:       #a8542b;
+  --nav-accent-tint:       rgba(191, 103, 55, 0.10);
   --nav-bg:                rgba(248, 243, 235, 0.96);
   --nav-border:            rgba(191, 103, 55, 0.15);
 }
 
 
 /* ----------------------------------------------------------------
-   Reserve space at the bottom of every page using this nav, so
-   real content (footer text, last card, end of a list) never
-   sits underneath the floating pill.
+   Component-owned document clearance.
+
+   This adds bottom room for the fixed nav but does NOT set a page
+   height or create a separate scrolling container. The document
+   remains the page's normal scroll surface.
    ---------------------------------------------------------------- */
 body{
   padding-bottom: var(--nav-clearance);
@@ -72,7 +79,8 @@ body{
   padding: var(--nav-padding-y) var(--nav-padding-x);
 
   width: max-content;
-  max-width: calc(100vw - 36px);
+  max-width: calc(100vw - (var(--nav-screen-gutter) * 2));
+  box-sizing: border-box;
 
   background: var(--nav-bg);
   border: 1px solid var(--nav-border);
@@ -91,12 +99,15 @@ body{
 .onehaveri-bottom-nav a{
   width: var(--nav-icon-size);
   height: var(--nav-icon-size);
+  flex: 0 0 var(--nav-icon-size);
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   color: var(--nav-ink);
   border-radius: 50%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color .2s ease, color .2s ease, transform .15s ease;
 }
 
@@ -131,16 +142,12 @@ body{
 
 
 /* ----------------------------------------------------------------
-   The elevated "create" button (center action, e.g. New Post).
-   This is what makes the nav read as "one primary action, two
-   secondary ones" instead of three identical flat icons.
-
-   Applied via JS by giving that link's <a> the extra class
-   "create-post" (see NAV_LINKS in bottom_nav.js).
+   Elevated center "create" button.
    ---------------------------------------------------------------- */
 .onehaveri-bottom-nav .create-post{
   width: var(--nav-accent-size);
   height: var(--nav-accent-size);
+  flex: 0 0 var(--nav-accent-size);
   margin-top: var(--nav-accent-lift);
   background: var(--nav-accent);
   color: #fff;
@@ -164,10 +171,7 @@ body{
 
 
 /* ----------------------------------------------------------------
-   Scroll / visibility hooks — not wired up to any scroll
-   listener yet. Kept here so that later, adding a small JS
-   scroll handler that toggles these classes on
-   .onehaveri-bottom-nav "just works" with an existing transition.
+   Scroll / visibility hooks.
    ---------------------------------------------------------------- */
 .onehaveri-bottom-nav.is-compact{
   transform: translateX(-50%) scale(.9);
@@ -179,8 +183,7 @@ body{
   transform: translateX(-50%) translateY(20px);
 }
 
-/* Hide the nav while the full-screen survey modal is open,
-   so it doesn't float on top of the modal. */
+/* Hide the nav while the full-screen survey modal is open. */
 body.survey-is-open .onehaveri-bottom-nav{
   opacity: 0;
   visibility: hidden;
@@ -191,6 +194,16 @@ body.survey-is-open .onehaveri-bottom-nav{
 @media (max-width: 768px){
   .onehaveri-bottom-nav{
     gap: 12px;
+  }
+}
+
+@media (max-width: 360px){
+  .onehaveri-bottom-nav{
+    --nav-icon-size: 42px;
+    --nav-accent-size: 54px;
+    --nav-padding-x: 13px;
+    --nav-padding-y: 10px;
+    --nav-gap: 10px;
   }
 }
 

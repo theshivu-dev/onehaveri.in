@@ -33,22 +33,9 @@
   --nav-border:           rgba(191, 103, 55, 0.15);
 }
 
-
-/* ----------------------------------------------------------------
-   Reserve document space only when the nav has actually been
-   injected by bottom_nav.js.
-
-   :has() keeps this responsibility inside the component stylesheet
-   without adding a global page-level class or changing JS.
-   ---------------------------------------------------------------- */
 body:has(.onehaveri-bottom-nav){
   padding-bottom: var(--nav-clearance);
 }
-
-
-/* ================================================================
-   THE FLOATING PILL
-   ================================================================ */
 
 .onehaveri-bottom-nav{
   position: fixed;
@@ -56,26 +43,21 @@ body:has(.onehaveri-bottom-nav){
   left: 50%;
   transform: translateX(-50%);
   z-index: 800;
-
   display: flex;
   align-items: center;
   gap: var(--nav-gap);
   padding: var(--nav-padding-y) var(--nav-padding-x);
-
   width: max-content;
   max-width: calc(100vw - (var(--nav-screen-gutter) * 2));
   box-sizing: border-box;
-
   background: var(--nav-bg);
   border: 1px solid var(--nav-border);
   border-radius: 999px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-
   box-shadow:
     0 10px 28px rgba(59, 42, 30, 0.12),
     0 2px 8px rgba(59, 42, 30, 0.06);
-
   transition: opacity .2s ease, transform .2s ease;
 }
 
@@ -122,15 +104,21 @@ body:has(.onehaveri-bottom-nav){
   display: block;
 }
 
-
 /* ----------------------------------------------------------------
-   Center navigation item — styling-only transition.
-   ----------------------------------------------------------------
-   The middle item is intentionally flattened for now. Its current
-   icon and JS behaviour remain unchanged in bottom_nav.js.
-   The next controlled step will replace the current create-post
-   identity with the Navigation menu item and its final icon.
+   Future Navigation item — intentionally inert and visually normal.
+   The feature remains in NAV_LINKS but is hidden from interaction
+   until a real navigation menu is implemented.
    ---------------------------------------------------------------- */
+.onehaveri-bottom-nav .nav-disabled{
+  cursor: default;
+  pointer-events: none;
+  opacity: .82;
+}
+
+.onehaveri-bottom-nav .nav-disabled:focus{
+  outline: none;
+}
+
 .onehaveri-bottom-nav .create-post{
   width: var(--nav-icon-size);
   height: var(--nav-icon-size);
@@ -155,10 +143,6 @@ body:has(.onehaveri-bottom-nav){
   transform: scale(.92);
 }
 
-
-/* ----------------------------------------------------------------
-   Scroll / visibility hooks.
-   ---------------------------------------------------------------- */
 .onehaveri-bottom-nav.is-compact{
   transform: translateX(-50%) scale(.9);
   opacity: .85;

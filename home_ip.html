@@ -22,7 +22,7 @@
      bottom_nav.js — so they can be reused on future pages without
      copy-pasting this whole file.
      ================================================================ -->
-<link rel="stylesheet" href="bottom_nav.css?v=8">
+<link rel="stylesheet" href="bottom_nav.css?v=9">
 <link rel="stylesheet" href="partners.css?v=1">
 <link rel="stylesheet" href="main_page.css?v=1">
 <meta charset="UTF-8">
@@ -192,7 +192,7 @@ const RESPONSES_KEY="onehaveri_survey_responses";function saveResponseLocally(an
 function showThankYou(){document.getElementById("questionContainer").innerHTML=`<div class="thank-you"><div class="thank-you-icon">✓</div><h2>ಧನ್ಯವಾದಗಳು 🙏</h2><p>ಹಾವೇರಿಯ ಬಗ್ಗೆ ನಿಮ್ಮ ಮಾತು ಹಂಚಿಕೊಂಡಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು.<br>OneHaveri ಬೆಳೆಯುವಲ್ಲಿ ನಿಮ್ಮ ಮಾತು ಒಂದು ಸಣ್ಣ ಹೆಜ್ಜೆ.</p><button type="button" onclick="closeSurvey()">ಮುಚ್ಚಿ</button></div>`;document.querySelector(".survey-footer").style.display="none";document.querySelector(".survey-progress").style.display="none"}
 window.addEventListener("load",()=>{invitationTimer=setTimeout(()=>{if(!document.getElementById("surveyOverlay").classList.contains("show")){document.getElementById("invitationOverlay").classList.add("show");document.getElementById("invitationOverlay").setAttribute("aria-hidden","false")}},8000)});
 </script>
-<script src="bottom_nav.js?v=8"></script>
+<script src="bottom_nav.js?v=9"></script>
 <script src="partners.js?v=1"></script>
 </body>
 </html>

@@ -1,0 +1,132 @@
+/* ================================================================
+   OneHaveri — Main Page Layout Foundation
+   ----------------------------------------------------------------
+   Page-level layout only.
+
+   This file intentionally does NOT style individual widgets/components.
+   Component CSS belongs with the component (for example partners.css,
+   bottom_nav.css). Larger future components may receive their own file.
+
+   PHASE 1
+   --------
+   This file is created as the new page-shell home for responsive layout.
+   It is NOT linked from home_ip.html yet. The existing inline CSS remains
+   authoritative until the next controlled phase removes the old shell
+   rules and links this file.
+   ================================================================ */
+
+:root{
+  /* OneHaveri page palette shared by page-level and component styles. */
+  --cream:#FBF1DE;
+  --cream-deep:#F3E3C4;
+  --card:#FFFCF5;
+  --card-warm:#FEF6E4;
+  --gold:#C77F16;
+  --gold-soft:#E7A525;
+  --terracotta:#B0452B;
+  --ink:#3B2A1E;
+  --muted:#6D5946;
+  --olive:#5F7345;
+  --line:rgba(59,42,30,.10);
+
+  --radius-card:16px;
+  --radius-pill:999px;
+  --shadow-card:0 6px 18px rgba(59,42,30,.06);
+
+  /* Responsive page geometry. */
+  --page-max-width:1200px;
+  --page-gutter:clamp(16px,3vw,48px);
+}
+
+
+/* ----------------------------------------------------------------
+   DOCUMENT BASE
+   ---------------------------------------------------------------- */
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--cream);
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+
+
+/* ----------------------------------------------------------------
+   MAIN PAGE SHELL
+   ----------------------------------------------------------------
+   Important design decision:
+
+   - Width is fluid, not phone-sized.
+   - The page may use a wider desktop canvas.
+   - Height is content-driven, not locked to one viewport.
+   - min-height keeps a short page visually fillable.
+   - Overflow remains normal so the document can grow and scroll.
+   - Bottom navigation clearance remains the responsibility of
+     bottom_nav.css; it is deliberately not duplicated here.
+   ---------------------------------------------------------------- */
+
+.page{
+  width:100%;
+  max-width:var(--page-max-width);
+  min-height:100svh;
+  height:auto;
+  margin:0 auto;
+  padding:
+    max(10px,env(safe-area-inset-top))
+    var(--page-gutter)
+    max(10px,env(safe-area-inset-bottom));
+  display:flex;
+  flex-direction:column;
+  gap:clamp(8px,1.5vw,16px);
+  position:relative;
+  overflow:visible;
+  background:var(--cream);
+}
+
+
+/* ----------------------------------------------------------------
+   PAGE BACKGROUND DECORATION
+   ---------------------------------------------------------------- */
+
+.dawn{
+  position:absolute;
+  inset:-10% -5% auto -5%;
+  width:110%;
+  height:62%;
+  background:
+    radial-gradient(58% 60% at 50% 0%,rgba(231,165,37,.55),transparent 68%),
+    radial-gradient(85% 50% at 50% 0%,rgba(245,201,110,.30),transparent 75%);
+  pointer-events:none;
+}
+
+
+/* ----------------------------------------------------------------
+   RESPONSIVE PAGE GEOMETRY
+   ----------------------------------------------------------------
+   Mobile remains the primary audience, but there is no hard mobile
+   width ceiling. Desktop gets a wider usable canvas while preserving
+   comfortable gutters.
+   ---------------------------------------------------------------- */
+
+@media (min-width:769px){
+  .page{
+    gap:clamp(12px,1.5vw,20px);
+  }
+}
+
+@media (min-width:1200px){
+  .page{
+    --page-gutter:clamp(32px,4vw,56px);
+  }
+}

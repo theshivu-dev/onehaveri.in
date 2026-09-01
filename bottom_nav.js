@@ -36,6 +36,8 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
    href      — where the link goes.
    label     — used for the accessible aria-label (screen readers)
                and to look the link back up in code.
+   disabled  — keeps a future item present in the component while
+               preventing navigation/action until its feature exists.
    isAccent  — retained for compatibility with the existing nav
                renderer. All three current items are flat.
    outline / filled — two versions of the icon: "outline" shows
@@ -53,9 +55,10 @@ const NAV_LINKS = [
   {
     href: "#",
     label: "Navigation",
+    disabled: true,
     isAccent: false,
     outline: `<path d="M5 7h14"/><path d="M5 12h14"/><path d="M5 17h14"/>`,
-    filled:  `<path d="M5 7h14"/><path d="M5 12h14"/><path d="M5 17h14"/>` 
+    filled:  `<path d="M5 7h14"/><path d="M5 12h14"/><path d="M5 17h14"/>`
   },
   {
     href: "#",
@@ -76,9 +79,16 @@ document.addEventListener("DOMContentLoaded", () => {
   nav.className = "onehaveri-bottom-nav";
 
   nav.innerHTML = NAV_LINKS.map(link => {
-    const classes = link.isAccent ? "create-post" : "";
+    const classes = [
+      link.isAccent ? "create-post" : "",
+      link.disabled ? "nav-disabled" : ""
+    ].filter(Boolean).join(" ");
+    const disabledAttrs = link.disabled
+      ? `aria-disabled="true" tabindex="-1"`
+      : "";
+
     return `
-      <a href="${link.href}" aria-label="${link.label}" class="${classes}">
+      <a href="${link.href}" aria-label="${link.label}" class="${classes}" ${disabledAttrs}>
         <svg class="icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${link.outline}</svg>
         <svg class="icon-filled" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${link.filled}</svg>
       </a>
@@ -86,6 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }).join("");
 
   document.body.appendChild(nav);
+
+  /* Future Navigation item is intentionally inert for now. */
+  const navigationLink = nav.querySelector('a[aria-label="Navigation"]');
+  navigationLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+  });
 
   const accountLink = nav.querySelector('a[aria-label="Account"]');
 
@@ -162,8 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
             showStatus(error.message, true);
           } else {
             showStatus("Passkey added — you can use it to sign in faster next time.", false);
-            // Give the person a moment to read the confirmation
-            // before the panel closes itself.
             setTimeout(closeAuthPanel, 1400);
           }
         });

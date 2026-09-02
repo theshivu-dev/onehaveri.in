@@ -587,33 +587,35 @@ The following are possibilities rather than commitments:
 
 Future sessions must distinguish between **implemented functionality**, **in-progress work**, and **future ideas**. Never describe a planned feature as implemented merely because it appears in this README.
 
-The database foundation for "Supabase-backed data and user-generated content" above has begun — see Section 24. This is database-level work only; no user-facing posting or browsing feature exists in this repository yet.
+The database foundation for "Supabase-backed data and user-generated content" above is now **schema-complete and reviewed** — see Section 24. Front-end work (post-creation and post-viewing pages) is the next phase; no such UI exists in this repository yet.
 
 ---
 
 ## 24. Supabase content-platform foundation (database layer)
 
-**Status: implemented at the database level only.** No HTML, CSS or JavaScript exists yet for creating or browsing posts. This section documents the Supabase schema and access-control foundation built ahead of that UI, in the `onehaveri` Supabase project, so future sessions understand what already exists before proposing a conflicting design.
+**Status: database schema complete, reviewed and hardened. No corresponding UI exists yet** — no HTML, CSS or JavaScript exists for creating or browsing posts. This section documents the full Supabase schema, access control, and review findings for the `onehaveri` project, so future sessions understand what already exists before proposing a conflicting design.
 
 ### 24.1 Design principles
 
 - No posting or data creation/change is ever allowed without the user being signed in — no anonymous writes anywhere in this schema.
-- Supabase (tables, RLS, functions) is the actual source of control. The eventual UI is a tool to read and write data, not where permissions live.
+- Supabase (tables, RLS, functions) is the actual source of control. The UI is a tool to read and write data, not where permissions live.
+- Privileged fields — post status, moderation flags, ownership columns — are enforced server-side by triggers and never trusted from whatever the client sends.
 - Behaviour toggles are stored as configuration data (`app_config`) rather than hardcoded, where practical.
 - Every meaningful write is recorded in an append-only audit trail (`audit_log`) that nothing in the app — including the OWNER — can edit or delete afterward.
-- Every table is designed so the next stage (comments, reactions, a business directory, trending sorts) can be added as a new table or column, not a redesign.
+- Every table is designed so the next stage (a business directory, trending sorts) can be added as a new table or column, not a redesign.
 
 ### 24.2 User role hierarchy
 
 - `role_master` — lookup of role types: `OWNER`, `ADMIN`, `BUSINESS`, `MEMBER`, each with an authority `rank`.
 - `OWNER` (rank 40) and `ADMIN` (rank 30) form the real moderation ladder. `BUSINESS` and `MEMBER` intentionally share the same rank (10) — `BUSINESS` is a parallel feature-lane (future business/institute pages), not higher authority over other users.
-- `user_roles` — one row per signed-up user, linked by Supabase auth UUID, never by email. A database trigger auto-assigns every new signup the `MEMBER` role. A second trigger guarantees only one `OWNER` can ever exist, enforced at the database level.
+- `user_roles` — one row per signed-up user, linked by Supabase auth UUID, never by email. A database trigger auto-assigns every new signup the `MEMBER` role. A second trigger guarantees only one `OWNER` can ever exist.
 - The owner's own account has been backfilled as the sole `OWNER`.
-- A "verified" flag for business-authored content will live on individual posts, decided at post-creation time — it is not stored on the user's role.
+- A "verified" flag for business-authored content lives on individual posts, decided at post-creation time — it is not stored on the user's role.
 
 ### 24.3 Config-driven behaviour
 
-- `app_config` — a generic settings table (config_key / config_value / data_type / scope) so behaviour such as "can an ADMIN grant the BUSINESS role" is controlled by a data row rather than hardcoded logic.
+- `app_config` — a generic settings table (config_key / config_value / data_type / scope) so behaviour is controlled by a data row rather than hardcoded logic.
+- Seeded so far: `grant_business_role_by_admin` (global, `true`), and `is_auto_publish_allowed` (one row per role, all currently `true`) — the latter decides whether a new post from a given role publishes immediately or sits `pending`, computed server-side at post-creation time.
 
 ### 24.4 Audit trail
 
@@ -622,18 +624,34 @@ The database foundation for "Supabase-backed data and user-generated content" ab
 ### 24.5 Content taxonomy (seeded)
 
 - `categories` — the 3 main buckets, matching the homepage's three concept cards: ಏನಾಗುತ್ತಿದೆ (What's Happening), ನಮಗೆ ಮುಖ್ಯವಾದುದು (What Matters to Us), ಕನಸುಗಳು (Dreams).
-- `subcategories` — 14 seeded rows split across the 3 categories (e.g. Local News / People / Places / Events / Culture & Traditions under What's Happening). Current wording is a first draft; a dedicated master-data edit page is planned rather than editing these by hand indefinitely.
+- `subcategories` — 14 seeded rows split across the 3 categories. Current wording is a first draft; a dedicated master-data edit page is planned rather than editing these by hand indefinitely.
 - `tags` — 14 seeded cross-cutting labels (Politics, Sports, Travel, Food, Entertainment, Business, Education, Health, Environment, Agriculture, Technology, Jobs, Women, Youth), independent of category, meant to keep growing over time.
 
-### 24.6 Not yet built
+### 24.6 Posts and satellites (built)
 
-- `posts`, `post_tags`, `comments`, `reactions` are designed on paper but not yet created in Supabase.
-- No post-creation or post-viewing page exists in this repository yet.
-- A business directory / yellow-pages feature is a future idea, parked until posts themselves are live.
+- `posts` — the core content table. `status` (draft/pending/published/rejected/hidden) is computed server-side from the author's role and the `is_auto_publish_allowed` config, ignoring whatever the client sends. `is_featured`/`is_promoted` can only be set true by ADMIN/OWNER. `is_verified` can only be true for a BUSINESS-role author, or by ADMIN/OWNER override. `author_id`/`created_by`/`updated_by` are forced server-side and frozen after creation. No delete — moderation is a status change.
+- `post_tags` — join table linking posts to tags; managed by the post's own author or an admin.
+- `comments` — `parent_comment_id` exists for future threaded replies but is unused so far. An author can self-hide their own comment; any other status change is admin-only.
+- `reactions` — one reaction per user per post, exclusive (like OR dislike, not both). Unlike every other table here, real deletion is allowed — unliking is a normal, revocable action, not something needing a permanent trace.
 
-### 24.7 Do not
+### 24.7 Technical review findings (this session)
 
-- Do not assume `posts`, `comments` or `reactions` tables exist yet — they don't, as of this update.
+- Verified directly against the live database: all 11 tables have RLS enabled, correct primary/foreign keys, and every internal-only function has its direct API access revoked.
+- **Fixed:** several RLS policies were re-evaluating `auth.uid()`/`current_user_rank()` on every row instead of once per query; rewritten using Postgres/Supabase's recommended `(select ...)` pattern. No behaviour changed, only planning efficiency.
+- **Fixed:** added missing indexes on several foreign keys that had none (`comments.author_id`, `posts.created_by`/`updated_by`/`subcategory_id`, `reactions.user_id`, `user_roles.role_id`/`assigned_by`).
+- **Open, needs a product decision (not fixed):** `posts`/`comments`/`reactions` foreign keys to `auth.users` currently `RESTRICT` deletion — **a Supabase account cannot be deleted at all once it has posted, commented, or reacted.** The owner is planning this separately (e.g. reassignment/anonymization on account deletion) as a product decision rather than a schema patch made ad hoc here.
+- **Noted, accepted as-is (low real-world risk):** the single-OWNER rule uses a count-based trigger check, which has a theoretical concurrent-transaction race condition. Given this role is only ever granted manually by the owner (not a public signup race), this is accepted rather than hardened further.
+- **Noted:** the real "backup owner" path is the owner's own access to the Supabase project itself (outside the app), which always bypasses RLS — a separate continuity plan (who else can access the Supabase project if needed) is being considered by the owner as a product matter, not a schema change.
+
+### 24.8 Error / response handling standard
+
+- Supabase's API layer (PostgREST) returns standard JSON for every request: success returns the affected row(s); failure returns `message`, `details`, `hint`, and a Postgres SQLSTATE `code` (e.g. `23505` for a duplicate key; an RLS-denied write is rejected automatically with no custom code needed).
+- Custom validation (e.g. "author_id cannot be changed") is raised via `RAISE EXCEPTION` inside trigger functions and reaches the client the same way, under the generic custom-exception code `P0001`. This is standard practice and sufficient for now. If the UI later needs to branch its behaviour differently per error type, distinct SQLSTATEs can be introduced at that point — not needed today.
+- Postgres's `NOTICE`/`WARNING` levels exist but are **not** forwarded to API clients — only `EXCEPTION` reaches the front end as an error; notices only go to server logs. There is currently no "this saved, but here's a warning" response from a plain table write. If that's ever genuinely needed (a warning that depends on server-side knowledge the client doesn't have — not client-side form validation, which needs no round-trip at all), the pattern is to route that specific write through an RPC function returning a custom shape like `{ data, warnings }` instead of a plain table insert. Not used anywhere in this schema yet, since no current write path needs it.
+
+### 24.9 Do not
+
 - Do not create new role, category, subcategory or tag values ad hoc in code; extend the corresponding Supabase table instead.
 - Do not treat `app_config`'s `main_categories` entry as a live source of truth — it is a historical record of the original seed; `categories` itself is authoritative once seeded.
 - Do not design a posting UI that allows anonymous writes; sign-in is a hard requirement enforced at the database level.
+- Do not assume a user's Supabase account can be deleted while they have posts/comments/reactions — it currently cannot, by design of the foreign keys, pending the owner's product decision on account-deletion handling.

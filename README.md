@@ -1,6 +1,6 @@
 # OneHaveri.in — Project Rules & Development Standards
 
-> **Last updated:** 2026-09-01
+> **Last updated:** 2026-09-02
 >
 > This README is the working contract for AI-assisted development of OneHaveri.in. It records the project's purpose, architectural decisions, current component structure, responsive-design direction, and important decisions made during development so future sessions can continue without losing context.
 
@@ -586,3 +586,54 @@ The following are possibilities rather than commitments:
 - Supabase-backed data and user-generated content.
 
 Future sessions must distinguish between **implemented functionality**, **in-progress work**, and **future ideas**. Never describe a planned feature as implemented merely because it appears in this README.
+
+The database foundation for "Supabase-backed data and user-generated content" above has begun — see Section 24. This is database-level work only; no user-facing posting or browsing feature exists in this repository yet.
+
+---
+
+## 24. Supabase content-platform foundation (database layer)
+
+**Status: implemented at the database level only.** No HTML, CSS or JavaScript exists yet for creating or browsing posts. This section documents the Supabase schema and access-control foundation built ahead of that UI, in the `onehaveri` Supabase project, so future sessions understand what already exists before proposing a conflicting design.
+
+### 24.1 Design principles
+
+- No posting or data creation/change is ever allowed without the user being signed in — no anonymous writes anywhere in this schema.
+- Supabase (tables, RLS, functions) is the actual source of control. The eventual UI is a tool to read and write data, not where permissions live.
+- Behaviour toggles are stored as configuration data (`app_config`) rather than hardcoded, where practical.
+- Every meaningful write is recorded in an append-only audit trail (`audit_log`) that nothing in the app — including the OWNER — can edit or delete afterward.
+- Every table is designed so the next stage (comments, reactions, a business directory, trending sorts) can be added as a new table or column, not a redesign.
+
+### 24.2 User role hierarchy
+
+- `role_master` — lookup of role types: `OWNER`, `ADMIN`, `BUSINESS`, `MEMBER`, each with an authority `rank`.
+- `OWNER` (rank 40) and `ADMIN` (rank 30) form the real moderation ladder. `BUSINESS` and `MEMBER` intentionally share the same rank (10) — `BUSINESS` is a parallel feature-lane (future business/institute pages), not higher authority over other users.
+- `user_roles` — one row per signed-up user, linked by Supabase auth UUID, never by email. A database trigger auto-assigns every new signup the `MEMBER` role. A second trigger guarantees only one `OWNER` can ever exist, enforced at the database level.
+- The owner's own account has been backfilled as the sole `OWNER`.
+- A "verified" flag for business-authored content will live on individual posts, decided at post-creation time — it is not stored on the user's role.
+
+### 24.3 Config-driven behaviour
+
+- `app_config` — a generic settings table (config_key / config_value / data_type / scope) so behaviour such as "can an ADMIN grant the BUSINESS role" is controlled by a data row rather than hardcoded logic.
+
+### 24.4 Audit trail
+
+- `audit_log` — a single, append-only, row-level log capturing who did what, when, and (where captured server-side) from where. Not editable or deletable through the app by anyone, including the OWNER.
+
+### 24.5 Content taxonomy (seeded)
+
+- `categories` — the 3 main buckets, matching the homepage's three concept cards: ಏನಾಗುತ್ತಿದೆ (What's Happening), ನಮಗೆ ಮುಖ್ಯವಾದುದು (What Matters to Us), ಕನಸುಗಳು (Dreams).
+- `subcategories` — 14 seeded rows split across the 3 categories (e.g. Local News / People / Places / Events / Culture & Traditions under What's Happening). Current wording is a first draft; a dedicated master-data edit page is planned rather than editing these by hand indefinitely.
+- `tags` — 14 seeded cross-cutting labels (Politics, Sports, Travel, Food, Entertainment, Business, Education, Health, Environment, Agriculture, Technology, Jobs, Women, Youth), independent of category, meant to keep growing over time.
+
+### 24.6 Not yet built
+
+- `posts`, `post_tags`, `comments`, `reactions` are designed on paper but not yet created in Supabase.
+- No post-creation or post-viewing page exists in this repository yet.
+- A business directory / yellow-pages feature is a future idea, parked until posts themselves are live.
+
+### 24.7 Do not
+
+- Do not assume `posts`, `comments` or `reactions` tables exist yet — they don't, as of this update.
+- Do not create new role, category, subcategory or tag values ad hoc in code; extend the corresponding Supabase table instead.
+- Do not treat `app_config`'s `main_categories` entry as a live source of truth — it is a historical record of the original seed; `categories` itself is authoritative once seeded.
+- Do not design a posting UI that allows anonymous writes; sign-in is a hard requirement enforced at the database level.

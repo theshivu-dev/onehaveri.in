@@ -8,9 +8,9 @@
   width:100%;margin:0;padding:12px 13px 11px;
   display:flex;flex-direction:column;gap:7px;
   border-radius:var(--radius-card);box-sizing:border-box;
-  background:linear-gradient(145deg,#FFF8E9,#FFFCF5);
-  border:1px solid rgba(199,127,22,.22);
-  box-shadow:0 5px 16px rgba(59,42,30,.055);
+  background:linear-gradient(145deg,#F3E2C4,#F8F1E3);
+  border:1px solid rgba(185,132,41,.22);
+  box-shadow:0 5px 16px rgba(46,33,23,.055);
 }
 
 .partner-card-header{
@@ -38,16 +38,16 @@
 /* Small contextual label, contained within the same partner card. */
 .partner-badge{
   flex:0 0 auto;max-width:45%;padding:4px 8px;
-  border:1px solid rgba(176,69,43,.18);border-radius:999px;
-  background:rgba(176,69,43,.055);color:var(--terracotta);
-  font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  border:1px solid rgba(156,74,46,.18);border-radius:999px;
+  background:rgba(156,74,46,.055);color:var(--terracotta);
+  font-family:var(--font-kannada);
   font-size:8.5px;line-height:1.15;font-weight:700;text-align:center;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
 .partner-card-body{min-width:0;padding-top:1px;}
 .partner-title{
-  margin:0;font-family:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  margin:0;font-family:var(--font-kannada);
   font-size:clamp(12.5px,3.6vw,14px);line-height:1.25;font-weight:700;color:var(--ink);
 }
 .partner-description{
@@ -56,8 +56,8 @@
 }
 
 .partner-1-nammashale{
-  background:linear-gradient(145deg,#FFF8E9,#FFFCF5);
-  border-color:rgba(199,127,22,.22);
+  background:linear-gradient(145deg,#F3E2C4,#F8F1E3);
+  border-color:rgba(185,132,41,.22);
 }
 .partner-1-nammashale .partner-title{color:var(--ink);}
 .partner-1-nammashale .partner-description{color:var(--muted);}

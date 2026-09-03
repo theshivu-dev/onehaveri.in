@@ -19,22 +19,44 @@
    ================================================================ */
 
 :root{
-  /* OneHaveri page palette shared by page-level and component styles. */
-  --cream:#FBF1DE;
-  --cream-deep:#F3E3C4;
-  --card:#FFFCF5;
-  --card-warm:#FEF6E4;
-  --gold:#C77F16;
-  --gold-soft:#E7A525;
-  --terracotta:#B0452B;
-  --ink:#3B2A1E;
-  --muted:#6D5946;
-  --olive:#5F7345;
-  --line:rgba(59,42,30,.10);
+  /* OneHaveri page palette shared by page-level and component styles.
+     Direction: "Kempu Mannu / Red Soil & Fields" -- Haveri's laterite
+     soil and monsoon-green farmland, on a manila-parchment base. */
+  --cream:#F2E8D8;
+  --cream-deep:#EBE0CC;
+  --card:#F8F1E3;
+  --card-warm:#F3E2C4;
+  --gold:#B98429;
+  --gold-soft:#D9A13F;
+  --terracotta:#9C4A2E;
+  --terracotta-deep:#7C3B22;
+  --terracotta-light:#B36A45;
+  --ink:#2E2117;
+  --muted:#5B4A38;
+  --olive:#3F5B3E;
+  --line:rgba(46,33,23,.10);
+
+  /* Typography: Noto Serif Kannada for Kannada copy (loaded as a
+     webfont -- see the Google Fonts link in each page's <head>), Lora
+     for English display/editorial voice, Work Sans for small UI text. */
+  --font-kannada:"Noto Serif Kannada","Nirmala UI","Tunga",serif;
+  --font-display:"Lora",Georgia,"Iowan Old Style","Times New Roman",serif;
+  --font-ui:"Work Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+
+  /* Fluid type scale -- these ranges genuinely keep growing through
+     tablet and desktop widths, unlike a scale that maxes out at phone
+     sizes. Local page styles should reference these instead of
+     hand-rolling their own one-off clamp() ranges. */
+  --fs-hero:clamp(24px,4.2vw,40px);
+  --fs-tagline:clamp(15px,2.1vw,19px);
+  --fs-intro:clamp(13px,1.6vw,16px);
+  --fs-card-title:clamp(15px,1.8vw,18px);
+  --fs-card-body:clamp(12px,1.3vw,14px);
+  --fs-eyebrow:clamp(11px,1vw,12.5px);
 
   --radius-card:16px;
   --radius-pill:999px;
-  --shadow-card:0 6px 18px rgba(59,42,30,.06);
+  --shadow-card:0 6px 18px rgba(46,33,23,.06);
 
   /* Responsive page geometry. This is a desktop-capable canvas, not a
      phone-sized wrapper. The max is a readability boundary only; the
@@ -61,7 +83,7 @@ body{
 }
 
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  font-family:var(--font-ui);
   color:var(--ink);
   -webkit-font-smoothing:antialiased;
 }
@@ -111,8 +133,8 @@ body{
   width:110%;
   height:62%;
   background:
-    radial-gradient(58% 60% at 50% 0%,rgba(231,165,37,.55),transparent 68%),
-    radial-gradient(85% 50% at 50% 0%,rgba(245,201,110,.30),transparent 75%);
+    radial-gradient(58% 60% at 50% 0%,rgba(185,132,41,.45),transparent 68%),
+    radial-gradient(85% 50% at 50% 0%,rgba(224,188,120,.28),transparent 75%);
   pointer-events:none;
 }
 

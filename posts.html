@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F2E8D8">
+<title>ಪೋಸ್ಟ್‌ಗಳು — OneHaveri</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Kannada:wght@500;600;700&family=Lora:ital,wght@0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="main_page.css?v=1">
+
+<style>
+/* ==================================================================
+   posts.html -- page-specific styles only. Shared tokens/layout come
+   from main_page.css (which also pulls in bottom_nav.css/partners.css).
+   Kept local for now, same as home_ip.html's own pattern -- extract
+   later only if this genuinely needs reuse elsewhere.
+   ------------------------------------------------------------------
+   Data-fetch + rendering logic lives entirely in posts.js, kept
+   separate on purpose so this page's structure and that page's
+   behaviour can each be touched independently.
+   ================================================================== */
+
+.posts-page{max-width:640px;margin:0 auto;padding:16px 14px 110px}
+
+.posts-header{position:sticky;top:0;z-index:5;background:var(--cream);padding-bottom:10px;margin-bottom:4px}
+.brand-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.brand-link{font-family:var(--font-kannada);font-weight:700;font-size:16px;color:var(--terracotta);text-decoration:none}
+.brand-link span{color:var(--ink)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.tab{flex:0 0 auto;border:none;padding:6px 13px;border-radius:999px;font-family:var(--font-kannada);font-size:12.5px;font-weight:600;background:var(--card);color:var(--muted);white-space:nowrap;cursor:pointer}
+.tab.active{background:var(--terracotta);color:#fff}
+
+.own-pending{background:var(--card-warm);border:1px dashed var(--gold);border-radius:var(--radius-card);padding:10px 12px;margin-bottom:14px}
+.own-pending-h{font-family:var(--font-kannada);font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.own-pending .tile{background:var(--card);margin-bottom:0}
+
+.state-msg{text-align:center;padding:28px 12px;color:var(--muted);font-size:13px;line-height:1.6}
+.state-msg .retry-btn{margin-top:10px;border:1px solid var(--terracotta);background:transparent;color:var(--terracotta);padding:6px 16px;border-radius:999px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer}
+
+.tile{display:block;text-decoration:none;background:var(--card);border-radius:12px;padding:12px 13px;margin-bottom:9px;border-left:3px solid var(--ac,var(--terracotta))}
+.tile h3{font-family:var(--font-kannada);font-size:14.5px;line-height:1.35;color:var(--ink);font-weight:600;margin-bottom:5px}
+.tile p{font-size:11.5px;color:var(--muted);line-height:1.45;margin-bottom:6px}
+.tile .tile-date{font-size:10px;color:var(--muted);font-family:var(--font-ui)}
+
+.load-more{display:block;margin:14px auto 0;border:1px solid var(--line);background:var(--card);color:var(--terracotta);padding:8px 20px;border-radius:999px;font-family:var(--font-kannada);font-size:12.5px;font-weight:600;cursor:pointer}
+.load-more[hidden]{display:none}
+.load-more[disabled]{opacity:.55;cursor:default}
+
+.foot-links{text-align:center;padding:20px 10px 8px;font-size:9.5px;color:var(--muted);border-top:1px dashed var(--line);margin-top:18px}
+.foot-links a{color:var(--terracotta);font-weight:600;margin:0 4px;text-decoration:none}
+</style>
+</head>
+<body>
+
+<main class="page posts-page">
+
+  <header class="posts-header">
+    <div class="brand-row">
+      <a class="brand-link" href="index.html">ಒಂದು<span>ಹಾವೇರಿ</span></a>
+    </div>
+    <nav class="tabs" id="catTabs" aria-label="Categories">
+      <button class="tab active" data-category="">ಎಲ್ಲಾ</button>
+      <button class="tab" data-category="whats-happening">ಏನಾಗುತ್ತಿದೆ</button>
+      <button class="tab" data-category="what-matters-to-us">ನಮಗೆ ಮುಖ್ಯವಾದುದು</button>
+      <button class="tab" data-category="dreams">ಕನಸುಗಳು</button>
+    </nav>
+  </header>
+
+  <section id="ownPendingSection" class="own-pending" hidden>
+    <div class="own-pending-h">ನಿಮ್ಮ ಪರಿಶೀಲನೆಯಲ್ಲಿರುವ ಪೋಸ್ಟ್</div>
+    <div id="ownPendingList"></div>
+  </section>
+
+  <section>
+    <div id="postsState" class="state-msg" hidden></div>
+    <div id="postsList"></div>
+    <button id="loadMoreBtn" class="load-more" hidden>ಇನ್ನಷ್ಟು ▾</button>
+  </section>
+
+  <div class="foot-links">
+    <a href="index.html#partners">About</a>·<a href="mailto:contact@onehaveri.in">Contact</a>
+    <div style="margin-top:6px;font-style:italic">A work in progress, for Haveri.</div>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="bottom_nav.js?v=9"></script>
+<script src="posts.js?v=1"></script>
+</body>
+</html>

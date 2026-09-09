@@ -1,6 +1,6 @@
 # OneHaveri.in — Project Rules & Development Standards
 
-> **Last updated:** 2026-09-02
+> **Last updated:** 2026-09-09
 >
 > This README is the working contract for AI-assisted development of OneHaveri.in. It records the project's purpose, architectural decisions, current component structure, responsive-design direction, and important decisions made during development so future sessions can continue without losing context.
 
@@ -319,32 +319,33 @@ The partner card should visually communicate that all of its content belongs to 
 
 ## 11. OneHaveri visual language
 
-The established homepage visual direction is warm, restrained and community-oriented.
+**Status: this section describes the current live direction, adopted 2026-09-04, replacing the original cream/terracotta/gold palette described in earlier checkpoints of this README.**
 
-Current design tokens include:
+The established visual direction is **"Kempu Mannu / Red Soil & Fields"** — grounded in Haveri's actual laterite red soil and monsoon-green farmland, on a manila-parchment base, deliberately chosen to move away from a generic warm-cream-and-terracotta look that reads as templated.
 
-- Warm cream background.
-- Cream/deep-cream card surfaces.
-- Gold/gold-soft accents.
-- Terracotta accent.
-- Dark brown/ink text.
-- Muted brown secondary text.
-- Olive accent where appropriate.
-- Soft borders.
-- Rounded cards.
-- Subtle shadows rather than heavy UI effects.
+Current design tokens (defined centrally in `main_page.css`'s `:root`, consumed by every page and shared component):
 
-The design should feel human, mature and local rather than like a generic dashboard or AI-generated template.
+- `--cream` / `--cream-deep` — manila parchment base tones.
+- `--card` / `--card-warm` — card surface tones.
+- `--terracotta` (+ `--terracotta-deep` / `--terracotta-light` for gradient depth) — red soil accent.
+- `--olive` — field green; promoted to a genuine second accent colour, not just a minor icon tint.
+- `--gold` / `--gold-soft` — harvest gold accent.
+- `--ink` / `--muted` — text tones.
+
+Do not silently revert to the older cream/terracotta hex values from earlier README checkpoints; the token names stayed the same, only their values changed, specifically so downstream files (`bottom_nav.css`, `partners.css`) inherit the new palette automatically without needing their own edits.
 
 ### Typography
 
-Kannada content should remain readable and natural. Existing Kannada typography uses appropriate system/Kannada serif fallbacks such as:
+- `Noto Serif Kannada` for Kannada copy — **now actually loaded as a webfont** via a Google Fonts `<link>` in each page's `<head>`. (Earlier checkpoints referenced this font in CSS without ever loading it, silently falling back to whatever serif a given device happened to have installed.)
+- `Lora` — English display/editorial voice (headlines, taglines), replacing a generic Georgia-italic treatment.
+- `Work Sans` — small UI text, labels, buttons.
+- A shared, genuinely fluid type-scale (`--fs-hero`, `--fs-tagline`, `--fs-intro`, `--fs-card-title`, `--fs-card-body`, `--fs-eyebrow`) also lives in `main_page.css`'s `:root`. Earlier local page styles had hardcoded `clamp()` ranges that maxed out at phone-appropriate sizes and never grew on wider screens — this caused the homepage to look sparse and undersized on desktop/laptop. New or extended pages should reference these shared tokens rather than inventing their own one-off ranges.
 
-- `Noto Serif Kannada`
-- `Nirmala UI`
-- `Tunga`
+### Design principles specifically adopted to avoid a generic/templated look
 
-Do not arbitrarily replace established typography.
+- Avoid a small tracked-out ALL-CAPS "eyebrow" label sitting above a heading — a very common generic-template signature. Status/label text should be a quieter pill instead.
+- Avoid making a row of cards (e.g. the three homepage concept cards) identical in every respect (same radius, same shadow, same size) with only an icon differing — add at least a colour-accent or structural distinction per item.
+- A page section that changes tone/contrast (e.g. the wave-divider between the homepage hero and the three cards) is preferred over a long flat single-tone page, to give real visual rhythm on wider screens.
 
 ### Icons
 
@@ -416,6 +417,8 @@ At the current checkpoint the repository includes:
 onehaveri.in/
 ├── index.html
 ├── home_ip.html
+├── posts.html
+├── posts.js
 ├── main_page.css
 ├── bottom_nav.css
 ├── bottom_nav.js
@@ -423,6 +426,8 @@ onehaveri.in/
 ├── partners.js
 └── test.html
 ```
+
+`posts.html` / `posts.js` are the first page built on top of the Supabase content-platform schema (Section 24) — see Section 25 for what they do and how they're structured. `post.html` (the individual reading page) is designed and settled in discussion (Section 26) but **not yet built**.
 
 The repository is intentionally lightweight and does not currently use a frontend framework/build pipeline.
 
@@ -560,6 +565,7 @@ Do not:
 - Rebrand a partner's entire card in the partner's colours when only the wordmark is intended to borrow that treatment.
 - Rewrite existing Kannada copy without request.
 - Assume that a visually attractive change is safe without checking the actual shared component.
+- Paste file contents into the wrong filename when manually applying AI-proposed changes into GitHub's web editor. This actually happened once (CSS content ended up pasted into `bottom_nav.js`, silently breaking the entire nav/account widget since a browser cannot execute CSS as JavaScript). Double-check the filename/tab showing before pasting, especially when updating several files in one sitting.
 
 ---
 
@@ -587,7 +593,7 @@ The following are possibilities rather than commitments:
 
 Future sessions must distinguish between **implemented functionality**, **in-progress work**, and **future ideas**. Never describe a planned feature as implemented merely because it appears in this README.
 
-The database foundation for "Supabase-backed data and user-generated content" above is now **schema-complete and reviewed** — see Section 24. Front-end work (post-creation and post-viewing pages) is the next phase; no such UI exists in this repository yet.
+The database foundation for "Supabase-backed data and user-generated content" above is **schema-complete and reviewed** — see Section 24. Front-end work has now actually begun: `posts.html` (the posts list/feed) is built — see Section 25. `post.html` (the individual reading page) is fully designed in discussion but not yet built — see Section 26.
 
 ---
 
@@ -655,3 +661,67 @@ The database foundation for "Supabase-backed data and user-generated content" ab
 - Do not treat `app_config`'s `main_categories` entry as a live source of truth — it is a historical record of the original seed; `categories` itself is authoritative once seeded.
 - Do not design a posting UI that allows anonymous writes; sign-in is a hard requirement enforced at the database level.
 - Do not assume a user's Supabase account can be deleted while they have posts/comments/reactions — it currently cannot, by design of the foreign keys, pending the owner's product decision on account-deletion handling.
+
+### 24.10 Schema additions made after the original technical review (2026-09-04 to 2026-09-08)
+
+- **`user_roles.status`** (`pending` / `active` / `suspended`) added. Default per-role status is config-driven via `app_config`'s `default_account_status` (currently `active` for all 4 roles, same "open now, tighten later" posture as the auto-publish config). `current_user_rank()` was extended to return `0` for any non-active status — since nearly every RLS policy in the schema already calls this one function, suspension cascades everywhere automatically without touching other policies. Deliberately scoped to only gate *creating* new posts/comments/reactions/tags; editing or removing existing content stays ungated for now.
+- **`posts.author_display_name`** added. Derived server-side from `auth.users` metadata (`full_name` → `name` → email-prefix → `"Member"` fallback) at post-creation time, frozen afterward like `created_at`, never trusted from the client. This means the posts list/reading pages never need a separate profile lookup or join to show who wrote something.
+- **Pagination index corrected:** `idx_posts_status_published` was `(status, published_at desc)`; rebuilt as `(status, published_at desc, id desc)` to add the `id` tiebreaker that correct cursor/keyset pagination requires (without it, two posts sharing an identical `published_at` could be skipped or duplicated across pages).
+- A production incident was found and fixed during this period: `bottom_nav.js` had been accidentally overwritten with CSS content when changes were manually applied to GitHub, breaking the nav/account widget entirely. Fixed by restoring the untouched, syntax-verified JavaScript. See Section 21 for the process note this produced.
+
+---
+
+## 25. `posts.html` — posts list / feed (built)
+
+**Status: built and structurally verified. Not yet linked from the homepage or bottom navigation** — reachable only by its own URL for now.
+
+### 25.1 Architecture
+
+- `posts.html` — markup and page-specific styles only (following the same "local styles until something earns extraction" approach as `home_ip.html`).
+- `posts.js` — all data-fetching and rendering, deliberately kept in its own file and internally organised as: CONFIG → DATA LAYER → UTIL → RENDER LAYER → STATE → INIT/EVENTS. The data layer returns plain post objects and knows nothing about the DOM; the render layer takes plain data and knows nothing about Supabase. This split is what makes extending the page later (e.g. adding tags to a tile) a small, localised change — confirmed in practice while designing the tag-extension example: it touches one line in a `select()` and a few lines in the one rendering function, nothing else.
+- Uses its own Supabase client instance (`sbPosts`), configured with constants named distinctly from `bottom_nav.js`'s own `SUPABASE_URL`/`SUPABASE_KEY` — both files load as plain scripts sharing one global scope, so reusing those exact names would crash with a redeclaration error. (This was caught and fixed during the build, not a hypothetical.)
+
+### 25.2 Settled v1 behaviour
+
+- Lands on **ಎಲ್ಲಾ** (all categories) by default; a homepage category card (once linked) would pre-filter.
+- Category filtering is **client-side state only for v1** — no URL/query-string reflection. Deferred, not rejected; revisit if a shareable filtered view becomes a real need.
+- An empty category **falls back to recent-across-all** rather than showing a dead filtered screen; a genuinely empty database shows an honest "nothing here yet" message.
+- Tiles show **only** title, a short excerpt, and a relative posted date — deliberately minimal for v1. No tags, no like/comment counts, no featured styling on tiles yet (all schema-ready, UI-deferred).
+- **Excerpt truncation** is space/whitespace-aware, not raw character-slicing — extends to the next word break past ~20 characters, with a hard length ceiling as a safety net, and trims trailing punctuation before the "…". This specifically avoids breaking Kannada grapheme clusters (a single visual Kannada letter can be built from multiple underlying character codes; cutting at an arbitrary character position can slice through one). Built as one function (`buildExcerpt`), intended to be reused by the future snapshot-image share feature so the two never drift out of sync.
+- **Pagination is cursor/keyset-based** (an explicit "Load more" button, not infinite scroll — chosen for accessibility, footer-reachability, and because long-form community content doesn't benefit from an endless-scroll pattern the way short social content does), matching the corrected index in Section 24.10.
+- **Errors stay on the page** — a plain message with a retry action, never an automatic redirect. This was extended during the build to also cover the case where the Supabase library itself fails to load (not just query failures), so every failure mode gets the same honest treatment rather than a silent blank page.
+- A signed-in author's own **non-published posts** appear in a small, separately-labelled section (not merged into the main feed), since mixing them into the cursor-paginated feed would break the pagination math (a draft/pending post has no `published_at` yet).
+- The "+ write" button and a dedicated "my posts" page are both explicitly out of scope for v1 (no `write.html` exists yet).
+
+### 25.3 Verified, not just assumed
+
+Rendered and tested locally (structure, styling, and failure-path behaviour) before handoff — a real redeclaration bug and a real CSS specificity bug (`display:block` on `.load-more` was overriding the browser's own `hidden`-attribute behaviour) were both found this way and fixed, not left for the owner to discover live. The actual live Supabase data fetch still needs confirming against the real deployed site, since that requires real network access this environment doesn't have.
+
+---
+
+## 26. `post.html` — individual post reading page (designed, not yet built)
+
+**Status: fully settled in discussion. No file exists yet.**
+
+- A separate real page (`post.html?id=...`), not a same-page panel swap — chosen specifically because a shared link must work for someone who has never opened OneHaveri before; a real URL gets correct back/refresh/bookmark behaviour for free, and matches the plain-static-files hosting already in use.
+- Internally modular by design: the page is a set of named regions (main content, comments, related-posts, etc.), each self-contained, so a future left/right panel can be added as a new region without touching existing ones — same self-containment principle already proven by `bottom_nav.js`/`partners.js`.
+- **Author-edit icon:** shown when `post.author_id` matches the signed-in user's own id — a free, local comparison, no extra query.
+- **Admin/moderation icons:** based on the signed-in user's own role, fetched once per session (not once per post) and cached — reuses the same role lookup that will gate other future UI decisions too.
+- **v1 feature staging**, each shipping as a visible-but-inert shell now so its layout doesn't need to be redesigned later:
+  - **Like button** — visible, disabled, wired later.
+  - **Comments** — read-only in v1 (existing comments display; no add-comment box yet).
+  - **Related posts** — an empty, clearly-labelled placeholder section with a code comment marking where the future fetch/render logic goes.
+  - **Share** — plain "copy link" only in v1; the snapshot-image card is a deliberate fast-follow, not v1.
+- **Not-found / no-access:** a plain "post not found" message, same back-to-posts link as everything else — deliberately not distinguishing "doesn't exist" from "exists but you can't see it," to avoid leaking that distinction.
+- **Back navigation:** an explicit, always-present on-page "back to all posts" link — relying on the browser's native back button alone doesn't work for someone arriving via a shared link, since there's nothing in their browser history to go back to.
+
+### Snapshot-image share feature (designed, not built, not scheduled for v1 of `post.html`)
+
+- Deliberately **truncation, not summarisation** — a fixed-size card (title + ~25-30 word excerpt + author + "read the full story" line) works identically regardless of how long the underlying post is, the same way a Twitter/news-app share card never shows the full article. Reuses `posts.js`'s `buildExcerpt` utility rather than a second, separately-maintained truncation routine.
+- Real AI summarisation was considered and deferred: not free (a real per-request LLM cost), and the sane way to keep that cost flat regardless of virality would be computing it once at publish time and caching it, not on every share click — not needed unless truncated excerpts start feeling clumsy in practice.
+
+### Other future ideas explored and deliberately not pursued for now
+
+- **Read-it-aloud (TTS):** the browser API is free and universal; feasible as a same-language read-aloud feature.
+- **Translated audio (EN↔KN):** investigated and found **not actually free/simple on mobile** — Chrome/Edge's on-device Translator API explicitly does not work on mobile devices, which rules it out for a mobile-first audience regardless of Kannada language support.
+- **Insta-story-style video export:** the "how does the client know when a server-side job is done" half is solvable cheaply with a small jobs table plus Supabase Realtime (already available, not yet used anywhere). The actual video-rendering compute is not something Cloudflare Workers/Pages Functions can do well (tight CPU-time limits, no real video-codec tooling) — would need real backend infrastructure. Parked as a "maybe later, once there's budget/tooling" idea, not a near-term feature.

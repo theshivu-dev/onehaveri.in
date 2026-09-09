@@ -162,7 +162,13 @@ function hideState() {
 }
 
 /* ---------------- STATE ---------------- */
-let currentCategory = "";
+// A homepage category card links here as posts.html?category=<slug> -- this
+// is a one-way *entry* parameter, read once on load. It is deliberately not
+// the same thing as reflecting in-page tab clicks into the URL (which we
+// decided against for v1) -- this only decides where the page starts.
+const VALID_CATEGORIES = ["whats-happening", "what-matters-to-us", "dreams"];
+const incomingCategory = new URLSearchParams(window.location.search).get("category");
+let currentCategory = VALID_CATEGORIES.includes(incomingCategory) ? incomingCategory : "";
 let currentCursor = null;
 let currentHasMore = false;
 
@@ -259,6 +265,15 @@ document.getElementById("catTabs").addEventListener("click", (e) => {
 });
 
 document.getElementById("loadMoreBtn").addEventListener("click", loadMore);
+
+// Reflect an incoming ?category= in the tab UI before the first fetch,
+// so the matching tab shows active immediately rather than defaulting
+// to "ಎಲ್ಲಾ" and then silently filtering underneath it.
+if (currentCategory) {
+  document.querySelectorAll(".tab").forEach(t => {
+    t.classList.toggle("active", t.dataset.category === currentCategory);
+  });
+}
 
 loadFirstPage();
 loadOwnPending();

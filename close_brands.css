@@ -75,7 +75,7 @@
 /* Increased Renowatt Logo Size */
 .renowatt-logo {
     max-width: 90%;
-    max-height: 75px; /* Scaled up for better visibility */
+    max-height: 90%; /* Scaled up for better visibility */
     height: auto;
     object-fit: contain;
     margin-bottom: 6px;

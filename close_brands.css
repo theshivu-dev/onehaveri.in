@@ -12,137 +12,121 @@
      <div data-close-brands></div>
    close_brands.js finds it and builds everything below into it.
    ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Young+Serif&display=swap');
 
-[data-close-brands]{
-  width:100%;
-  margin:0;
-  padding:0;
-  position:relative;
-  z-index:1;
-}
-
-/* ----------------------------------------------------------------
-   OUTER ZONE
-   A distinct identification background (olive-tinted) so this
-   reads as its own area, deliberately different from the
-   tan/gold NammaShale partner card above it.
-   ---------------------------------------------------------------- */
-.valaya-zone{
-  width:100%;
-  box-sizing:border-box;
-  padding:16px 14px 18px;
-  border-radius:var(--radius-card);
-  background:linear-gradient(150deg,rgba(63,91,62,.10),rgba(63,91,62,.03));
-  border:1px solid rgba(63,91,62,.22);
+/* Main "ನಮ್ಮ ವಲಯ" Outer Container */
+.close-brands-container {
+    background-color: #3b4231; /* Olive/Dark-tinted identification background color */
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    box-sizing: border-box;
 }
 
-.valaya-heading{
-  margin:0 0 12px;
-  font-family:var(--font-kannada);
-  font-size:clamp(16px,3.6vw,20px);
-  font-weight:700;
-  color:var(--ink);
-  text-align:left;
+/* Section Header inside Container */
+.close-brands-header {
+    margin-bottom: 16px;
 }
 
-/* ----------------------------------------------------------------
-   TILE GRID
-   Mobile-first: single column, full-width tiles. From ~560px up,
-   two columns side by side. Designed to keep working cleanly if
-   a 3rd/4th tile is added later (auto-fit wraps naturally rather
-   than requiring a layout rewrite).
-   ---------------------------------------------------------------- */
-.valaya-grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:10px;
+.close-brands-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
 }
 
-@media (min-width:560px){
-  .valaya-grid{
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  }
+/* Grid layout with 40% / 60% column distribution */
+.close-brands-grid {
+    display: grid;
+    grid-template-columns: 4fr 6fr; /* 40% - 60% ratio */
+    gap: 16px;
+    align-items: stretch; /* Ensures items match full height */
 }
 
-/* Shared tile base — both card types below inherit this shape,
-   sizing and hover behaviour so the grid stays visually even
-   even though the two types look quite different inside. */
-.valaya-tile{
-  display:block;
-  position:relative;
-  border-radius:var(--radius-card);
-  overflow:hidden;
-  min-height:118px;
-  text-decoration:none;
-  box-shadow:var(--shadow-card);
-  transition:transform .15s ease, box-shadow .15s ease;
-}
-.valaya-tile:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 24px rgba(46,33,23,.12);
-}
-.valaya-tile:focus-visible{
-  outline:2px solid var(--gold-soft);
-  outline-offset:3px;
+/* Generic Tile Base */
+.close-brand-tile {
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
 
-/* ----------------------------------------------------------------
-   TILE TYPE: logo-card
-   Dark card, a brand's own logo image, a short tagline underneath.
-   Suits a brand whose logo is white-text-on-transparent (needs a
-   dark surface to be visible at all).
-   ---------------------------------------------------------------- */
-.valaya-tile.logo-card{
-  background:#181A1B;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:flex-start;
-  gap:10px;
-  padding:18px 16px;
-}
-.valaya-tile.logo-card img{
-  height:26px;
-  width:auto;
-  max-width:100%;
-  object-fit:contain;
-  display:block;
-}
-.valaya-tile.logo-card .valaya-tagline{
-  margin:0;
-  font-family:var(--font-ui);
-  font-size:11px;
-  line-height:1.4;
-  color:rgba(255,255,255,.72);
-  font-weight:600;
+.close-brand-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-/* ----------------------------------------------------------------
-   TILE TYPE: photo-card
-   A background photo with a dark gradient at the base so the
-   brand name stays legible over any image.
-   ---------------------------------------------------------------- */
-.valaya-tile.photo-card{
-  background-size:cover;
-  background-position:center;
-  display:flex;
-  align-items:flex-end;
-  padding:0;
-}
-.valaya-tile.photo-card .valaya-photo-overlay{
-  width:100%;
-  padding:14px 16px 12px;
-  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.55) 100%);
-}
-.valaya-tile.photo-card .valaya-label{
-  margin:0;
-  font-family:var(--font-ui);
-  font-weight:800;
-  font-size:15px;
-  color:#fff;
-  text-shadow:0 1px 3px rgba(0,0,0,.4);
+/* Renowatt Tile (Left - 40%) */
+.close-brand-tile.renowatt-tile {
+    background-color: #1a1e24; /* Dark card background */
+    padding: 24px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Increased Renowatt Logo Size */
+.renowatt-logo {
+    max-width: 85%;
+    max-height: 80px; /* Scaled up for better visibility */
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 12px;
+}
+
+.renowatt-tagline {
+    font-size: 0.85rem;
+    color: #d0d5dd;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* SnehaKoota Tile (Right - 60%) */
+.close-brand-tile.snehakoota-tile {
+    position: relative;
+    min-height: 180px;
+    height: 100%; /* Match full height of namma valaya layout */
+    background-size: cover;
+    background-position: center;
+    justify-content: flex-end;
+}
+
+.snehakoota-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+/* Applied Young Serif Font to SnehaKoota Text */
+.snehakoota-text {
+    font-family: 'Young Serif', serif, Georgia;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    margin: 0;
+}
+
+/* Responsive view for mobile screens */
+@media (max-width: 768px) {
+    .close-brands-grid {
+        grid-template-columns: 1fr; /* Stack vertically on small screens */
+    }
+
+    .close-brand-tile.snehakoota-tile {
+        min-height: 150px;
+    }
+}
 /* Future tile types (e.g. a plain wordmark tile, or an "onboard
    your company" invite tile) can be added below as their own
    .valaya-tile.<type-name> block, without touching the grid or

@@ -1,0 +1,149 @@
+/* ==========================================================================
+   CLOSE BRANDS — "ನಮ್ಮ ವಲಯ" (Namma Valaya)
+   ----------------------------------------------------------------
+   A small, closed circle of things built by people close to
+   OneHaveri — not "partners", not advertising. Deliberately a
+   separate component from partners.css/partners.js: different
+   intent (our own circle vs. useful outside initiatives), so it
+   can be redesigned, relocated, or split into its own page later
+   without touching that file at all.
+
+   MOUNTING: home_ip.html only needs one empty element —
+     <div data-close-brands></div>
+   close_brands.js finds it and builds everything below into it.
+   ========================================================================== */
+
+[data-close-brands]{
+  width:100%;
+  margin:0;
+  padding:0;
+  position:relative;
+  z-index:1;
+}
+
+/* ----------------------------------------------------------------
+   OUTER ZONE
+   A distinct identification background (olive-tinted) so this
+   reads as its own area, deliberately different from the
+   tan/gold NammaShale partner card above it.
+   ---------------------------------------------------------------- */
+.valaya-zone{
+  width:100%;
+  box-sizing:border-box;
+  padding:16px 14px 18px;
+  border-radius:var(--radius-card);
+  background:linear-gradient(150deg,rgba(63,91,62,.10),rgba(63,91,62,.03));
+  border:1px solid rgba(63,91,62,.22);
+}
+
+.valaya-heading{
+  margin:0 0 12px;
+  font-family:var(--font-kannada);
+  font-size:clamp(16px,3.6vw,20px);
+  font-weight:700;
+  color:var(--ink);
+  text-align:left;
+}
+
+/* ----------------------------------------------------------------
+   TILE GRID
+   Mobile-first: single column, full-width tiles. From ~560px up,
+   two columns side by side. Designed to keep working cleanly if
+   a 3rd/4th tile is added later (auto-fit wraps naturally rather
+   than requiring a layout rewrite).
+   ---------------------------------------------------------------- */
+.valaya-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+@media (min-width:560px){
+  .valaya-grid{
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  }
+}
+
+/* Shared tile base — both card types below inherit this shape,
+   sizing and hover behaviour so the grid stays visually even
+   even though the two types look quite different inside. */
+.valaya-tile{
+  display:block;
+  position:relative;
+  border-radius:var(--radius-card);
+  overflow:hidden;
+  min-height:118px;
+  text-decoration:none;
+  box-shadow:var(--shadow-card);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.valaya-tile:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(46,33,23,.12);
+}
+.valaya-tile:focus-visible{
+  outline:2px solid var(--gold-soft);
+  outline-offset:3px;
+}
+
+/* ----------------------------------------------------------------
+   TILE TYPE: logo-card
+   Dark card, a brand's own logo image, a short tagline underneath.
+   Suits a brand whose logo is white-text-on-transparent (needs a
+   dark surface to be visible at all).
+   ---------------------------------------------------------------- */
+.valaya-tile.logo-card{
+  background:#181A1B;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  gap:10px;
+  padding:18px 16px;
+}
+.valaya-tile.logo-card img{
+  height:26px;
+  width:auto;
+  max-width:100%;
+  object-fit:contain;
+  display:block;
+}
+.valaya-tile.logo-card .valaya-tagline{
+  margin:0;
+  font-family:var(--font-ui);
+  font-size:11px;
+  line-height:1.4;
+  color:rgba(255,255,255,.72);
+  font-weight:600;
+}
+
+/* ----------------------------------------------------------------
+   TILE TYPE: photo-card
+   A background photo with a dark gradient at the base so the
+   brand name stays legible over any image.
+   ---------------------------------------------------------------- */
+.valaya-tile.photo-card{
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  align-items:flex-end;
+  padding:0;
+}
+.valaya-tile.photo-card .valaya-photo-overlay{
+  width:100%;
+  padding:14px 16px 12px;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.55) 100%);
+}
+.valaya-tile.photo-card .valaya-label{
+  margin:0;
+  font-family:var(--font-ui);
+  font-weight:800;
+  font-size:15px;
+  color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+
+/* Future tile types (e.g. a plain wordmark tile, or an "onboard
+   your company" invite tile) can be added below as their own
+   .valaya-tile.<type-name> block, without touching the grid or
+   the shared .valaya-tile base above. */

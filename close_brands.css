@@ -1,134 +1,159 @@
 /* ==========================================================================
-   CLOSE BRANDS — "ನಮ್ಮ ವಲಯ" (Namma Valaya)
-   ----------------------------------------------------------------
-   A small, closed circle of things built by people close to
-   OneHaveri — not "partners", not advertising. Deliberately a
-   separate component from partners.css/partners.js.
+   CLOSE BRANDS — "ನಮ್ಮ ವಲಯ"
+   Compact Version
    ========================================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Young+Serif&display=swap');
 
-/* Main "ನಮ್ಮ ವಲಯ" Outer Container */
 .close-brands-container {
     background-color: #3F5B3E;
     border-radius: 12px;
-    padding: 12px 16px; /* Compact outer padding */
-    margin: 12px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    color: #ffffff;
+    padding: 8px 12px;
+    margin: 8px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    color: #fff;
     box-sizing: border-box;
 }
 
-/* Section Header inside Container */
 .close-brands-header {
-    margin-bottom: 8px; /* Clean header spacing */
+    margin-bottom: 6px;
 }
 
 .close-brands-header h2 {
-    font-size: 1.15rem; /* Scaled header to save vertical space */
+    font-size: 1rem;
     font-weight: 700;
     margin: 0;
-    color: #ffffff;
+    color: #fff;
 }
 
-/* Grid layout with 40% / 60% column distribution */
 .close-brands-grid {
     display: grid;
-    grid-template-columns: 4fr 6fr; /* 40% - 60% ratio */
-    gap: 12px;
-    align-items: center; /* Centers tiles vertically relative to grid rows */
+    grid-template-columns: 4fr 6fr;
+    gap: 10px;
+    align-items: stretch;
 }
 
-/* Generic Tile Base */
+/* ==========================================================================
+   TILE BASE
+   ========================================================================== */
+
 .close-brand-tile {
     border-radius: 8px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform .2s ease, box-shadow .2s ease;
     box-sizing: border-box;
 }
 
 .close-brand-tile:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 5px 14px rgba(0,0,0,.20);
 }
 
-/* Renowatt Tile (Left - 40%) */
+/* ==========================================================================
+   RENOWATT
+   ========================================================================== */
+
 .close-brand-tile.renowatt-tile {
-    background-color: #1a1e24;
-    padding: 10px 12px;
+    background: #1a1e24;
+    border: 1px solid rgba(255,255,255,.08);
+
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Keeps logo centered and tagline pinned at bottom */
+    justify-content: center;
     align-items: center;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    aspect-ratio: 16 / 7; /* Responsive height scaling */
-    min-height: 90px;
-    align-self: center; /* Fixes vertical misalignment */
+
+    padding: 8px;
+
+    height: 100px;
 }
 
-/* Maximize Renowatt Logo Area */
 .renowatt-logo {
-    flex: 1; /* Allows logo container to occupy available vertical space */
-    max-width: 85%; /* Optimal width ratio for visual balance */
-    max-height: 75px; /* Restrains logo size gracefully */
+    max-width: 75%;
+    max-height: 34px;
+
     width: auto;
     height: auto;
+
     object-fit: contain;
-    margin: auto 0; /* Centers logo vertically */
 }
 
 .renowatt-tagline {
-    font-size: 0.72rem; /* Compact, clear tagline */
+    margin-top: 8px;
+
+    font-size: 0.58rem;
+    line-height: 1.2;
+
     color: #d0d5dd;
-    margin: 0;
-    line-height: 1.1;
-    padding-bottom: 2px;
+    text-align: center;
 }
 
-/* SnehaKoota Tile (Right - 60%) */
+/* ==========================================================================
+   SNEHAKOOTA
+   ========================================================================== */
+
 .close-brand-tile.snehakoota-tile {
     position: relative;
-    aspect-ratio: 16 / 7; /* Matches Renowatt aspect ratio for identical height */
-    min-height: 80px;
+
+    height: 100px;
+
     background-size: cover;
     background-position: center;
-    justify-content: flex-end;
-    align-self: center; /* Fixes vertical misalignment */
+    background-repeat: no-repeat;
 }
 
 .snehakoota-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.8) 100%);
+
     display: flex;
     align-items: flex-end;
-    padding: 12px 14px; /* Internal padding for banner label */
+
+    padding: 8px 10px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,0.05) 0%,
+            rgba(0,0,0,0.70) 100%
+        );
 }
 
-/* Applied Young Serif Font to SnehaKoota Text */
 .snehakoota-text {
     font-family: 'Young Serif', serif, Georgia;
-    font-size: 1.15rem; /* Proportional serif text display */
+    font-size: 0.95rem;
     font-weight: 400;
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-    margin: 0;
+
+    color: #fff;
+
+    text-shadow: 0 2px 4px rgba(0,0,0,.6);
 }
 
-/* Responsive View for Mobile Screens */
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
 @media (max-width: 750px) {
+
     .close-brands-grid {
-        grid-template-columns: 1fr; /* Stack tiles vertically on small viewports */
+        grid-template-columns: 1fr;
     }
 
     .close-brand-tile.renowatt-tile,
     .close-brand-tile.snehakoota-tile {
-        aspect-ratio: auto; /* Remove aspect ratio on mobile for fluid sizing */
-        height: 95px;
-        min-height: 95px;
+        height: 80px;
+    }
+
+    .renowatt-logo {
+        max-height: 28px;
+    }
+
+    .renowatt-tagline {
+        font-size: 0.5rem;
+    }
+
+    .snehakoota-text {
+        font-size: 0.8rem;
     }
 }

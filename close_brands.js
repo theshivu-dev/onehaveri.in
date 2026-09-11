@@ -13,28 +13,16 @@
    the grid in close_brands.css wraps automatically.
    ========================================================================== */
 
-const CLOSE_BRANDS_DATA = {
 
   // ENTRY 1: Renowatt — dark card, their own logo, a short tagline.
   // Their real logo is white-text-on-transparent, so it needs the
   // dark card background to be visible at all.
-  "renowatt": {
-    type: "logo-card",
-    logoUrl: "https://www.renowatt.in/renowatt-no-bg-english-white-font.avif",
-    logoAlt: "Renowatt",
-    tagline: "Building the Energy Infrastructure of Tomorrow",
-    linkUrl: "https://www.renowatt.in"
-  },
+ 
 
   // ENTRY 2: SnehaKoota — a photo tile with the name overlaid.
   // imageUrl expects a file sitting in this same repo folder —
   // see the filename note in the README / build notes.
-  "snehakoota": {
-    type: "photo-card",
-    imageUrl: "close-brands-snehakoota.png",
-    label: "SnehaKoota.in",
-    linkUrl: "https://snehakoota.in"
-  }
+ 
 
   /* ENTRY 3: ADD FUTURE ENTRIES HERE, e.g.
   , "future-id": {
@@ -45,53 +33,30 @@ const CLOSE_BRANDS_DATA = {
     linkUrl: "https://example.com"
   }
   */
-};
+document.addEventListener("DOMContentLoaded", function () {
+    const mountPoint = document.querySelector("[data-close-brands]");
+    if (!mountPoint) return;
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderCloseBrands();
+    // HTML Markup injection
+    mountPoint.innerHTML = `
+        <div class="close-brands-container">
+            <div class="close-brands-header">
+                <h2>ನಮ್ಮ ವಲಯ</h2>
+            </div>
+            <div class="close-brands-grid">
+                <!-- Renowatt Card (40%) -->
+                <a href="https://www.renowatt.in" target="_blank" rel="noopener noreferrer" class="close-brand-tile renowatt-tile">
+                    <img src="https://www.renowatt.in/renowatt-no-bg-english-white-font.avif" alt="Renowatt Logo" class="renowatt-logo" />
+                    <p class="renowatt-tagline">Building the Energy Infrastructure of Tomorrow</p>
+                </a>
+
+                <!-- SnehaKoota Card (60%) -->
+                <a href="https://snehakoota.in" target="_blank" rel="noopener noreferrer" class="close-brand-tile snehakoota-tile" style="background-image: url('close-brands-snehakoota.jpg');">
+                    <div class="snehakoota-overlay">
+                        <span class="snehakoota-text">SnehaKoota.in</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    `;
 });
-
-function renderCloseBrands() {
-  const containers = document.querySelectorAll("[data-close-brands]");
-
-  containers.forEach((container) => {
-    const tilesHtml = Object.values(CLOSE_BRANDS_DATA)
-      .map((entry) => renderTile(entry))
-      .join("");
-
-    container.innerHTML = `
-      <div class="valaya-zone">
-        <h2 class="valaya-heading">ನಮ್ಮ ವಲಯ</h2>
-        <div class="valaya-grid">
-          ${tilesHtml}
-        </div>
-      </div>
-    `;
-  });
-}
-
-// Builds one tile's markup according to its "type". Adding a new
-// type later means adding one more branch here, matched by a new
-// .valaya-tile.<type-name> block in close_brands.css.
-function renderTile(entry) {
-  if (entry.type === "logo-card") {
-    return `
-      <a href="${entry.linkUrl}" target="_blank" rel="noopener noreferrer" class="valaya-tile logo-card">
-        <img src="${entry.logoUrl}" alt="${entry.logoAlt}">
-        <p class="valaya-tagline">${entry.tagline}</p>
-      </a>
-    `;
-  }
-
-  if (entry.type === "photo-card") {
-    return `
-      <a href="${entry.linkUrl}" target="_blank" rel="noopener noreferrer" class="valaya-tile photo-card" style="background-image:url('${entry.imageUrl}')">
-        <div class="valaya-photo-overlay">
-          <p class="valaya-label">${entry.label}</p>
-        </div>
-      </a>
-    `;
-  }
-
-  return "";
-}

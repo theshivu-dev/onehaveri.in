@@ -17,17 +17,17 @@
 /* Main "ನಮ್ಮ ವಲಯ" Outer Container */
 .close-brands-container {
     background-color: #3F5B3E; /* #3b4231; /* Olive/Dark-tinted identification background color */
-    border-radius: 16px;
-    padding: 12px;
-    margin: 20px 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 8px;
+    margin: 16px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: #ffffff;
     box-sizing: border-box;
 }
 
 /* Section Header inside Container */
 .close-brands-header {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .close-brands-header h2 {
@@ -41,13 +41,13 @@
 .close-brands-grid {
     display: grid;
     grid-template-columns: 4fr 6fr; /* 40% - 60% ratio */
-    gap: 16px;
+    gap: 12px;
     align-items: stretch; /* Ensures items match full height */
 }
 
 /* Generic Tile Base */
 .close-brand-tile {
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
@@ -65,7 +65,7 @@
 /* Renowatt Tile (Left - 40%) */
 .close-brand-tile.renowatt-tile {
     background-color: #1a1e24; /* Dark card background */
-    padding: 18px;
+    padding: 14px;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -74,11 +74,11 @@
 
 /* Increased Renowatt Logo Size */
 .renowatt-logo {
-    max-width: 95%;
-    max-height: 70px; /* Scaled up for better visibility */
+    max-width: 90%;
+    max-height: 50px; /* Scaled up for better visibility */
     height: auto;
     object-fit: contain;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 .renowatt-tagline {
@@ -104,7 +104,7 @@
     background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
     display: flex;
     align-items: flex-end;
-    padding: 20px;
+    padding: 16px;
 }
 
 /* Applied Young Serif Font to SnehaKoota Text */
@@ -118,13 +118,13 @@
 }
 
 /* Responsive view for mobile screens */
-@media (max-width: 768px) {
+@media (max-width: 750px) {
     .close-brands-grid {
         grid-template-columns: 1fr; /* Stack vertically on small screens */
     }
 
     .close-brand-tile.snehakoota-tile {
-        min-height: 150px;
+        min-height: 120px;
     }
 }
 /* Future tile types (e.g. a plain wordmark tile, or an "onboard

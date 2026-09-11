@@ -65,7 +65,7 @@
 /* Renowatt Tile (Left - 40%) */
 .close-brand-tile.renowatt-tile {
     background-color: #1a1e24; /* Dark card background */
-    padding: 20px;
+    padding: 18px;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -75,7 +75,7 @@
 /* Increased Renowatt Logo Size */
 .renowatt-logo {
     max-width: 95%;
-    max-height: 70%; /* Scaled up for better visibility */
+    max-height: 70px; /* Scaled up for better visibility */
     height: auto;
     object-fit: contain;
     margin-bottom: 10px;

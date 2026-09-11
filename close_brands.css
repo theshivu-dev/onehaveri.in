@@ -11,7 +11,7 @@
 .close-brands-container {
     background-color: #3F5B3E;
     border-radius: 12px;
-    padding: 12px 16px; /* Reduced outer padding */
+    padding: 12px 16px; /* Compact outer padding */
     margin: 12px 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: #ffffff;
@@ -20,11 +20,11 @@
 
 /* Section Header inside Container */
 .close-brands-header {
-    margin-bottom: 6px; /* Compact header spacing */
+    margin-bottom: 8px; /* Clean header spacing */
 }
 
 .close-brands-header h2 {
-    font-size: 1.15rem; /* Slightly smaller header to save vertical space */
+    font-size: 1.15rem; /* Scaled header to save vertical space */
     font-weight: 700;
     margin: 0;
     color: #ffffff;
@@ -34,8 +34,8 @@
 .close-brands-grid {
     display: grid;
     grid-template-columns: 4fr 6fr; /* 40% - 60% ratio */
-    gap: 10px;
-    align-items: stretch;
+    gap: 12px;
+    align-items: center; /* Centers tiles vertically relative to grid rows */
 }
 
 /* Generic Tile Base */
@@ -61,40 +61,43 @@
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Pushes logo to center/top and tagline to bottom */
+    justify-content: space-between; /* Keeps logo centered and tagline pinned at bottom */
     align-items: center;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    height: 100px; /* Reduced fixed height (~60% reduction) */
+    aspect-ratio: 16 / 7; /* Responsive height scaling */
+    min-height: 90px;
+    align-self: center; /* Fixes vertical misalignment */
 }
 
 /* Maximize Renowatt Logo Area */
 .renowatt-logo {
-    flex: 1; /* Allows logo container to expand and occupy available space */
-    max-width: 90%; /* Expanded width ratio */
-    max-height: 65px; /* Ensures logo dominates the tile vertically */
+    flex: 1; /* Allows logo container to occupy available vertical space */
+    max-width: 85%; /* Optimal width ratio for visual balance */
+    max-height: 55px; /* Restrains logo size gracefully */
     width: auto;
     height: auto;
     object-fit: contain;
-    margin: auto 0; /* Keeps logo vertically centered in available space */
+    margin: auto 0; /* Centers logo vertically */
 }
 
 .renowatt-tagline {
-    font-size: 0.72rem; /* Compact tagline */
+    font-size: 0.72rem; /* Compact, clear tagline */
     color: #d0d5dd;
     margin: 0;
     line-height: 1.1;
-    padding-bottom: 2px; /* Pins nicely at the bottom */
+    padding-bottom: 2px;
 }
 
 /* SnehaKoota Tile (Right - 60%) */
 .close-brand-tile.snehakoota-tile {
     position: relative;
-    height: 100px; /* Matches Renowatt height */
-    min-height: 100px;
+    aspect-ratio: 16 / 7; /* Matches Renowatt aspect ratio for identical height */
+    min-height: 90px;
     background-size: cover;
     background-position: center;
     justify-content: flex-end;
+    align-self: center; /* Fixes vertical misalignment */
 }
 
 .snehakoota-overlay {
@@ -103,28 +106,29 @@
     background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.8) 100%);
     display: flex;
     align-items: flex-end;
-    padding: 14px 16px; /* Compact internal padding */
+    padding: 12px 14px; /* Internal padding for banner label */
 }
 
 /* Applied Young Serif Font to SnehaKoota Text */
 .snehakoota-text {
     font-family: 'Young Serif', serif, Georgia;
-    font-size: 1.15rem; /* Scaled down proportional to container height */
+    font-size: 1.15rem; /* Proportional serif text display */
     font-weight: 400;
     color: #ffffff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
     margin: 0;
 }
 
-/* Responsive view for mobile screens */
+/* Responsive View for Mobile Screens */
 @media (max-width: 750px) {
     .close-brands-grid {
-        grid-template-columns: 1fr; /* Stack vertically on small screens */
+        grid-template-columns: 1fr; /* Stack tiles vertically on small viewports */
     }
 
     .close-brand-tile.renowatt-tile,
     .close-brand-tile.snehakoota-tile {
-        height: 100px;
-        min-height: 100px;
+        aspect-ratio: auto; /* Remove aspect ratio on mobile for fluid sizing */
+        height: 95px;
+        min-height: 95px;
     }
 }

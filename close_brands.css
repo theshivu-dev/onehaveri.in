@@ -91,7 +91,7 @@
 /* SnehaKoota Tile (Right - 60%) */
 .close-brand-tile.snehakoota-tile {
     position: relative;
-    min-height: 180px;
+    min-height: 170px;
     height: 100%; /* Match full height of namma valaya layout */
     background-size: cover;
     background-position: center;

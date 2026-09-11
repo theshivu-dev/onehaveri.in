@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </a>
 
                 <!-- SnehaKoota Card (60%) -->
-                <a href="https://snehakoota.in" target="_blank" rel="noopener noreferrer" class="close-brand-tile snehakoota-tile" style="background-image: url('close-brands-snehakoota.jpg');">
+                <a href="https://snehakoota.in" target="_blank" rel="noopener noreferrer" class="close-brand-tile snehakoota-tile" style="background-image: url('close-brands-snehakoota.png');">
                     <div class="snehakoota-overlay">
                         <span class="snehakoota-text">SnehaKoota.in</span>
                     </div>

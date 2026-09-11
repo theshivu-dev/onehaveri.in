@@ -1,41 +1,36 @@
-/* ==========================================================================
-   CLOSE BRANDS — "ನಮ್ಮ ವಲಯ" (Namma Valaya)
-   ----------------------------------------------------------------
-   A small, closed circle of things built by people close to
-   OneHaveri — not "partners", not advertising. Deliberately a
-   separate component from partners.css/partners.js.
-   ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Young+Serif&display=swap');
-
-/* Main "ನಮ್ಮ ವಲಯ" Outer Container */
+/* Main Container converted into a 2-Column Grid */
 .close-brands-container {
     background-color: #3F5B3E;
     border-radius: 12px;
-    padding: 12px 16px; /* Compact outer padding */
+    padding: 12px 16px;
     margin: 12px 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: #ffffff;
     box-sizing: border-box;
-}
 
-/* Section Header inside Container */
-.close-brands-header {
-    margin-bottom: 8px; /* Clean header spacing */
-}
-
-.close-brands-header h2 {
-    font-size: 1.15rem; /* Scaled header to save vertical space */
-    font-weight: 700;
-    margin: 0;
-    color: #ffffff;
-}
-
-/* Grid layout with 40% / 60% column distribution */
-.close-brands-grid {
+    /* CSS Grid Layout */
     display: grid;
     grid-template-columns: 4fr 6fr; /* 40% - 60% ratio */
     gap: 12px;
-    align-items: center; /* Centers tiles vertically relative to grid rows */
+    align-items: stretch; /* Stretches items vertically to match full height */
+}
+
+/* Left Column: Stack Header and Renowatt Tile Vertically */
+.close-brands-left-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.close-brands-header {
+    margin-bottom: 8px;
+}
+
+.close-brands-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
 }
 
 /* Generic Tile Base */
@@ -55,49 +50,46 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-/* Renowatt Tile (Left - 40%) */
+/* Renowatt Tile (Left) */
 .close-brand-tile.renowatt-tile {
     background-color: #1a1e24;
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Keeps logo centered and tagline pinned at bottom */
+    justify-content: space-between;
     align-items: center;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    aspect-ratio: 16 / 7; /* Responsive height scaling */
+    height: 100%; /* Fill available height in the left column */
     min-height: 90px;
-    align-self: center; /* Fixes vertical misalignment */
 }
 
-/* Maximize Renowatt Logo Area */
 .renowatt-logo {
-    flex: 1; /* Allows logo container to occupy available vertical space */
-    max-width: 85%; /* Optimal width ratio for visual balance */
-    max-height: 55px; /* Restrains logo size gracefully */
+    flex: 1;
+    max-width: 85%;
+    max-height: 55px;
     width: auto;
     height: auto;
     object-fit: contain;
-    margin: auto 0; /* Centers logo vertically */
+    margin: auto 0;
 }
 
 .renowatt-tagline {
-    font-size: 0.72rem; /* Compact, clear tagline */
+    font-size: 0.72rem;
     color: #d0d5dd;
     margin: 0;
     line-height: 1.1;
     padding-bottom: 2px;
 }
 
-/* SnehaKoota Tile (Right - 60%) */
+/* SnehaKoota Tile (Right - Expands vertically into top space) */
 .close-brand-tile.snehakoota-tile {
     position: relative;
-    aspect-ratio: 16 / 7; /* Matches Renowatt aspect ratio for identical height */
-    min-height: 90px;
+    height: 100%; /* Stretches to match total height of Header + Renowatt */
+    min-height: 100%;
     background-size: cover;
     background-position: center;
     justify-content: flex-end;
-    align-self: center; /* Fixes vertical misalignment */
 }
 
 .snehakoota-overlay {
@@ -106,28 +98,26 @@
     background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.8) 100%);
     display: flex;
     align-items: flex-end;
-    padding: 12px 14px; /* Internal padding for banner label */
+    padding: 12px 14px;
 }
 
-/* Applied Young Serif Font to SnehaKoota Text */
 .snehakoota-text {
     font-family: 'Young Serif', serif, Georgia;
-    font-size: 1.15rem; /* Proportional serif text display */
+    font-size: 1.15rem;
     font-weight: 400;
     color: #ffffff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
     margin: 0;
 }
 
-/* Responsive View for Mobile Screens */
+/* Mobile Responsive Adjustments */
 @media (max-width: 750px) {
-    .close-brands-grid {
-        grid-template-columns: 1fr; /* Stack tiles vertically on small viewports */
+    .close-brands-container {
+        grid-template-columns: 1fr; /* Stack vertically on small screens */
     }
 
     .close-brand-tile.renowatt-tile,
     .close-brand-tile.snehakoota-tile {
-        aspect-ratio: auto; /* Remove aspect ratio on mobile for fluid sizing */
         height: 95px;
         min-height: 95px;
     }

@@ -11,7 +11,7 @@
 .close-brands-container {
     background-color: #3F5B3E;
     border-radius: 12px;
-    padding: 10px 14px; /* Reduced outer padding */
+    padding: 12px 16px; /* Reduced outer padding */
     margin: 12px 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: #ffffff;
@@ -58,7 +58,7 @@
 /* Renowatt Tile (Left - 40%) */
 .close-brand-tile.renowatt-tile {
     background-color: #1a1e24;
-    padding: 8px 12px;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Pushes logo to center/top and tagline to bottom */
@@ -72,7 +72,7 @@
 .renowatt-logo {
     flex: 1; /* Allows logo container to expand and occupy available space */
     max-width: 90%; /* Expanded width ratio */
-    max-height: 55px; /* Ensures logo dominates the tile vertically */
+    max-height: 65px; /* Ensures logo dominates the tile vertically */
     width: auto;
     height: auto;
     object-fit: contain;
@@ -103,7 +103,7 @@
     background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.8) 100%);
     display: flex;
     align-items: flex-end;
-    padding: 8px 12px; /* Compact internal padding */
+    padding: 14px 16px; /* Compact internal padding */
 }
 
 /* Applied Young Serif Font to SnehaKoota Text */
@@ -124,7 +124,7 @@
 
     .close-brand-tile.renowatt-tile,
     .close-brand-tile.snehakoota-tile {
-        height: 90px;
-        min-height: 90px;
+        height: 100px;
+        min-height: 100px;
     }
 }

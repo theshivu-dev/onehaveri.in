@@ -1,63 +1,155 @@
 /* ==========================================================================
-   CLOSE BRANDS DATA & RENDERER — "ನಮ್ಮ ವಲಯ" (Namma Valaya)
-   ----------------------------------------------------------------
-   A small, closed circle of things built by people close to
-   OneHaveri. Kept entirely separate from partners.js/partners.css
-   on purpose — different intent, different data, so this whole
-   feature can be redesigned or moved to its own page later without
-   touching the partners code at all.
-
-   TO ADD A NEW ENTRY LATER:
-   Add a new key to CLOSE_BRANDS_DATA below, using whichever "type"
-   fits it (see the two examples). Nothing else needs to change —
-   the grid in close_brands.css wraps automatically.
+   CLOSE BRANDS — "ನಮ್ಮ ವಲಯ"
+   Compact Version
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Young+Serif&display=swap');
 
-  // ENTRY 1: Renowatt — dark card, their own logo, a short tagline.
-  // Their real logo is white-text-on-transparent, so it needs the
-  // dark card background to be visible at all.
- 
+.close-brands-container {
+    background-color: #3F5B3E;
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    color: #fff;
+    box-sizing: border-box;
+}
 
-  // ENTRY 2: SnehaKoota — a photo tile with the name overlaid.
-  // imageUrl expects a file sitting in this same repo folder —
-  // see the filename note in the README / build notes.
- 
+.close-brands-header {
+    margin-bottom: 6px;
+}
 
-  /* ENTRY 3: ADD FUTURE ENTRIES HERE, e.g.
-  , "future-id": {
-    type: "logo-card",
-    logoUrl: "future-logo.png",
-    logoAlt: "Future Brand",
-    tagline: "One line about them.",
-    linkUrl: "https://example.com"
-  }
-  */
-document.addEventListener("DOMContentLoaded", function () {
-    const mountPoint = document.querySelector("[data-close-brands]");
-    if (!mountPoint) return;
+.close-brands-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
 
-    // HTML Markup injection
-    mountPoint.innerHTML = `
-        <div class="close-brands-container">
-            <div class="close-brands-header">
-                <h2>ನಮ್ಮ ವಲಯ</h2>
-            </div>
-            <div class="close-brands-grid">
-                <!-- Renowatt Card (40%) -->
-                <a href="https://www.renowatt.in" target="_blank" rel="noopener noreferrer" class="close-brand-tile renowatt-tile">
-       
-                    <img src="renowatt_logo_cropped.png" alt="Renowatt Logo" class="renowatt-logo" /> 
-                    <p class="renowatt-tagline">Building the Energy Infrastructure of Tomorrow</p>
-                </a>
+.close-brands-grid {
+    display: grid;
+    grid-template-columns: 4fr 6fr;
+    gap: 10px;
+    align-items: stretch;
+}
 
-                <!-- SnehaKoota Card (60%) -->
-                <a href="https://snehakoota.in" target="_blank" rel="noopener noreferrer" class="close-brand-tile snehakoota-tile" style="background-image: url('close-brands-snehakoota.png');">
-                    <div class="snehakoota-overlay">
-                        <span class="snehakoota-text">SnehaKoota.in</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    `;
-});
+/* ==========================================================================
+   TILE BASE
+   ========================================================================== */
+
+.close-brand-tile {
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform .2s ease, box-shadow .2s ease;
+    box-sizing: border-box;
+}
+
+.close-brand-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(0,0,0,.20);
+}
+
+/* ==========================================================================
+   RENOWATT
+   ========================================================================== */
+
+.close-brand-tile.renowatt-tile {
+    background: #1a1e24;
+    border: 1px solid rgba(255,255,255,.08);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px;
+
+    height: 100px;
+}
+
+.renowatt-logo {
+    max-width: 90%;
+    max-height: 90px;
+    object-fit: contain;
+}
+
+.renowatt-tagline {
+    margin-top: 8px;
+
+    font-size: 0.58rem;
+    line-height: 1.2;
+
+    color: #d0d5dd;
+    text-align: center;
+}
+
+/* ==========================================================================
+   SNEHAKOOTA
+   ========================================================================== */
+
+.close-brand-tile.snehakoota-tile {
+    position: relative;
+
+    height: 100px;
+
+    background-size: cover;
+    background-position: center 20%;
+    background-repeat: no-repeat;
+}
+
+.snehakoota-overlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: flex-end;
+
+    padding: 8px 10px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,0.05) 0%,
+            rgba(0,0,0,0.70) 100%
+        );
+}
+
+.snehakoota-text {
+    font-family: 'Young Serif', serif, Georgia;
+    font-size: 0.95rem;
+    font-weight: 400;
+
+    color: #fff;
+
+    text-shadow: 0 2px 4px rgba(0,0,0,.6);
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 750px) {
+
+    .close-brands-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .close-brand-tile.renowatt-tile,
+    .close-brand-tile.snehakoota-tile {
+        height: 80px;
+    }
+
+    .renowatt-logo {
+        max-height: 28px;
+    }
+
+    .renowatt-tagline {
+        font-size: 0.5rem;
+    }
+
+    .snehakoota-text {
+        font-size: 0.8rem;
+    }
+}

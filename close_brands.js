@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <!-- Renowatt Card (40%) -->
                 <a href="https://www.renowatt.in" target="_blank" rel="noopener noreferrer" class="close-brand-tile renowatt-tile">
        
-                    <img src=" renowatt_logo.avif" alt="Renowatt Logo" class="renowatt-logo" /> 
+                    <img src="renowatt_logo_cropped.png" alt="Renowatt Logo" class="renowatt-logo" /> 
                     <p class="renowatt-tagline">Building the Energy Infrastructure of Tomorrow</p>
                 </a>
 

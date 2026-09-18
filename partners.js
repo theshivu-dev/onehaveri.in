@@ -5,6 +5,17 @@
    Homepage hero behavior lives in main_page.js.
    ========================================================================== */
 
+/* Compatibility fallback for pages that have not yet added the direct
+   main_page.js script reference. Remove once both homepage HTML files are
+   updated with the direct script tag. */
+(function loadMainPageBehavior() {
+  if (document.querySelector('script[data-main-page-behavior]')) return;
+  const script = document.createElement('script');
+  script.src = 'main_page.js?v=1';
+  script.dataset.mainPageBehavior = 'true';
+  document.head.appendChild(script);
+})();
+
 const PARTNERS_DATA = {
   "nammashale": {
     brandText: "Namma",

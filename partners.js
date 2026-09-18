@@ -5,16 +5,6 @@
    Homepage hero behavior lives in main_page.js.
    ========================================================================== */
 
-/* Compatibility loader: keeps existing page script order working while the
-   shared homepage behavior is loaded from its own file. */
-(function loadMainPageBehavior() {
-  if (document.querySelector('script[data-main-page-behavior]')) return;
-  const script = document.createElement('script');
-  script.src = 'main_page.js?v=1';
-  script.dataset.mainPageBehavior = 'true';
-  document.head.appendChild(script);
-})();
-
 const PARTNERS_DATA = {
   "nammashale": {
     brandText: "Namma",

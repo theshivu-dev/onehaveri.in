@@ -27,7 +27,61 @@ const PARTNERS_DATA = {
   */
 };
 
+/* ==========================================================================
+   SHARED HOME HERO BANNER
+   --------------------------------------------------------------------------
+   index.html and home_ip.html both load this file.
+
+   Behaviour:
+   - Pick exactly one of banner1.png / banner2.png / banner3.png on page load.
+   - Keep that banner fixed for the lifetime of the current page load.
+   - Disable the old CSS keyframe rotation.
+   - Keep the hero visually compact like a normal website banner/header.
+   ========================================================================== */
+
+function initHeroBanner() {
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
+
+  const banners = ["banner1.png", "banner2.png", "banner3.png"];
+  const selectedBanner = banners[Math.floor(Math.random() * banners.length)];
+
+  const style = document.createElement("style");
+  style.id = "onehaveri-hero-runtime-style";
+  style.textContent = `
+    .hero {
+      width: 100%;
+      aspect-ratio: 3.2 / 1 !important;
+      max-height: 360px !important;
+      min-height: 0 !important;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      animation: none !important;
+      background-image: url("${selectedBanner}") !important;
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        aspect-ratio: 2.35 / 1 !important;
+        max-height: 220px !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before {
+        animation: none !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+  hero.dataset.banner = selectedBanner;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  initHeroBanner();
   renderPartnerInitiatives();
 });
 

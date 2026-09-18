@@ -1,0 +1,31 @@
+/* ================================================================
+   OneHaveri — Shared Hero Banner Overrides
+   ----------------------------------------------------------------
+   Compact responsive hero for index.html and home_ip.html.
+   The artwork remains fully visible (contain) and does not rotate.
+   ================================================================ */
+
+.hero{
+  width:100%;
+  aspect-ratio:3.2 / 1;
+  max-height:360px;
+  min-height:0;
+}
+
+.hero::before{
+  animation:none;
+  background-image:url("banner1.png");
+}
+
+@media (max-width:600px){
+  .hero{
+    aspect-ratio:2.35 / 1;
+    max-height:220px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hero::before{
+    animation:none;
+  }
+}

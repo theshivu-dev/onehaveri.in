@@ -3,7 +3,6 @@
    ========================================================================== */
 
 const PARTNERS_DATA = {
-  // PARTNER 1: NammaShale
   "nammashale": {
     brandText: "Namma",
     brandHighlight: "ಶಾಲೆ",
@@ -13,36 +12,13 @@ const PARTNERS_DATA = {
     linkUrl: "https://nammashale.in",
     themeClass: "partner-1-nammashale"
   }
-
-  /* PARTNER 2: ADD FUTURE PARTNERS HERE
-  , "future-id": {
-    brandText: "Future",
-    brandHighlight: "Initiative",
-    badge: "ವಿವರಣೆ",
-    title: "ಶೀರ್ಷಿಕೆ",
-    description: "ವಿವರಣೆ...",
-    linkUrl: "https://example.com",
-    themeClass: "partner-2-future"
-  }
-  */
 };
 
-/* ==========================================================================
-   SHARED HOME HERO BANNER
-   --------------------------------------------------------------------------
-   index.html and home_ip.html both load this file.
-
-   Behaviour:
-   - Pick exactly one banner family on page load.
-   - Use optimized WebP artwork for desktop and mobile.
-   - Keep the selected banner fixed for the lifetime of the page load.
-   - Disable the old CSS keyframe rotation.
-   - Preserve the original artwork ratio (8:3) so the full artwork remains
-     visible while the banner fills the available width.
-   - Add a compact, layered OneHaveri identity badge at the top-left.
-   - Center and emphasize the Coming soon status badge.
-   - Remove the obsolete decorative wave between hero and posts.
-   ========================================================================== */
+/* Centralized hero copy: easy to revise later without editing the HTML. */
+const HERO_COPY = Object.freeze({
+  heading: "ಹಾವೇರಿಯ ಬದುಕು, ಹಾವೇರಿಯವರ ಮಾತು.",
+  tagline: "Don't wait. Stand for your place."
+});
 
 function initHeroBanner() {
   const hero = document.querySelector(".hero");
@@ -56,6 +32,7 @@ function initHeroBanner() {
   style.id = "onehaveri-hero-runtime-style";
   style.textContent = `
     .hero {
+      position: relative !important;
       width: 100%;
       aspect-ratio: 8 / 3 !important;
       max-height: 360px !important;
@@ -76,11 +53,77 @@ function initHeroBanner() {
       content: none !important;
     }
 
+    /* Floating hero copy panel: approximately half the banner width and
+       one-quarter of its height on desktop. */
+    .onehaveri-hero-copy-panel {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(14px, 3.2%, 24px);
+      transform: translateX(-50%);
+      z-index: 4;
+      width: min(52%, 590px);
+      min-height: 25%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: clamp(12px, 1.4vw, 19px) clamp(16px, 2.2vw, 30px);
+      text-align: center;
+      border: 1px solid rgba(248,241,227,.78);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(248,241,227,.88), rgba(248,241,227,.68));
+      box-shadow: 0 12px 30px rgba(46,33,23,.18), 0 0 0 4px rgba(248,241,227,.18), 0 0 26px rgba(217,161,63,.18);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+
+    .onehaveri-hero-copy-panel:hover {
+      transform: translateX(-50%) translateY(-3px);
+      background: linear-gradient(135deg, rgba(248,241,227,.95), rgba(248,241,227,.78));
+      box-shadow: 0 15px 34px rgba(46,33,23,.23), 0 0 0 5px rgba(248,241,227,.22), 0 0 34px rgba(217,161,63,.30);
+    }
+
+    .onehaveri-hero-copy-panel .hero-heading {
+      margin: 0 !important;
+      max-width: none !important;
+      font-family: var(--font-kannada) !important;
+      font-size: clamp(17px, 2.1vw, 30px) !important;
+      line-height: 1.25 !important;
+      font-weight: 700 !important;
+      color: var(--ink) !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,.45);
+    }
+
+    .onehaveri-hero-copy-panel .tagline {
+      margin: 0 !important;
+      max-width: none !important;
+      display: block !important;
+      font-family: var(--font-display) !important;
+      font-size: clamp(10px, 1.05vw, 14px) !important;
+      line-height: 1.35 !important;
+      font-style: italic !important;
+      font-weight: 700 !important;
+      color: var(--terracotta) !important;
+    }
+
+    .onehaveri-hero-copy-panel .tagline::before,
+    .onehaveri-hero-copy-panel .tagline::after {
+      display: none !important;
+      content: none !important;
+    }
+
+    .onehaveri-hero-copy-panel .divider {
+      display: none !important;
+    }
+
     .onehaveri-hero-brand {
       position: absolute;
       top: clamp(12px, 2.1vw, 24px);
       left: clamp(12px, 2.1vw, 24px);
-      z-index: 4;
+      z-index: 5;
       display: inline-flex;
       align-items: center;
       gap: 10px;
@@ -215,6 +258,24 @@ function initHeroBanner() {
         background-image: url("${mobileBanner}") !important;
       }
 
+      .onehaveri-hero-copy-panel {
+        width: 88%;
+        min-height: 30%;
+        bottom: 9px;
+        gap: 3px;
+        padding: 8px 11px;
+        border-radius: 15px;
+      }
+
+      .onehaveri-hero-copy-panel .hero-heading {
+        font-size: clamp(13px, 3.7vw, 19px) !important;
+        line-height: 1.2 !important;
+      }
+
+      .onehaveri-hero-copy-panel .tagline {
+        font-size: 9px !important;
+      }
+
       .onehaveri-hero-brand {
         top: 9px;
         left: 9px;
@@ -262,6 +323,23 @@ function initHeroBanner() {
     }
   `;
 
+  document.head.appendChild(style);
+
+  const heading = hero.querySelector(".hero-heading");
+  const tagline = hero.querySelector(".tagline");
+  if (heading) heading.textContent = HERO_COPY.heading;
+  if (tagline) tagline.textContent = HERO_COPY.tagline;
+
+  if (!document.getElementById("onehaveri-hero-copy-panel") && heading && tagline) {
+    const copyPanel = document.createElement("div");
+    copyPanel.id = "onehaveri-hero-copy-panel";
+    copyPanel.className = "onehaveri-hero-copy-panel";
+    copyPanel.setAttribute("aria-label", "OneHaveri hero message");
+    hero.insertBefore(copyPanel, heading);
+    copyPanel.appendChild(heading);
+    copyPanel.appendChild(tagline);
+  }
+
   if (!document.getElementById("onehaveri-hero-brand")) {
     const brand = document.createElement("div");
     brand.id = "onehaveri-hero-brand";
@@ -278,7 +356,6 @@ function initHeroBanner() {
     hero.appendChild(brand);
   }
 
-  document.head.appendChild(style);
   hero.dataset.banner = String(bannerNumber);
   hero.dataset.desktopBanner = desktopBanner;
   hero.dataset.mobileBanner = mobileBanner;
@@ -298,7 +375,6 @@ function renderPartnerInitiatives() {
 
     if (!data) return;
 
-    // Build markup entirely in JS
     container.className = `partner-card ${data.themeClass}`;
     container.innerHTML = `
       <div class="partner-card-header">

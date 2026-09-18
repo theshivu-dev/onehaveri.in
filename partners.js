@@ -73,7 +73,7 @@ function initHeroBanner() {
       text-align: center;
       border: 1px solid rgba(248,241,227,.78);
       border-radius: 22px;
-      background: linear-gradient(135deg, rgba(248,241,227,.88), rgba(248,241,227,.68));
+      background: rgba(248,241,227,.10);
       box-shadow: 0 12px 30px rgba(46,33,23,.18), 0 0 0 4px rgba(248,241,227,.18), 0 0 26px rgba(217,161,63,.18);
       backdrop-filter: blur(7px);
       -webkit-backdrop-filter: blur(7px);
@@ -82,7 +82,7 @@ function initHeroBanner() {
 
     .onehaveri-hero-copy-panel:hover {
       transform: translateX(-50%) translateY(-3px);
-      background: linear-gradient(135deg, rgba(248,241,227,.95), rgba(248,241,227,.78));
+      background: rgba(248,241,227,.16);
       box-shadow: 0 15px 34px rgba(46,33,23,.23), 0 0 0 5px rgba(248,241,227,.22), 0 0 34px rgba(217,161,63,.30);
     }
 

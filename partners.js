@@ -13,7 +13,7 @@ const PARTNERS_DATA = {
     linkUrl: "https://nammashale.in",
     themeClass: "partner-1-nammashale"
   }
-  
+
   /* PARTNER 2: ADD FUTURE PARTNERS HERE
   , "future-id": {
     brandText: "Future",
@@ -33,25 +33,27 @@ const PARTNERS_DATA = {
    index.html and home_ip.html both load this file.
 
    Behaviour:
-   - Pick exactly one of banner1.png / banner2.png / banner3.png on page load.
-   - Keep that banner fixed for the lifetime of the current page load.
+   - Pick exactly one banner family on page load.
+   - Use optimized WebP artwork for desktop and mobile.
+   - Keep the selected banner fixed for the lifetime of the page load.
    - Disable the old CSS keyframe rotation.
-   - Keep the hero visually compact like a normal website banner/header.
+   - Use contain so the supplied artwork is never cropped.
    ========================================================================== */
 
 function initHeroBanner() {
   const hero = document.querySelector(".hero");
   if (!hero) return;
 
-  const banners = ["banner1.png", "banner2.png", "banner3.png"];
-  const selectedBanner = banners[Math.floor(Math.random() * banners.length)];
+  const bannerNumber = Math.floor(Math.random() * 3) + 1;
+  const desktopBanner = `assets/banners/banner${bannerNumber}-desktop.webp`;
+  const mobileBanner = `assets/banners/banner${bannerNumber}-mobile.webp`;
 
   const style = document.createElement("style");
   style.id = "onehaveri-hero-runtime-style";
   style.textContent = `
     .hero {
       width: 100%;
-      aspect-ratio: 3.2 / 1 !important;
+      aspect-ratio: 8 / 3 !important;
       max-height: 360px !important;
       min-height: 0 !important;
       overflow: hidden;
@@ -59,13 +61,20 @@ function initHeroBanner() {
 
     .hero::before {
       animation: none !important;
-      background-image: url("${selectedBanner}") !important;
+      background-image: url("${desktopBanner}") !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      background-size: contain !important;
     }
 
     @media (max-width: 600px) {
       .hero {
-        aspect-ratio: 2.35 / 1 !important;
+        aspect-ratio: 8 / 3 !important;
         max-height: 220px !important;
+      }
+
+      .hero::before {
+        background-image: url("${mobileBanner}") !important;
       }
     }
 
@@ -77,7 +86,9 @@ function initHeroBanner() {
   `;
 
   document.head.appendChild(style);
-  hero.dataset.banner = selectedBanner;
+  hero.dataset.banner = String(bannerNumber);
+  hero.dataset.desktopBanner = desktopBanner;
+  hero.dataset.mobileBanner = mobileBanner;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

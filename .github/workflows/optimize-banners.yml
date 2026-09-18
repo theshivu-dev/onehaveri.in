@@ -1,0 +1,62 @@
+name: Optimize homepage banners
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "assets/banners/**"
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-banners:
+    if: ${{ !contains(github.event.head_commit.message, '[skip banner optimize]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Pillow
+        run: python -m pip install --upgrade pillow
+
+      - name: Generate responsive WebP banners
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          source_dir = Path('.')
+          output_dir = Path('assets/banners')
+          output_dir.mkdir(parents=True, exist_ok=True)
+
+          for index in (1, 2, 3):
+              source = source_dir / f'banner{index}.png'
+              if not source.exists():
+                  raise SystemExit(f'Missing source image: {source}')
+
+              image = Image.open(source).convert('RGB')
+              for variant, width in (('desktop', 1600), ('mobile', 800)):
+                  height = round(image.height * width / image.width)
+                  resized = image.resize((width, height), Image.Resampling.LANCZOS)
+                  destination = output_dir / f'banner{index}-{variant}.webp'
+                  resized.save(destination, 'WEBP', quality=82, method=6)
+                  print(f'Created {destination}: {width}x{height}, {destination.stat().st_size} bytes')
+          PY
+
+      - name: Commit optimized banners
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/banners
+          if git diff --cached --quiet; then
+            echo "No banner changes to commit."
+          else
+            git commit -m "Generate optimized responsive banners [skip banner optimize]"
+            git push
+          fi

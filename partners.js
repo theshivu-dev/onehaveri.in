@@ -27,7 +27,7 @@ const PARTNERS_DATA = {
   */
 };
 
-/* ==========================================================================
+/* ========================================================================== 
    SHARED HOME HERO BANNER
    --------------------------------------------------------------------------
    index.html and home_ip.html both load this file.
@@ -37,8 +37,8 @@ const PARTNERS_DATA = {
    - Use optimized WebP artwork for desktop and mobile.
    - Keep the selected banner fixed for the lifetime of the page load.
    - Disable the old CSS keyframe rotation.
-   - Match the source artwork ratio so the banner fills its width without
-     side gutters or cropping.
+   - Preserve the original artwork ratio (8:3) so the full artwork remains
+     visible while the banner fills the available width.
    - Center and emphasize the Coming soon status badge.
    - Remove the obsolete decorative wave between hero and posts.
    ========================================================================== */
@@ -56,8 +56,8 @@ function initHeroBanner() {
   style.textContent = `
     .hero {
       width: 100%;
-      aspect-ratio: 16 / 9 !important;
-      max-height: none !important;
+      aspect-ratio: 8 / 3 !important;
+      max-height: 360px !important;
       min-height: 0 !important;
       overflow: hidden;
     }
@@ -110,14 +110,15 @@ function initHeroBanner() {
     .section-wave {
       display: none !important;
       height: 0 !important;
+      min-height: 0 !important;
       margin: 0 !important;
       padding: 0 !important;
     }
 
     @media (max-width: 600px) {
       .hero {
-        aspect-ratio: 16 / 9 !important;
-        max-height: none !important;
+        aspect-ratio: 8 / 3 !important;
+        max-height: 220px !important;
       }
 
       .hero::before {

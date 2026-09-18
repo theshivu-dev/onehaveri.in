@@ -27,7 +27,7 @@ const PARTNERS_DATA = {
   */
 };
 
-/* ========================================================================== 
+/* ==========================================================================
    SHARED HOME HERO BANNER
    --------------------------------------------------------------------------
    index.html and home_ip.html both load this file.
@@ -39,6 +39,7 @@ const PARTNERS_DATA = {
    - Disable the old CSS keyframe rotation.
    - Preserve the original artwork ratio (8:3) so the full artwork remains
      visible while the banner fills the available width.
+   - Add a compact, layered OneHaveri identity badge at the top-left.
    - Center and emphasize the Coming soon status badge.
    - Remove the obsolete decorative wave between hero and posts.
    ========================================================================== */
@@ -68,6 +69,95 @@ function initHeroBanner() {
       background-repeat: no-repeat !important;
       background-position: center !important;
       background-size: cover !important;
+    }
+
+    .hero::after {
+      display: none !important;
+      content: none !important;
+    }
+
+    .onehaveri-hero-brand {
+      position: absolute;
+      top: clamp(12px, 2.1vw, 24px);
+      left: clamp(12px, 2.1vw, 24px);
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      max-width: min(310px, 46%);
+      padding: 8px 15px 8px 8px;
+      border: 1px solid rgba(248,241,227,.72);
+      border-radius: 999px;
+      background: linear-gradient(110deg, rgba(248,241,227,.96), rgba(248,241,227,.78));
+      box-shadow: 0 7px 22px rgba(46,33,23,.16), 0 0 0 4px rgba(248,241,227,.16), 0 0 24px rgba(217,161,63,.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform .22s ease, box-shadow .22s ease;
+      pointer-events: auto;
+    }
+
+    .onehaveri-hero-brand:hover {
+      transform: translateY(-2px) scale(1.015);
+      box-shadow: 0 10px 28px rgba(46,33,23,.20), 0 0 0 5px rgba(248,241,227,.20), 0 0 30px rgba(217,161,63,.32);
+    }
+
+    .onehaveri-hero-brand-logo {
+      width: clamp(58px, 7.2vw, 82px);
+      height: clamp(58px, 7.2vw, 82px);
+      flex: 0 0 auto;
+      object-fit: contain;
+      border-radius: 50%;
+      background: rgba(248,241,227,.95);
+      box-shadow: 0 0 0 2px rgba(255,255,255,.8), 0 3px 12px rgba(46,33,23,.16), 0 0 18px rgba(217,161,63,.25);
+      transition: filter .22s ease, transform .22s ease;
+    }
+
+    .onehaveri-hero-brand:hover .onehaveri-hero-brand-logo {
+      transform: rotate(-2deg);
+      filter: drop-shadow(0 0 8px rgba(217,161,63,.65));
+    }
+
+    .onehaveri-hero-brand-copy {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      line-height: 1.05;
+      text-align: left;
+    }
+
+    .onehaveri-hero-brand-name {
+      color: var(--olive);
+      font-family: var(--font-ui);
+      font-size: clamp(18px, 2.1vw, 27px);
+      font-weight: 800;
+      letter-spacing: -.7px;
+      white-space: nowrap;
+    }
+
+    .onehaveri-hero-brand-values {
+      color: var(--muted);
+      font-family: var(--font-ui);
+      font-size: clamp(8px, .85vw, 11px);
+      font-weight: 600;
+      letter-spacing: .15px;
+      white-space: nowrap;
+    }
+
+    .onehaveri-hero-brand-motto {
+      color: var(--terracotta);
+      font-family: var(--font-kannada);
+      font-size: clamp(9px, .95vw, 12px);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .onehaveri-hero-brand-motto span {
+      color: var(--terracotta);
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
     }
 
     .hero > .status {
@@ -125,6 +215,32 @@ function initHeroBanner() {
         background-image: url("${mobileBanner}") !important;
       }
 
+      .onehaveri-hero-brand {
+        top: 9px;
+        left: 9px;
+        gap: 6px;
+        max-width: 68%;
+        padding: 5px 9px 5px 5px;
+      }
+
+      .onehaveri-hero-brand-logo {
+        width: 43px;
+        height: 43px;
+      }
+
+      .onehaveri-hero-brand-name {
+        font-size: 15px;
+        letter-spacing: -.35px;
+      }
+
+      .onehaveri-hero-brand-values {
+        font-size: 7px;
+      }
+
+      .onehaveri-hero-brand-motto {
+        font-size: 7px;
+      }
+
       .hero > .status {
         top: 10px !important;
         padding: 7px 13px !important;
@@ -145,6 +261,22 @@ function initHeroBanner() {
       }
     }
   `;
+
+  if (!document.getElementById("onehaveri-hero-brand")) {
+    const brand = document.createElement("div");
+    brand.id = "onehaveri-hero-brand";
+    brand.className = "onehaveri-hero-brand";
+    brand.setAttribute("aria-label", "OneHaveri — People, Places, Possibilities");
+    brand.innerHTML = `
+      <img class="onehaveri-hero-brand-logo" src="logo1.png" alt="OneHaveri Karnataka logo">
+      <div class="onehaveri-hero-brand-copy">
+        <div class="onehaveri-hero-brand-name">OneHaveri</div>
+        <div class="onehaveri-hero-brand-values">People • Places • Possibilities</div>
+        <div class="onehaveri-hero-brand-motto">ನಮ್ಮ ಹಾವೇರಿ <span>| Together.</span></div>
+      </div>
+    `;
+    hero.appendChild(brand);
+  }
 
   document.head.appendChild(style);
   hero.dataset.banner = String(bannerNumber);

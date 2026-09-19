@@ -122,11 +122,29 @@ function initHeroBanner() {
       .onehaveri-hero-copy-panel { width: 88%; min-height: 30%; bottom: 9px; gap: 3px; padding: 8px 11px; border-radius: 15px; }
       .onehaveri-hero-copy-panel .hero-heading { font-size: clamp(13px, 3.7vw, 19px) !important; line-height: 1.2 !important; }
       .onehaveri-hero-copy-panel .tagline { font-size: 9px !important; }
-      .onehaveri-hero-brand { top: 9px; left: 9px; gap: 6px; max-width: 68%; padding: 5px 9px 5px 5px; }
-      .onehaveri-hero-brand-logo { width: 43px; height: 43px; }
-      .onehaveri-hero-brand-name { font-size: 15px; letter-spacing: -.35px; }
-      .onehaveri-hero-brand-values, .onehaveri-hero-brand-motto { font-size: 7px; }
-      .hero > .status { top: 10px !important; padding: 7px 13px !important; font-size: 12px !important; }
+      .onehaveri-hero-brand {
+        top: clamp(7px, 2.5vw, 11px);
+        left: clamp(7px, 2.5vw, 11px);
+        gap: clamp(5px, 1.6vw, 7px);
+        max-width: min(72%, 280px);
+        padding: clamp(4px, 1.5vw, 6px) clamp(7px, 2.4vw, 10px) clamp(4px, 1.5vw, 6px) clamp(4px, 1.5vw, 6px);
+      }
+      .onehaveri-hero-brand-logo {
+        width: clamp(40px, 11.5vw, 48px);
+        height: clamp(40px, 11.5vw, 48px);
+      }
+      .onehaveri-hero-brand-name { font-size: clamp(14px, 4.2vw, 16px); letter-spacing: -.35px; }
+      .onehaveri-hero-brand-values, .onehaveri-hero-brand-motto { font-size: clamp(6.5px, 1.9vw, 8px); }
+      .hero > .status {
+        top: clamp(62px, 19vw, 76px) !important;
+        left: auto !important;
+        right: clamp(7px, 2.5vw, 11px) !important;
+        transform: none !important;
+        max-width: calc(100% - 18px) !important;
+        padding: clamp(6px, 1.8vw, 8px) clamp(10px, 3vw, 13px) !important;
+        font-size: clamp(10px, 3vw, 12px) !important;
+        gap: 6px !important;
+      }
       .hero > .status::before { width: 7px !important; height: 7px !important; flex-basis: 7px !important; }
     }
   `;

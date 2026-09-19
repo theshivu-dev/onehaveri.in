@@ -125,27 +125,31 @@ function initHeroBanner() {
       .onehaveri-hero-brand {
         top: clamp(7px, 2.5vw, 11px);
         left: clamp(7px, 2.5vw, 11px);
-        gap: clamp(5px, 1.6vw, 7px);
-        max-width: min(72%, 280px);
-        padding: clamp(4px, 1.5vw, 6px) clamp(7px, 2.4vw, 10px) clamp(4px, 1.5vw, 6px) clamp(4px, 1.5vw, 6px);
+        gap: clamp(4px, 1.4vw, 6px);
+        max-width: min(58%, 240px);
+        padding: clamp(3px, 1.2vw, 5px) clamp(5px, 2vw, 8px) clamp(3px, 1.2vw, 5px) clamp(3px, 1.2vw, 5px);
+        box-sizing: border-box;
       }
       .onehaveri-hero-brand-logo {
-        width: clamp(40px, 11.5vw, 48px);
-        height: clamp(40px, 11.5vw, 48px);
+        width: clamp(36px, 10vw, 42px);
+        height: clamp(36px, 10vw, 42px);
       }
-      .onehaveri-hero-brand-name { font-size: clamp(14px, 4.2vw, 16px); letter-spacing: -.35px; }
-      .onehaveri-hero-brand-values, .onehaveri-hero-brand-motto { font-size: clamp(6.5px, 1.9vw, 8px); }
+      .onehaveri-hero-brand-name { font-size: clamp(12px, 3.6vw, 14px); letter-spacing: -.3px; }
+      .onehaveri-hero-brand-values, .onehaveri-hero-brand-motto { font-size: clamp(5.8px, 1.65vw, 7px); }
       .hero > .status {
-        top: clamp(62px, 19vw, 76px) !important;
+        top: clamp(8px, 2.5vw, 11px) !important;
         left: auto !important;
         right: clamp(7px, 2.5vw, 11px) !important;
         transform: none !important;
-        max-width: calc(100% - 18px) !important;
-        padding: clamp(6px, 1.8vw, 8px) clamp(10px, 3vw, 13px) !important;
-        font-size: clamp(10px, 3vw, 12px) !important;
-        gap: 6px !important;
+        width: min(34%, 128px) !important;
+        max-width: 34% !important;
+        box-sizing: border-box !important;
+        padding: clamp(5px, 1.5vw, 7px) clamp(6px, 2vw, 9px) !important;
+        font-size: clamp(9px, 2.6vw, 11px) !important;
+        gap: 4px !important;
+        z-index: 6 !important;
       }
-      .hero > .status::before { width: 7px !important; height: 7px !important; flex-basis: 7px !important; }
+      .hero > .status::before { width: 6px !important; height: 6px !important; flex-basis: 6px !important; }
     }
   `;
 

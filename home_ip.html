@@ -71,6 +71,239 @@
 .survey-header{padding:20px 20px 12px;border-bottom:1px solid var(--line);flex:0 0 auto}.survey-label{color:var(--terracotta);font-size:9px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:7px}.survey-title{margin:0;font-family:var(--font-kannada);font-size:22px;line-height:1.35}.survey-subtitle{margin:7px 0 0;color:var(--muted);font-size:11px;line-height:1.5}.survey-close{position:absolute;right:14px;top:14px;width:32px;height:32px;border:0;border-radius:50%;background:rgba(46,33,23,.06);color:var(--muted);font-size:20px;cursor:pointer}.survey-progress{height:4px;background:rgba(46,33,23,.08);flex:0 0 auto}.survey-progress-bar{height:100%;width:0%;background:var(--terracotta);transition:width .25s ease}.survey-body{padding:22px 20px;overflow-y:auto;flex:1 1 auto;min-height:0}.question-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px;background:linear-gradient(155deg,rgba(217,161,63,.22),rgba(156,74,46,.10))}.question-number{color:var(--terracotta);font-size:10px;font-weight:800;margin-bottom:9px}.question-text{margin:0 0 17px;font-family:var(--font-kannada);font-size:19px;line-height:1.45}.question-help{margin:-9px 0 14px;color:var(--muted);font-size:10.5px;line-height:1.45}.option-list{display:flex;flex-wrap:wrap;gap:8px}.option{position:relative}.option.half{flex:1 1 calc(50% - 4px);min-width:120px}.option.full{flex:1 1 100%}.option input{position:absolute;opacity:0;pointer-events:none}.option label{display:block;padding:11px 13px;border:1px solid rgba(46,33,23,.12);border-radius:12px;background:#fffdf8;color:var(--ink);font-size:12px;line-height:1.4;cursor:pointer;transition:.15s ease;height:100%}.option label:hover{border-color:rgba(156,74,46,.35)}.option input:checked + label{border-color:var(--terracotta);background:rgba(156,74,46,.07);box-shadow:inset 0 0 0 1px rgba(156,74,46,.12)}.other-input{display:none;width:100%;margin-top:8px;border:1px solid rgba(46,33,23,.14);border-radius:11px;padding:10px 12px;background:#fffdf8;color:var(--ink);font:inherit;font-size:12px;outline:none}.other-input.show{display:block}.other-input:focus{border-color:var(--terracotta);box-shadow:0 0 0 3px rgba(156,74,46,.08)}.text-answer{width:100%;min-height:115px;resize:vertical;border:1px solid rgba(46,33,23,.14);border-radius:13px;padding:12px;background:#fffdf8;color:var(--ink);font:inherit;font-size:12px;line-height:1.5;outline:none}.text-answer:focus{border-color:var(--terracotta);box-shadow:0 0 0 3px rgba(156,74,46,.08)}.survey-footer{padding:12px 20px 18px;display:flex;justify-content:space-between;gap:10px;flex:0 0 auto}.survey-nav{display:flex;gap:8px;margin-left:auto}.nav-button{border:0;border-radius:11px;padding:10px 17px;font-size:11px;font-weight:700;cursor:pointer}.nav-back{background:rgba(46,33,23,.07);color:var(--muted)}.nav-next{background:var(--terracotta);color:white}.nav-next:hover{filter:brightness(.96)}.survey-note{margin-top:12px;color:var(--muted);font-size:9.5px;line-height:1.45;text-align:center}.thank-you{padding:35px 24px 30px;text-align:center}.thank-you-icon{width:54px;height:54px;margin:0 auto 14px;border-radius:50%;background:rgba(63,91,62,.12);color:var(--olive);display:flex;align-items:center;justify-content:center;font-size:25px}.thank-you h2{margin:0 0 9px;font-family:var(--font-kannada);font-size:22px}.thank-you p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}.thank-you button{margin-top:20px;border:0;border-radius:11px;padding:10px 20px;background:var(--terracotta);color:white;font-weight:700;cursor:pointer}
 .invitation-overlay{position:fixed;inset:0;z-index:1100;display:none;align-items:flex-end;justify-content:center;padding:18px 18px max(110px,calc(env(safe-area-inset-bottom) + 100px));background:rgba(46,33,23,.20);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}.invitation-overlay.show{display:flex}.invitation{width:100%;max-width:430px;background:var(--card);border:1px solid rgba(46,33,23,.10);border-radius:20px;padding:19px 18px 16px;box-shadow:0 15px 45px rgba(46,33,23,.22);animation:inviteUp .3s ease}@keyframes inviteUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}.invitation-tag{color:var(--terracotta);font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.invitation h2{margin:6px 0 6px;font-family:var(--font-kannada);font-size:19px;line-height:1.35}.invitation p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}.invitation-actions{display:flex;gap:8px;margin-top:14px}.invitation-actions button{flex:1;border-radius:10px;padding:10px 8px;font-size:11px;font-weight:700;cursor:pointer}.invite-later{border:1px solid rgba(46,33,23,.12);background:#fffdf8;color:var(--muted)}.invite-start{border:0;background:var(--terracotta);color:white}
 @media(max-height:760px){.status{margin-bottom:5px;font-size:9px}.hero-heading{font-size:18px}.divider{margin:3px auto}.tagline{margin:4px auto 0;font-size:12.5px;gap:6px}.tagline:before,.tagline:after{flex-basis:9px}.intro{font-size:11px;line-height:1.32}.card{padding:7px 4px}.icon{width:21px;height:21px;margin-bottom:3px;border-radius:7px}.icon svg{width:11px;height:11px}.card h2{font-size:11.5px;margin-bottom:2px}.card p{font-size:8.4px;line-height:1.25}.survey-button{padding:6px 12px;font-size:9.5px}.join{padding:8px 9px;gap:7px}.join-icon{width:26px;height:26px;flex-basis:26px}.join-icon svg{width:13px;height:13px}.join p{font-size:9.2px;line-height:1.28}.join h2{font-size:11.5px}.join .coming{font-size:8.6px;margin-top:3px}.bottom{font-size:8px}}
+
+/* ----------------------------------------------------------------
+   FEATURED COMMUNITY PORTALS — home_ip.html only
+   ---------------------------------------------------------------- */
+.portal-directory{
+  position:relative;
+  z-index:1;
+  width:100%;
+  overflow:hidden;
+  padding:clamp(16px,2.2vw,30px);
+  border:1px solid rgba(185,132,41,.20);
+  border-radius:clamp(18px,2.4vw,28px);
+  background:linear-gradient(145deg,rgba(248,241,227,.98),rgba(243,226,196,.72));
+  box-shadow:0 8px 24px rgba(46,33,23,.055);
+}
+.portal-directory-head{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(280px,.95fr);
+  align-items:center;
+  gap:16px;
+  min-height:148px;
+  margin-bottom:clamp(14px,2vw,24px);
+}
+.portal-directory-kicker{
+  margin:0 0 3px;
+  color:var(--terracotta);
+  font-family:var(--font-kannada);
+  font-size:clamp(13px,1.7vw,18px);
+  font-weight:700;
+  line-height:1.3;
+}
+.portal-directory-title{
+  margin:0;
+  color:var(--olive);
+  font-family:var(--font-display);
+  font-size:clamp(24px,3.2vw,42px);
+  font-weight:700;
+  line-height:1.1;
+  letter-spacing:-.7px;
+}
+.portal-directory-subtitle{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:clamp(12px,1.3vw,15px);
+  line-height:1.45;
+}
+.portal-landscape{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:190px;
+  overflow:visible;
+}
+.portal-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:stretch;
+  gap:clamp(10px,1.4vw,18px);
+}
+.portal-card{
+  --portal-accent:var(--olive);
+  --portal-tint:#E8EBDD;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  padding:clamp(10px,1.15vw,16px);
+  border:1px solid rgba(185,132,41,.20);
+  border-left:3px solid var(--portal-accent);
+  border-radius:18px;
+  background:rgba(248,241,227,.94);
+  box-shadow:0 7px 18px rgba(46,33,23,.055);
+  color:var(--ink);
+}
+.portal-card--blood{--portal-accent:#B72C25;--portal-tint:#FBE3DE;background:linear-gradient(155deg,#FFF2EE,#FBECE7);}
+.portal-card--jobs{--portal-accent:#285D3D;--portal-tint:#E2EBDD;background:linear-gradient(155deg,#F8F6EC,#F1F1E5);}
+.portal-card--schools{--portal-accent:#A66C08;--portal-tint:#F9E9C7;background:linear-gradient(155deg,#FFF8E7,#F8EFD9);}
+.portal-card--community{--portal-accent:#285D3D;--portal-tint:#E0EBDD;background:linear-gradient(155deg,#F5F7ED,#EEF1E7);}
+.portal-card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:clamp(10px,1.3vw,16px);
+}
+.portal-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:clamp(46px,5.2vw,64px);
+  height:clamp(46px,5.2vw,64px);
+  flex:0 0 auto;
+  border-radius:50%;
+  background:var(--portal-tint);
+  color:var(--portal-accent);
+}
+.portal-icon svg{width:56%;height:56%;display:block;}
+.portal-status{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border:1px solid rgba(185,132,41,.16);
+  border-radius:999px;
+  background:rgba(217,161,63,.10);
+  color:var(--terracotta);
+  font-family:var(--font-ui);
+  font-size:clamp(9px,.9vw,11px);
+  font-weight:600;
+  line-height:1.15;
+  white-space:nowrap;
+}
+.portal-status svg{width:12px;height:12px;flex:0 0 auto;}
+.portal-card-title-kn{
+  margin:0;
+  color:var(--portal-accent);
+  font-family:var(--font-kannada);
+  font-size:clamp(13px,1.35vw,17px);
+  font-weight:700;
+  line-height:1.35;
+}
+.portal-card-title-en{
+  margin:2px 0 0;
+  color:var(--ink);
+  font-family:var(--font-ui);
+  font-size:clamp(14px,1.55vw,20px);
+  font-weight:700;
+  line-height:1.2;
+}
+.portal-card-description{
+  min-height:4.2em;
+  margin:8px 0 12px;
+  color:var(--muted);
+  font-size:clamp(11px,1.1vw,14px);
+  line-height:1.45;
+}
+.portal-art{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:clamp(100px,10.2vw,145px);
+  margin-top:auto;
+  overflow:hidden;
+  border-radius:12px;
+  background:var(--portal-tint);
+}
+.portal-art svg{display:block;width:100%;height:100%;}
+.portal-card-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+}
+.portal-explore{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:40px;
+  padding:9px 14px;
+  border:0;
+  border-radius:10px;
+  background:var(--portal-accent);
+  color:#fff;
+  font-family:var(--font-ui);
+  font-size:clamp(11px,1vw,13px);
+  font-weight:600;
+  line-height:1.2;
+  opacity:.88;
+  cursor:not-allowed;
+}
+.portal-explore svg{width:15px;height:15px;flex:0 0 auto;}
+.portal-save-note{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-left:auto;
+  color:#B72C25;
+  font-size:10px;
+  line-height:1.25;
+  text-align:center;
+}
+.portal-save-note svg{width:17px;height:17px;flex:0 0 auto;}
+@media(max-width:1000px){
+  .portal-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .portal-directory-head{grid-template-columns:minmax(0,1fr) minmax(220px,.85fr);}
+  .portal-card-description{min-height:3.2em;}
+  .portal-art{height:clamp(105px,18vw,155px);}
+}
+@media(max-width:600px){
+  .portal-directory{padding:14px 12px;border-radius:18px;}
+  .portal-directory-head{
+    display:block;
+    min-height:130px;
+    margin-bottom:14px;
+    padding:5px 2px 0;
+  }
+  .portal-directory-copy{position:relative;z-index:1;width:76%;}
+  .portal-directory-kicker{font-size:13px;}
+  .portal-directory-title{font-size:clamp(23px,7vw,31px);}
+  .portal-directory-subtitle{max-width:250px;margin-top:6px;font-size:11px;}
+  .portal-landscape{
+    position:absolute;
+    right:-6px;
+    bottom:-2px;
+    width:57%;
+    max-height:125px;
+    opacity:.94;
+  }
+  .portal-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+  .portal-card{padding:9px 8px 10px;border-radius:14px;border-left-width:3px;}
+  .portal-card-top{align-items:flex-start;gap:5px;margin-bottom:9px;}
+  .portal-icon{width:39px;height:39px;}
+  .portal-status{gap:4px;padding:4px 6px;font-size:8px;}
+  .portal-status svg{width:10px;height:10px;}
+  .portal-card-title-kn{font-size:clamp(11px,3.1vw,13px);line-height:1.35;}
+  .portal-card-title-en{font-size:clamp(12px,3.35vw,15px);line-height:1.2;}
+  .portal-card-description{min-height:5.3em;margin:6px 0 9px;font-size:10px;line-height:1.38;}
+  .portal-art{height:clamp(76px,25vw,112px);border-radius:9px;}
+  .portal-card-actions{margin-top:8px;gap:4px;}
+  .portal-explore{width:100%;min-height:34px;gap:5px;padding:7px 5px;font-size:10px;border-radius:8px;}
+  .portal-explore svg{width:12px;height:12px;}
+  .portal-save-note{display:none;}
+}
+@media(max-width:350px){
+  .portal-grid{grid-template-columns:1fr;}
+  .portal-card-description{min-height:0;}
+  .portal-art{height:125px;}
+  .portal-card-top{align-items:center;}
+  .portal-explore{width:auto;padding-inline:14px;font-size:11px;}
+}
+
 </style>
 
 </head>
@@ -92,6 +325,153 @@
   <a class="card" href="posts.html?category=dreams"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/></svg></div><h2>ಕನಸುಗಳು</h2><p>Ideas, possibilities, solutions and small steps for tomorrow.</p></a>
 </section>
 <section class="survey-invite"><button type="button" class="survey-button" onclick="openSurvey()">📋 ಸಮೀಕ್ಷೆ: ಹಾವೇರಿಯ ಬಗ್ಗೆ ನಿಮ್ಮ ಮಾತು ಹಂಚಿಕೊಳ್ಳಿ (2–3 ನಿಮಿಷ)</button></section>
+
+<section class="portal-directory" aria-labelledby="portal-directory-title">
+  <div class="portal-directory-head">
+    <div class="portal-directory-copy">
+      <p class="portal-directory-kicker">ನಮ್ಮ ಪೋರ್ಟಲ್‌ಗಳು</p>
+      <h2 class="portal-directory-title" id="portal-directory-title">Community Portals</h2>
+      <p class="portal-directory-subtitle">Useful services and initiatives for Haveri.</p>
+    </div>
+    <svg class="portal-landscape" viewBox="0 0 620 190" role="img" aria-label="Illustration of a Haveri temple, bridge, river and moonlit landscape">
+      <defs>
+        <linearGradient id="portal-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8E5B6"/><stop offset="1" stop-color="#F3DDA8" stop-opacity=".25"/></linearGradient>
+        <linearGradient id="portal-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8C9B2"/><stop offset="1" stop-color="#E8D8B7"/></linearGradient>
+      </defs>
+      <rect x="0" y="0" width="620" height="190" rx="18" fill="url(#portal-sky)" opacity=".42"/>
+      <circle cx="476" cy="49" r="43" fill="#F5D38B" opacity=".82"/>
+      <circle cx="463" cy="41" r="36" fill="#FBE8B9" opacity=".45"/>
+      <path d="M0 123 Q70 92 145 118 T300 116 T470 109 T620 115 V190 H0Z" fill="#B7C7A0" opacity=".65"/>
+      <path d="M0 143 Q120 124 230 143 T460 138 T620 141 V190 H0Z" fill="url(#portal-water)"/>
+      <path d="M0 154 Q110 143 220 154 T450 151 T620 153" stroke="#8EA88A" stroke-width="2" fill="none" opacity=".65"/>
+      <g fill="#819A71" opacity=".9"><path d="M0 126q18-37 36 0q19-50 38 0q17-30 34 0v25H0Z"/><path d="M530 126q16-38 32 0q19-51 38 0q10-28 20 0v23h-90Z"/></g>
+      <g fill="#C79A57" stroke="#8C6B3C" stroke-width="1.4" stroke-linejoin="round">
+        <path d="M106 132V78h14V61h13V43h11V61h13V78h14v54Z"/>
+        <path d="M96 80h94l-47-26Z"/><path d="M111 98h69M111 112h69" stroke="#E8C47F"/>
+        <path d="M129 132V91h28v41Z" fill="#E7C88B"/>
+        <path d="M136 132v-25a7 7 0 0 1 14 0v25" fill="#7C8F70"/>
+        <path d="M90 132h126v8H90Z" fill="#A77D43"/>
+      </g>
+      <g fill="#D2B47C" stroke="#947445" stroke-width="1.4">
+        <path d="M220 138V108h400v30Z"/>
+        <path d="M216 108h408v8H216Z" fill="#B68B4E"/>
+        <path d="M244 116v22h34v-22M321 116v22h34v-22M398 116v22h34v-22M475 116v22h34v-22M552 116v22h34v-22" fill="#EED9A7"/>
+        <path d="M244 138a17 17 0 0 1 34 0M321 138a17 17 0 0 1 34 0M398 138a17 17 0 0 1 34 0M475 138a17 17 0 0 1 34 0M552 138a17 17 0 0 1 34 0" fill="none" stroke="#9E7C4C" stroke-width="4"/>
+      </g>
+      <g fill="#536B55"><path d="M42 107q-28-20-21-41q24 3 30 23q8-27 30-27q3 24-20 39q27-6 38 15H33Z"/><path d="M558 105q-20-26-8-45q21 9 22 28q14-24 34-16q-2 23-23 35q20-2 29 13h-63Z"/></g>
+      <g stroke="#647B69" stroke-width="2" fill="none" stroke-linecap="round"><path d="M330 40q9-8 18 0q-9-2-18 0ZM373 59q8-8 16 0q-8-2-16 0ZM402 34q8-8 16 0q-8-2-16 0Z"/></g>
+      <path d="M0 165Q160 151 300 167T620 165" stroke="#D7C49A" stroke-width="3" fill="none" opacity=".85"/>
+    </svg>
+  </div>
+
+  <div class="portal-grid">
+    <article class="portal-card portal-card--blood">
+      <div class="portal-card-top">
+        <span class="portal-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 3C19 13 8 24 8 33a16 16 0 0 0 32 0C40 24 29 13 24 3Z"/><path d="M16 32a8 8 0 0 0 8 8" fill="none" stroke="#FFF2EE" stroke-width="3" stroke-linecap="round"/></svg></span>
+        <span class="portal-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>Coming Soon</span>
+      </div>
+      <h3 class="portal-card-title-kn">ರಕ್ತದಾನ ಮತ್ತು ರಕ್ತ ಬ್ಯಾಂಕ್</h3>
+      <p class="portal-card-title-en">Blood Bank Portal</p>
+      <p class="portal-card-description">Find blood availability, connect with donors, and support urgent needs.</p>
+      <div class="portal-art" aria-hidden="true">
+        <svg viewBox="0 0 320 120">
+          <defs><linearGradient id="blood-bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F9D8CF"/><stop offset="1" stop-color="#FFF0E9"/></linearGradient></defs>
+          <rect width="320" height="120" fill="url(#blood-bg)"/>
+          <circle cx="160" cy="60" r="44" fill="#F6C0B7" opacity=".6"/>
+          <path d="M160 25c-11 16-31 34-31 50a31 31 0 0 0 62 0c0-16-20-34-31-50Z" fill="#B72C25" opacity=".95"/>
+          <path d="M143 77a18 18 0 0 0 18 18" fill="none" stroke="#FFF0E9" stroke-width="5" stroke-linecap="round"/>
+          <path d="M73 82q36-45 73-1l-18 23H88Z" fill="#DDAA86" opacity=".9"/>
+          <path d="M247 82q-36-45-73-1l18 23h40Z" fill="#C58F6C" opacity=".9"/>
+          <path d="M93 105q40-23 67-5q27-18 67 5" fill="none" stroke="#F7E4D5" stroke-width="12" stroke-linecap="round"/>
+          <path d="M126 60l34 32 34-32" fill="none" stroke="#F6B4AA" stroke-width="3" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="portal-card-actions">
+        <button class="portal-explore" type="button" disabled aria-disabled="true">Explore Portal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <span class="portal-save-note"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-4.8-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.2-8 11-8 11Z"/></svg><span>Save Lives<br>Support Haveri</span></span>
+      </div>
+    </article>
+
+    <article class="portal-card portal-card--jobs">
+      <div class="portal-card-top">
+        <span class="portal-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="15" width="38" height="27" rx="4" fill="currentColor" stroke="none"/><path d="M17 15V9h14v6M5 25h38M20 24v5h8v-5" stroke="#F8F1E3" stroke-width="3"/></svg></span>
+        <span class="portal-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>Coming Soon</span>
+      </div>
+      <h3 class="portal-card-title-kn">ಕೌಶಲ್ಯ ಮತ್ತು ಉದ್ಯೋಗ</h3>
+      <p class="portal-card-title-en">Skills &amp; Jobs</p>
+      <p class="portal-card-description">Training programs, job opportunities and career resources for Haveri youth and professionals.</p>
+      <div class="portal-art" aria-hidden="true">
+        <svg viewBox="0 0 320 120">
+          <defs><linearGradient id="jobs-bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#E8D6AA"/><stop offset="1" stop-color="#F6EDDA"/></linearGradient></defs>
+          <rect width="320" height="120" fill="url(#jobs-bg)"/>
+          <rect x="45" y="16" width="230" height="77" rx="7" fill="#26332D"/>
+          <rect x="54" y="24" width="212" height="58" rx="3" fill="#334C42"/>
+          <path d="M90 51h54M90 60h36M178 45h53M178 54h37" stroke="#D8DDBA" stroke-width="3" stroke-linecap="round" opacity=".65"/>
+          <path d="M130 93h60l13 12H117Z" fill="#8D6D4C"/>
+          <path d="M108 105h104" stroke="#B99A71" stroke-width="5" stroke-linecap="round"/>
+          <rect x="218" y="57" width="30" height="25" rx="3" fill="#D9A13F"/>
+          <path d="M225 57v-6h16v6" stroke="#F6EDDA" stroke-width="2" fill="none"/>
+          <circle cx="94" cy="41" r="7" fill="#D9A13F"/>
+        </svg>
+      </div>
+      <div class="portal-card-actions"><button class="portal-explore" type="button" disabled aria-disabled="true">Explore Portal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+    </article>
+
+    <article class="portal-card portal-card--schools">
+      <div class="portal-card-top">
+        <span class="portal-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M5 21 24 7l19 14v4H5Z"/><path d="M9 25h30v17H9Z"/><path d="M20 29h8v13h-8Z" fill="#F8F1E3"/><path d="M13 29h4v4h-4zM31 29h4v4h-4z" fill="#F8F1E3"/><path d="M24 3v9" stroke="currentColor" stroke-width="3"/><path d="M24 4h12l-5 5h-7Z" fill="#D9A13F"/></svg></span>
+        <span class="portal-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>Coming Soon</span>
+      </div>
+      <h3 class="portal-card-title-kn">ಶಾಲೆಗಳು ಮತ್ತು ಶಿಕ್ಷಣ</h3>
+      <p class="portal-card-title-en">Schools &amp; Education</p>
+      <p class="portal-card-description">Information, resources and initiatives to support better education for every child in Haveri.</p>
+      <div class="portal-art" aria-hidden="true">
+        <svg viewBox="0 0 320 120">
+          <defs><linearGradient id="school-bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#D8E5D5"/><stop offset="1" stop-color="#F6E8C8"/></linearGradient></defs>
+          <rect width="320" height="120" fill="url(#school-bg)"/>
+          <rect x="93" y="13" width="134" height="72" rx="3" fill="#29483F"/>
+          <rect x="101" y="21" width="118" height="56" rx="2" fill="#355D50"/>
+          <path d="M119 35h80M119 46h61M119 57h74" stroke="#E6E2B8" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>
+          <path d="M75 88h170" stroke="#9D8056" stroke-width="6" stroke-linecap="round"/>
+          <path d="M145 87v-9h30v9" fill="#B48A55"/>
+          <rect x="37" y="78" width="25" height="30" rx="4" fill="#C78E55"/>
+          <path d="M49 79V52M49 63q-20-7-19-23q19 0 19 23ZM49 72q21-7 20-27q-19 0-20 27Z" fill="#577B4F"/>
+          <path d="M35 108h29" stroke="#8C633D" stroke-width="4" stroke-linecap="round"/>
+          <rect x="261" y="77" width="25" height="31" rx="4" fill="#C78E55"/>
+          <path d="M273 78V48M273 61q-20-7-19-23q19 0 19 23ZM273 69q21-7 20-27q-19 0-20 27Z" fill="#577B4F"/>
+        </svg>
+      </div>
+      <div class="portal-card-actions"><button class="portal-explore" type="button" disabled aria-disabled="true">Explore Portal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+    </article>
+
+    <article class="portal-card portal-card--community">
+      <div class="portal-card-top">
+        <span class="portal-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><circle cx="24" cy="12" r="7"/><circle cx="9" cy="22" r="6"/><circle cx="39" cy="22" r="6"/><path d="M11 42v-5c0-8 5-13 13-13s13 5 13 13v5Z"/><path d="M1 42v-5c0-5 3-9 8-9 3 0 5 1 7 3-3 3-4 7-4 11ZM47 42v-5c0-5-3-9-8-9-3 0-5 1-7 3 3 3 4 7 4 11Z"/></svg></span>
+        <span class="portal-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>Coming Soon</span>
+      </div>
+      <h3 class="portal-card-title-kn">ಸಮುದಾಯದ ಉಪಕ್ರಮಗಳು</h3>
+      <p class="portal-card-title-en">Community Initiatives</p>
+      <p class="portal-card-description">Civic actions, volunteer opportunities, CSR initiatives and ways to contribute to a better Haveri.</p>
+      <div class="portal-art" aria-hidden="true">
+        <svg viewBox="0 0 320 120">
+          <defs><linearGradient id="community-bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#E4E9D7"/><stop offset="1" stop-color="#F3E3C9"/></linearGradient></defs>
+          <rect width="320" height="120" fill="url(#community-bg)"/>
+          <circle cx="160" cy="58" r="43" fill="#D0DABF" opacity=".65"/>
+          <g stroke-linecap="round" stroke-linejoin="round">
+            <path d="M57 45l58 24 44-22 51 24 54-25" fill="none" stroke="#C68F68" stroke-width="26"/>
+            <path d="M58 45l58 24 44-22 51 24 53-25" fill="none" stroke="#D9AB83" stroke-width="17"/>
+            <path d="M112 69l43 23 54-21" fill="none" stroke="#B97D5D" stroke-width="23"/>
+            <path d="M112 69l43 23 54-21" fill="none" stroke="#E4B895" stroke-width="14"/>
+          </g>
+          <path d="M144 62l16-9 17 9-17 10Z" fill="#3F5B3E" opacity=".85"/>
+          <path d="M160 71v23" stroke="#3F5B3E" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+        </svg>
+      </div>
+      <div class="portal-card-actions"><button class="portal-explore" type="button" disabled aria-disabled="true">Explore Portal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+    </article>
+  </div>
+</section>
+
 <div id="partners-container" data-partner="nammashale"></div>
 <div data-close-brands></div>
 <section class="join"><div class="join-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="10" r="3.2"/><circle cx="16.2" cy="12.2" r="2.6"/><path d="M3.2 19.5c.6-3 2.7-4.6 5.3-4.6s4.7 1.6 5.3 4.6"/><path d="M13.8 15.4c1.9.2 3.4 1.6 3.9 4.1"/></svg></div><div class="join-copy"><h2>ನೀವೂ ಜೊತೆಯಾಗಿರಿ</h2><p>ಪತ್ರಕರ್ತರಿರಲಿ, ಹೊಸ ಐಡಿಯಾ ಇರುವ ವಿದ್ಯಾರ್ಥಿಯಿರಲಿ, ತಮ್ಮ ಕಥೆ ಹೇಳಬೇಕೆನ್ನಿಸುವ ಅಂಗಡಿಯವರಿರಲಿ, ಸುತ್ತಮುತ್ತ ಏನಾದರೂ ಗಮನಿಸಿದ ನೆರೆಹೊರೆಯವರಿರಲಿ — ಪ್ರತಿಯೊಬ್ಬರ ಮಾತಿಗೂ ಇಲ್ಲಿ ಜಾಗ ಇದೆ.</p><span class="coming">Contribution platform — In Progress.</span><p>If you would like to contribute in any way towards expanding this shared vision for Haveri, reach out to us at <a href="mailto:contact@onehaveri.in">contact@onehaveri.in</a>.</p></div></section>

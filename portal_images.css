@@ -1,46 +1,122 @@
 /* ================================================================
    OneHaveri — Community Portal Artwork
    ----------------------------------------------------------------
-   Maps the portal artwork assets to the existing portal components.
-   This file intentionally changes only .portal-art and
-   .portal-landscape visuals; portal structure, labels, sizing and
-   behavior remain owned by home_ip.html.
+   Portal-only visual overrides. The existing portal structure,
+   content, actions and behavior remain owned by home_ip.html.
    ================================================================ */
 
+/* Replace the legacy inline artwork completely. The page JavaScript
+   also contains the original SVG sizing rule, so these are explicit
+   and important to prevent the old artwork from leaking through. */
 .portal-art{
-  background-color:transparent;
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:contain;
+  background-color:transparent !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:100% 100% !important;
+  border-radius:10px !important;
 }
 
+.portal-art > *,
 .portal-art svg{
-  display:none;
+  display:none !important;
 }
 
 .portal-card--blood .portal-art{
-  background-image:url("assets/portal/images/blood-bank.png");
+  background-image:url("assets/portal/images/blood-bank.png") !important;
 }
 
 .portal-card--jobs .portal-art{
-  background-image:url("assets/portal/images/skills-jobs.png");
+  background-image:url("assets/portal/images/skills-jobs.png") !important;
 }
 
 .portal-card--schools .portal-art{
-  background-image:url("assets/portal/images/schools.png");
+  background-image:url("assets/portal/images/schools.png") !important;
 }
 
 .portal-card--community .portal-art{
-  background-image:url("assets/portal/images/community.png");
+  background-image:url("assets/portal/images/community.png") !important;
+}
+
+/* The uploaded artwork is already composed for the portal card ratio;
+   reducing the art band keeps the cards compact without cropping it. */
+.portal-art{
+  height:clamp(64px,5.4vw,80px) !important;
+}
+
+/* Remove the secondary English subtitle so the directory header can
+   be shorter and the artwork can sit naturally against the right edge. */
+.portal-directory-subtitle{
+  display:none !important;
+}
+
+.portal-directory-head{
+  min-height:clamp(68px,6vw,88px) !important;
+  overflow:hidden;
 }
 
 .portal-landscape{
-  background-image:url("assets/portal/images/portal-landscape.png");
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:contain;
+  position:absolute !important;
+  right:0 !important;
+  bottom:0 !important;
+  width:52% !important;
+  height:clamp(72px,7vw,92px) !important;
+  max-height:none !important;
+  background-image:url("assets/portal/images/portal-landscape.png") !important;
+  background-repeat:no-repeat !important;
+  background-position:right center !important;
+  background-size:contain !important;
+  background-color:transparent !important;
+  opacity:.96 !important;
+  overflow:hidden !important;
+  z-index:0 !important;
 }
 
 .portal-landscape > *{
-  display:none;
+  display:none !important;
+}
+
+@media(max-width:1000px){
+  .portal-directory-head{
+    min-height:clamp(72px,8vw,88px) !important;
+  }
+  .portal-art{
+    height:clamp(62px,9vw,78px) !important;
+  }
+  .portal-landscape{
+    width:50% !important;
+    height:clamp(68px,8vw,84px) !important;
+  }
+}
+
+@media(max-width:600px){
+  .portal-directory-head{
+    min-height:74px !important;
+    margin-bottom:6px !important;
+    overflow:hidden;
+  }
+  .portal-directory-copy{
+    width:54% !important;
+  }
+  .portal-art{
+    height:clamp(58px,15vw,68px) !important;
+  }
+  .portal-landscape{
+    right:0 !important;
+    bottom:0 !important;
+    width:54% !important;
+    height:68px !important;
+  }
+}
+
+@media(max-width:350px){
+  .portal-directory-copy{
+    width:56% !important;
+  }
+  .portal-art{
+    height:82px !important;
+  }
+  .portal-landscape{
+    width:56% !important;
+    height:72px !important;
+  }
 }

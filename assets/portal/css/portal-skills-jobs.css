@@ -1,0 +1,15 @@
+/* ================================================================
+   OneHaveri — Skills & Jobs Portal
+   ----------------------------------------------------------------
+   Only Skills & Jobs identity/artwork belongs here.
+   ================================================================ */
+
+.portal-directory .portal-card.portal-card--jobs{
+  --portal-accent:#285D3D;
+  --portal-tint:#E2EBDD;
+  background:linear-gradient(155deg,#F8F6EC,#F1F1E5);
+}
+
+.portal-directory .portal-card.portal-card--jobs .portal-art{
+  background-image:url("../../portal/images/skills-jobs.png") !important;
+}

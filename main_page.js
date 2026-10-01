@@ -7,7 +7,7 @@
 
 const HERO_COPY = Object.freeze({
   heading: "ಹಾವೇರಿಯ ಬದುಕು, ಹಾವೇರಿಯವರ ಮಾತು.",
-  tagline: "Don't wait. Stand for your place."
+  tagline: "BYADAGI|HAVERI|HIREKERUR|RANEBENNURU|RATTIHALLI|SAVANURU|SHIGGAON"
 });
 
 function initHeroBanner() {

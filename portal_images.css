@@ -1,118 +1,20 @@
 /* ================================================================
-   OneHaveri — Community Portal Artwork
+   OneHaveri — Community Portals CSS entry point
    ----------------------------------------------------------------
-   Portal-only visual overrides. The existing portal structure,
-   content, actions and behavior remain owned by home_ip.html.
+   The homepage keeps one stable stylesheet reference. The actual
+   portal component CSS is isolated under assets/portal/css/:
+
+     portal-container.css      shared container/card geometry
+     portal-blood-bank.css     Blood Bank only
+     portal-skills-jobs.css    Skills & Jobs only
+     portal-schools.css        Schools & Education only
+     portal-community.css      Community Initiatives only
+
+   This file intentionally contains no portal-specific styling.
    ================================================================ */
 
-/* Uploaded artwork replaces the legacy inline SVG artwork completely. */
-.portal-art{
-  background-color:transparent !important;
-  background-repeat:no-repeat !important;
-  background-position:center !important;
-  background-size:contain !important;
-  border-radius:10px !important;
-  height:clamp(64px,5.4vw,80px) !important;
-}
-
-.portal-art > *,
-.portal-art svg{
-  display:none !important;
-}
-
-.portal-card--blood .portal-art{
-  background-image:url("assets/portal/images/blood-bank.png") !important;
-}
-
-.portal-card--jobs .portal-art{
-  background-image:url("assets/portal/images/skills-jobs.png") !important;
-}
-
-.portal-card--schools .portal-art{
-  background-image:url("assets/portal/images/schools.png") !important;
-}
-
-.portal-card--community .portal-art{
-  background-image:url("assets/portal/images/community.png") !important;
-}
-
-/* Keep the directory header compact: the visual carries the right side,
-   so the repeated explanatory subtitle is intentionally removed. */
-.portal-directory-subtitle{
-  display:none !important;
-}
-
-.portal-directory-head{
-  min-height:clamp(68px,6vw,88px) !important;
-  overflow:hidden;
-}
-
-.portal-landscape{
-  position:absolute !important;
-  right:0 !important;
-  bottom:0 !important;
-  width:52% !important;
-  height:clamp(72px,7vw,92px) !important;
-  max-height:none !important;
-  background-image:url("assets/portal/images/portal-landscape.png") !important;
-  background-repeat:no-repeat !important;
-  background-position:right center !important;
-  background-size:contain !important;
-  background-color:transparent !important;
-  opacity:.96 !important;
-  overflow:hidden !important;
-  z-index:0 !important;
-  mix-blend-mode:multiply;
-}
-
-/* The original inline landscape SVG is hidden so it cannot appear behind
-   the uploaded PNG or create the old double-artwork effect. */
-.portal-landscape > *{
-  display:none !important;
-}
-
-@media(max-width:1000px){
-  .portal-directory-head{
-    min-height:clamp(72px,8vw,88px) !important;
-  }
-  .portal-art{
-    height:clamp(62px,9vw,78px) !important;
-  }
-  .portal-landscape{
-    width:50% !important;
-    height:clamp(68px,8vw,84px) !important;
-  }
-}
-
-@media(max-width:600px){
-  .portal-directory-head{
-    min-height:74px !important;
-    margin-bottom:6px !important;
-    overflow:hidden;
-  }
-  .portal-directory-copy{
-    width:54% !important;
-  }
-  .portal-art{
-    height:clamp(58px,15vw,68px) !important;
-  }
-  .portal-landscape{
-    right:0 !important;
-    bottom:0 !important;
-    width:54% !important;
-    height:68px !important;
-  }
-}
-
-@media(max-width:350px){
-  .portal-directory-copy{
-    width:56% !important;
-  }
-  .portal-art{
-    height:82px !important;
-  }
-  .portal-landscape{
-    width:56% !important;
-    height:72px !important;
-  }
-}
+@import url("assets/portal/css/portal-container.css");
+@import url("assets/portal/css/portal-blood-bank.css");
+@import url("assets/portal/css/portal-skills-jobs.css");
+@import url("assets/portal/css/portal-schools.css");
+@import url("assets/portal/css/portal-community.css");

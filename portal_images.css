@@ -1,0 +1,46 @@
+/* ================================================================
+   OneHaveri — Community Portal Artwork
+   ----------------------------------------------------------------
+   Maps the portal artwork assets to the existing portal components.
+   This file intentionally changes only .portal-art and
+   .portal-landscape visuals; portal structure, labels, sizing and
+   behavior remain owned by home_ip.html.
+   ================================================================ */
+
+.portal-art{
+  background-color:transparent;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+}
+
+.portal-art svg{
+  display:none;
+}
+
+.portal-card--blood .portal-art{
+  background-image:url("assets/portal/images/blood-bank.png");
+}
+
+.portal-card--jobs .portal-art{
+  background-image:url("assets/portal/images/skills-jobs.png");
+}
+
+.portal-card--schools .portal-art{
+  background-image:url("assets/portal/images/schools.png");
+}
+
+.portal-card--community .portal-art{
+  background-image:url("assets/portal/images/community.png");
+}
+
+.portal-landscape{
+  background-image:url("assets/portal/images/portal-landscape.png");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+}
+
+.portal-landscape > *{
+  display:none;
+}

@@ -1,0 +1,15 @@
+/* ================================================================
+   OneHaveri — Schools & Education Portal
+   ----------------------------------------------------------------
+   Only Schools & Education identity/artwork belongs here.
+   ================================================================ */
+
+.portal-directory .portal-card.portal-card--schools{
+  --portal-accent:#A66C08;
+  --portal-tint:#F9E9C7;
+  background:linear-gradient(155deg,#FFF8E7,#F8EFD9);
+}
+
+.portal-directory .portal-card.portal-card--schools .portal-art{
+  background-image:url("../../portal/images/schools.png") !important;
+}

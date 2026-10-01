@@ -1,0 +1,15 @@
+/* ================================================================
+   OneHaveri — Community Initiatives Portal
+   ----------------------------------------------------------------
+   Only Community Initiatives identity/artwork belongs here.
+   ================================================================ */
+
+.portal-directory .portal-card.portal-card--community{
+  --portal-accent:#285D3D;
+  --portal-tint:#E0EBDD;
+  background:linear-gradient(155deg,#F5F7ED,#EEF1E7);
+}
+
+.portal-directory .portal-card.portal-card--community .portal-art{
+  background-image:url("../../portal/images/community.png") !important;
+}

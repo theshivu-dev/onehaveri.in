@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F2E8D8">
+<title>ಪೋಸ್ಟ್ — OneHaveri</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Kannada:wght@500;600;700&family=Lora:ital,wght@0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="main_page.css?v=1">
+
+<style>
+/* ==================================================================
+   post.html -- page-specific styles only, same local-styles pattern
+   as posts.html/home_ip.html. Shared tokens/layout come from
+   main_page.css. Data-fetch + rendering logic lives entirely in
+   post.js, kept separate so this page's structure and that page's
+   behaviour can each be touched independently.
+
+   This page is independently modular from posts.html/posts.js -- the
+   only connection between the two is the ?id= in the URL. Neither
+   file knows the other exists.
+   ================================================================== */
+
+.post-page{max-width:640px;margin:0 auto;padding:16px 14px 110px}
+
+/* REGION: back-nav */
+.post-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.back-link{font-family:var(--font-kannada);font-size:12.5px;font-weight:600;color:var(--terracotta);text-decoration:none}
+.share-btn{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:6px 14px;font-family:var(--font-ui);font-size:11px;font-weight:600;cursor:pointer;transition:.15s ease}
+.share-btn.copied{color:var(--olive);border-color:rgba(63,91,62,.4)}
+
+.state-msg{text-align:center;padding:60px 12px;color:var(--muted);font-size:13px;line-height:1.8}
+.state-msg .retry-btn{margin-top:10px;border:1px solid var(--terracotta);background:transparent;color:var(--terracotta);padding:6px 16px;border-radius:999px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer}
+
+/* REGION: post-main */
+.post-main{background:var(--card);border-radius:var(--radius-card);padding:18px 16px;border-left:3px solid var(--ac,var(--terracotta))}
+.post-chip-row{margin-bottom:10px}
+.post-chip{font-family:var(--font-ui);font-size:10px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(156,74,46,.09);color:var(--terracotta)}
+.post-title{font-family:var(--font-kannada);font-size:21px;line-height:1.35;font-weight:700;color:var(--ink);margin:0 0 14px}
+.post-meta-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.post-author{display:flex;align-items:center;gap:8px;min-width:0}
+.post-avatar{width:32px;height:32px;border-radius:50%;background:var(--olive);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-ui);font-weight:700;font-size:13px;flex:0 0 32px}
+.post-author-text{min-width:0}
+.post-author-name{font-family:var(--font-ui);font-size:12.5px;font-weight:600;color:var(--ink)}
+.post-author-date{font-size:10px;color:var(--muted)}
+.edit-link{flex:0 0 auto;font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--terracotta);text-decoration:none;border:1px solid rgba(156,74,46,.25);padding:5px 12px;border-radius:999px;white-space:nowrap}
+
+.post-body{font-family:var(--font-display);font-size:14px;line-height:1.85;color:var(--ink)}
+.post-body p{margin:0 0 14px}
+.post-body p:last-child{margin-bottom:0}
+
+.post-tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.post-tag-chip{font-family:var(--font-ui);font-size:10px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--cream-deep);color:var(--muted)}
+
+.post-actions-row{display:flex;gap:16px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.action-btn{display:inline-flex;align-items:center;gap:5px;border:none;background:none;color:var(--muted);font-family:var(--font-ui);font-size:12px;font-weight:600;opacity:.55;cursor:default}
+/* Like button: intentionally visible + disabled in v1, wired later -- see README Section 26. */
+
+/* REGION: comments */
+.comments-region{margin-top:20px}
+.comments-h{font-family:var(--font-kannada);font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.comment-item{background:var(--card);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.comment-author{font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.comment-body{font-size:12px;color:var(--muted);line-height:1.55}
+.comment-date{font-size:9.5px;color:var(--muted);margin-top:4px}
+.comments-empty{color:var(--muted);font-size:11.5px;text-align:center;padding:14px 0}
+
+/* REGION: related-posts (placeholder shell only -- see post.js) */
+.related-region{margin-top:20px;padding:14px;border:1px dashed var(--line);border-radius:var(--radius-card);text-align:center;color:var(--muted);font-size:11px}
+</style>
+</head>
+<body>
+
+<main class="page post-page">
+
+  <!-- REGION: back-nav -->
+  <div class="post-topbar">
+    <a class="back-link" href="posts.html">← ಎಲ್ಲಾ ಪೋಸ್ಟ್‌ಗಳಿಗೆ ಹಿಂತಿರುಗಿ</a>
+    <button type="button" class="share-btn" id="shareBtn">↗ ಹಂಚಿಕೊಳ್ಳಿ</button>
+  </div>
+
+  <div id="postState" class="state-msg" hidden></div>
+
+  <!-- REGION: post-main -->
+  <article id="postMain" class="post-main" hidden>
+    <div class="post-chip-row" id="postChipRow"></div>
+    <h1 class="post-title" id="postTitle"></h1>
+
+    <div class="post-meta-row">
+      <div class="post-author">
+        <div class="post-avatar" id="postAvatar"></div>
+        <div class="post-author-text">
+          <div class="post-author-name" id="postAuthorName"></div>
+          <div class="post-author-date" id="postAuthorDate"></div>
+        </div>
+      </div>
+      <!-- Author-edit: shown only when signed-in user === post author (cheap local check) -->
+      <a class="edit-link" id="editLink" hidden>ಸಂಪಾದಿಸಿ</a>
+      <!-- ADMIN/MODERATION ICONS: not built in v1 -- would need a cached
+           per-session role lookup once moderation actions exist here. -->
+    </div>
+
+    <div class="post-body" id="postBody"></div>
+
+    <div class="post-tags-row" id="postTagsRow" hidden></div>
+
+    <div class="post-actions-row">
+      <!-- Like: visible + disabled in v1, wired in a later version -->
+      <button type="button" class="action-btn" id="likeBtn" disabled>♡ ಇಷ್ಟ</button>
+    </div>
+  </article>
+
+  <!-- REGION: comments -->
+  <section id="commentsRegion" class="comments-region" hidden>
+    <div class="comments-h">ಕಾಮೆಂಟ್‌ಗಳು</div>
+    <div id="commentsList"></div>
+  </section>
+
+  <!-- REGION: related-posts -->
+  <!-- Placeholder for now. Future: fetch a few other published posts from
+       the same category_id (excluding this post's own id) and render them
+       here the same way posts.js's tileHtml() does. Not built in v1 --
+       with only a few dozen posts total, "related" has little to show yet. -->
+  <section class="related-region">ಇದೇ ವಿಭಾಗದ ಇತರ ಪೋಸ್ಟ್‌ಗಳು — ಶೀಘ್ರದಲ್ಲಿ</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="bottom_nav.js?v=9"></script>
+<script src="post.js?v=1"></script>
+</body>
+</html>

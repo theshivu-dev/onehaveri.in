@@ -19,9 +19,6 @@
    ================================================================ */
 
 :root{
-  /* OneHaveri page palette shared by page-level and component styles.
-     Direction: "Kempu Mannu / Red Soil & Fields" -- Haveri's laterite
-     soil and monsoon-green farmland, on a manila-parchment base. */
   --cream:#F2E8D8;
   --cream-deep:#EBE0CC;
   --card:#F8F1E3;
@@ -119,9 +116,10 @@ body{
 /* ----------------------------------------------------------------
    HOMEPAGE HERO
    ----------------------------------------------------------------
-   The hero shell is owned here. Banner artwork, copy placement,
-   brand treatment and responsive hero behavior are initialized by
-   main_page.js so there is only one active hero implementation.
+   main_page.js owns the artwork, sizing, copy placement and brand
+   treatment. The ::before layer is intentionally retained as the
+   lightweight artwork surface consumed by that runtime code; the
+   obsolete CSS banner rotation is removed.
    ---------------------------------------------------------------- */
 
 .hero{
@@ -137,6 +135,17 @@ body{
   box-shadow:0 10px 30px rgba(46,33,23,.08);
   text-align:left;
   padding:0;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background-color:var(--cream-deep);
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
 }
 
 /* Keep the secondary intro available semantically without displaying

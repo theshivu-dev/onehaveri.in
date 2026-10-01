@@ -1,6 +1,6 @@
 # OneHaveri.in — Project Rules & Development Standards
 
-> **Last updated:** 2026-09-09
+> **Last updated:** 2026-10-01
 >
 > This README is the working contract for AI-assisted development of OneHaveri.in. It records the project's purpose, architectural decisions, current component structure, responsive-design direction, and important decisions made during development so future sessions can continue without losing context.
 
@@ -80,7 +80,7 @@ The current architecture should remain capable of growing into a larger applicat
 
 Do not assume that every change made to `home_ip.html` should automatically be made to `index.html`. Confirm the intended synchronization step.
 
-The current repository contains both pages and, at the latest checkpoint, they have the same file size/SHA in the repository.
+The current repository contains both pages. Do not assume they are synchronized unless their current repository state has been checked.
 
 ---
 
@@ -114,7 +114,13 @@ The current in-progress homepage contains the following conceptual sections:
    - A modular area for linking to worthwhile existing initiatives.
    - First partner: **NammaShale.in**.
 
-6. **Bottom navigation**
+6. **Community Portals area**
+   - A current homepage module for useful Haveri-facing portals.
+   - Current portal concepts are Blood Bank Portal, Skills & Jobs, Schools & Education, and Community Initiatives.
+   - The portal artwork uses repository PNG assets and a Haveri landscape treatment.
+   - Portal presentation is now separated into a shared container layer plus portal-specific CSS so one portal can be changed without unnecessarily affecting another.
+
+7. **Bottom navigation**
    - Home
    - Navigation placeholder
    - Account
@@ -179,10 +185,12 @@ A UI system that is reused across pages should have its own CSS/JS files.
 
 Page layout, page geometry and page-specific shared behaviour should live in page-level files where practical.
 
-Current example:
+Current examples:
 
 - `main_page.css` → homepage/page-level layout and shared visual tokens.
 - `home_ip.html` → page markup and page-specific content/logic that has not yet justified extraction.
+- `portal_images.css` → stable homepage stylesheet entry point for the Community Portals component.
+- `assets/portal/css/` → isolated portal component CSS.
 
 ### Component extraction rule
 
@@ -239,7 +247,7 @@ Do not put future navigation logic into the Navigation placeholder until the fea
 
 ### Important constraint
 
-`bottom_nav.css` and `bottom_nav.js` are specific to the bottom navigation component. Do not place unrelated homepage/game/partner logic there.
+`bottom_nav.css` and `bottom_nav.js` are specific to the bottom navigation component. Do not place unrelated homepage/game/partner/portal logic there.
 
 ---
 
@@ -336,16 +344,16 @@ Do not silently revert to the older cream/terracotta hex values from earlier REA
 
 ### Typography
 
-- `Noto Serif Kannada` for Kannada copy — **now actually loaded as a webfont** via a Google Fonts `<link>` in each page's `<head>`. (Earlier checkpoints referenced this font in CSS without ever loading it, silently falling back to whatever serif a given device happened to have installed.)
-- `Lora` — English display/editorial voice (headlines, taglines), replacing a generic Georgia-italic treatment.
+- `Noto Serif Kannada` for Kannada copy — **now actually loaded as a webfont** via a Google Fonts `<link>` in each page's `<head>`.
+- `Lora` — English display/editorial voice (headlines, taglines).
 - `Work Sans` — small UI text, labels, buttons.
-- A shared, genuinely fluid type-scale (`--fs-hero`, `--fs-tagline`, `--fs-intro`, `--fs-card-title`, `--fs-card-body`, `--fs-eyebrow`) also lives in `main_page.css`'s `:root`. Earlier local page styles had hardcoded `clamp()` ranges that maxed out at phone-appropriate sizes and never grew on wider screens — this caused the homepage to look sparse and undersized on desktop/laptop. New or extended pages should reference these shared tokens rather than inventing their own one-off ranges.
+- A shared fluid type-scale (`--fs-hero`, `--fs-tagline`, `--fs-intro`, `--fs-card-title`, `--fs-card-body`, `--fs-eyebrow`) lives in `main_page.css`'s `:root`. New or extended pages should reference these shared tokens rather than inventing one-off ranges.
 
 ### Design principles specifically adopted to avoid a generic/templated look
 
-- Avoid a small tracked-out ALL-CAPS "eyebrow" label sitting above a heading — a very common generic-template signature. Status/label text should be a quieter pill instead.
-- Avoid making a row of cards (e.g. the three homepage concept cards) identical in every respect (same radius, same shadow, same size) with only an icon differing — add at least a colour-accent or structural distinction per item.
-- A page section that changes tone/contrast (e.g. the wave-divider between the homepage hero and the three cards) is preferred over a long flat single-tone page, to give real visual rhythm on wider screens.
+- Avoid a small tracked-out ALL-CAPS "eyebrow" label sitting above a heading. Status/label text should be a quieter pill instead.
+- Avoid making a row of cards identical in every respect with only an icon differing — add at least a colour-accent or structural distinction per item.
+- A page section that changes tone/contrast is preferred over a long flat single-tone page, to give real visual rhythm on wider screens.
 
 ### Icons
 
@@ -405,13 +413,15 @@ This includes concepts such as:
 
 Page-specific component styling that is still small and closely tied to the current working page may remain in `home_ip.html` until there is a clear reason to extract it.
 
+The Community Portals component is now an explicit exception to keeping small portal styling inline: its shared geometry and portal-specific visual rules live under `assets/portal/css/`, with `portal_images.css` retained as the stable stylesheet entry point from the homepage.
+
 Do not move CSS merely to satisfy a theoretical purity rule. Extract when it improves maintainability or reuse.
 
 ---
 
 ## 14. Current repository structure
 
-At the current checkpoint the repository includes:
+At the current checkpoint the repository includes, among other existing project files:
 
 ```text
 onehaveri.in/
@@ -424,12 +434,27 @@ onehaveri.in/
 ├── bottom_nav.js
 ├── partners.css
 ├── partners.js
+├── portal_images.css
+├── assets/
+│   └── portal/
+│       ├── images/
+│       │   ├── blood-bank.png
+│       │   ├── skills-jobs.png
+│       │   ├── schools.png
+│       │   ├── community.png
+│       │   └── portal-landscape.png
+│       └── css/
+│           ├── portal-container.css
+│           ├── portal-blood-bank.css
+│           ├── portal-skills-jobs.css
+│           ├── portal-schools.css
+│           └── portal-community.css
 └── test.html
 ```
 
-`posts.html` / `posts.js` are the first page built on top of the Supabase content-platform schema (Section 24) — see Section 25 for what they do and how they're structured. `post.html` (the individual reading page) is designed and settled in discussion (Section 26) but **not yet built**.
-
 The repository is intentionally lightweight and does not currently use a frontend framework/build pipeline.
+
+`posts.html` / `posts.js` are the first page built on top of the Supabase content-platform schema — see Section 25. `post.html` (the individual reading page) is designed and settled in discussion but **not yet built**.
 
 ---
 
@@ -515,6 +540,7 @@ Examples of functionality that must be protected:
 - Partner rendering.
 - Responsive page layout.
 - Bottom navigation rendering.
+- Community Portal rendering and its stable stylesheet entry point.
 
 A visual change to one component must not accidentally remove or duplicate another component's behaviour.
 
@@ -565,7 +591,8 @@ Do not:
 - Rebrand a partner's entire card in the partner's colours when only the wordmark is intended to borrow that treatment.
 - Rewrite existing Kannada copy without request.
 - Assume that a visually attractive change is safe without checking the actual shared component.
-- Paste file contents into the wrong filename when manually applying AI-proposed changes into GitHub's web editor. This actually happened once (CSS content ended up pasted into `bottom_nav.js`, silently breaking the entire nav/account widget since a browser cannot execute CSS as JavaScript). Double-check the filename/tab showing before pasting, especially when updating several files in one sitting.
+- Paste file contents into the wrong filename when manually applying AI-proposed changes into GitHub's web editor. Double-check the filename/tab showing before pasting, especially when updating several files in one sitting.
+- Put portal-specific styling back into unrelated shared component files when the existing portal CSS isolation already provides a clear editing boundary.
 
 ---
 
@@ -593,13 +620,13 @@ The following are possibilities rather than commitments:
 
 Future sessions must distinguish between **implemented functionality**, **in-progress work**, and **future ideas**. Never describe a planned feature as implemented merely because it appears in this README.
 
-The database foundation for "Supabase-backed data and user-generated content" above is **schema-complete and reviewed** — see Section 24. Front-end work has now actually begun: `posts.html` (the posts list/feed) is built — see Section 25. `post.html` (the individual reading page) is fully designed in discussion but not yet built — see Section 26.
+The database foundation for Supabase-backed data and user-generated content is **schema-complete and reviewed** — see Section 24. Front-end work has begun: `posts.html` (the posts list/feed) is built — see Section 25. `post.html` (the individual reading page) is fully designed in discussion but not yet built — see Section 26.
 
 ---
 
 ## 24. Supabase content-platform foundation (database layer)
 
-**Status: database schema complete, reviewed and hardened. No corresponding UI exists yet** — no HTML, CSS or JavaScript exists for creating or browsing posts. This section documents the full Supabase schema, access control, and review findings for the `onehaveri` project, so future sessions understand what already exists before proposing a conflicting design.
+**Status: database schema complete, reviewed and hardened.** This section documents the Supabase schema, access control, and review findings for the `onehaveri` project so future sessions understand what already exists before proposing a conflicting design.
 
 ### 24.1 Design principles
 
@@ -613,14 +640,14 @@ The database foundation for "Supabase-backed data and user-generated content" ab
 ### 24.2 User role hierarchy
 
 - `role_master` — lookup of role types: `OWNER`, `ADMIN`, `BUSINESS`, `MEMBER`, each with an authority `rank`.
-- `OWNER` (rank 40) and `ADMIN` (rank 30) form the real moderation ladder. `BUSINESS` and `MEMBER` intentionally share the same rank (10) — `BUSINESS` is a parallel feature-lane (future business/institute pages), not higher authority over other users.
+- `OWNER` (rank 40) and `ADMIN` (rank 30) form the real moderation ladder. `BUSINESS` and `MEMBER` intentionally share the same rank (10) — `BUSINESS` is a parallel feature-lane, not higher authority over other users.
 - `user_roles` — one row per signed-up user, linked by Supabase auth UUID, never by email. A database trigger auto-assigns every new signup the `MEMBER` role. A second trigger guarantees only one `OWNER` can ever exist.
 - The owner's own account has been backfilled as the sole `OWNER`.
 - A "verified" flag for business-authored content lives on individual posts, decided at post-creation time — it is not stored on the user's role.
 
 ### 24.3 Config-driven behaviour
 
-- `app_config` — a generic settings table (config_key / config_value / data_type / scope) so behaviour is controlled by a data row rather than hardcoded logic.
+- `app_config` — a generic settings table (`config_key` / `config_value` / `data_type` / `scope`) so behaviour is controlled by a data row rather than hardcoded logic.
 - Seeded so far: `grant_business_role_by_admin` (global, `true`), and `is_auto_publish_allowed` (one row per role, all currently `true`) — the latter decides whether a new post from a given role publishes immediately or sits `pending`, computed server-side at post-creation time.
 
 ### 24.4 Audit trail
@@ -635,39 +662,38 @@ The database foundation for "Supabase-backed data and user-generated content" ab
 
 ### 24.6 Posts and satellites (built)
 
-- `posts` — the core content table. `status` (draft/pending/published/rejected/hidden) is computed server-side from the author's role and the `is_auto_publish_allowed` config, ignoring whatever the client sends. `is_featured`/`is_promoted` can only be set true by ADMIN/OWNER. `is_verified` can only be true for a BUSINESS-role author, or by ADMIN/OWNER override. `author_id`/`created_by`/`updated_by` are forced server-side and frozen after creation. No delete — moderation is a status change.
+- `posts` — the core content table. `status` is computed server-side from the author's role and the `is_auto_publish_allowed` config, ignoring whatever the client sends. Moderation flags and ownership fields are protected server-side. No delete — moderation is a status change.
 - `post_tags` — join table linking posts to tags; managed by the post's own author or an admin.
-- `comments` — `parent_comment_id` exists for future threaded replies but is unused so far. An author can self-hide their own comment; any other status change is admin-only.
-- `reactions` — one reaction per user per post, exclusive (like OR dislike, not both). Unlike every other table here, real deletion is allowed — unliking is a normal, revocable action, not something needing a permanent trace.
+- `comments` — `parent_comment_id` exists for future threaded replies but is unused so far.
+- `reactions` — one reaction per user per post, exclusive (like OR dislike, not both).
 
-### 24.7 Technical review findings (this session)
+### 24.7 Technical review findings
 
 - Verified directly against the live database: all 11 tables have RLS enabled, correct primary/foreign keys, and every internal-only function has its direct API access revoked.
-- **Fixed:** several RLS policies were re-evaluating `auth.uid()`/`current_user_rank()` on every row instead of once per query; rewritten using Postgres/Supabase's recommended `(select ...)` pattern. No behaviour changed, only planning efficiency.
-- **Fixed:** added missing indexes on several foreign keys that had none (`comments.author_id`, `posts.created_by`/`updated_by`/`subcategory_id`, `reactions.user_id`, `user_roles.role_id`/`assigned_by`).
-- **Open, needs a product decision (not fixed):** `posts`/`comments`/`reactions` foreign keys to `auth.users` currently `RESTRICT` deletion — **a Supabase account cannot be deleted at all once it has posted, commented, or reacted.** The owner is planning this separately (e.g. reassignment/anonymization on account deletion) as a product decision rather than a schema patch made ad hoc here.
-- **Noted, accepted as-is (low real-world risk):** the single-OWNER rule uses a count-based trigger check, which has a theoretical concurrent-transaction race condition. Given this role is only ever granted manually by the owner (not a public signup race), this is accepted rather than hardened further.
-- **Noted:** the real "backup owner" path is the owner's own access to the Supabase project itself (outside the app), which always bypasses RLS — a separate continuity plan (who else can access the Supabase project if needed) is being considered by the owner as a product matter, not a schema change.
+- **Fixed:** RLS policies that were re-evaluating `auth.uid()` / `current_user_rank()` on every row were rewritten using the recommended `(select ...)` pattern. No behaviour change was intended.
+- **Fixed:** missing indexes on several foreign keys were added.
+- **Open, needs a product decision:** `posts` / `comments` / `reactions` foreign keys to `auth.users` currently use `RESTRICT` deletion. Account-deletion handling remains a separate product decision.
+- **Accepted as-is:** the single-OWNER rule has a theoretical concurrent-transaction race, but OWNER assignment is manually controlled.
 
 ### 24.8 Error / response handling standard
 
-- Supabase's API layer (PostgREST) returns standard JSON for every request: success returns the affected row(s); failure returns `message`, `details`, `hint`, and a Postgres SQLSTATE `code` (e.g. `23505` for a duplicate key; an RLS-denied write is rejected automatically with no custom code needed).
-- Custom validation (e.g. "author_id cannot be changed") is raised via `RAISE EXCEPTION` inside trigger functions and reaches the client the same way, under the generic custom-exception code `P0001`. This is standard practice and sufficient for now. If the UI later needs to branch its behaviour differently per error type, distinct SQLSTATEs can be introduced at that point — not needed today.
-- Postgres's `NOTICE`/`WARNING` levels exist but are **not** forwarded to API clients — only `EXCEPTION` reaches the front end as an error; notices only go to server logs. There is currently no "this saved, but here's a warning" response from a plain table write. If that's ever genuinely needed (a warning that depends on server-side knowledge the client doesn't have — not client-side form validation, which needs no round-trip at all), the pattern is to route that specific write through an RPC function returning a custom shape like `{ data, warnings }` instead of a plain table insert. Not used anywhere in this schema yet, since no current write path needs it.
+- Supabase's API layer returns standard JSON for success/failure.
+- Custom validation is raised via `RAISE EXCEPTION` inside trigger functions and reaches the client as a standard API error.
+- If a future write genuinely needs server-generated warnings, use a purpose-built RPC response rather than expecting Postgres `NOTICE`/`WARNING` messages to reach the browser.
 
 ### 24.9 Do not
 
 - Do not create new role, category, subcategory or tag values ad hoc in code; extend the corresponding Supabase table instead.
-- Do not treat `app_config`'s `main_categories` entry as a live source of truth — it is a historical record of the original seed; `categories` itself is authoritative once seeded.
-- Do not design a posting UI that allows anonymous writes; sign-in is a hard requirement enforced at the database level.
-- Do not assume a user's Supabase account can be deleted while they have posts/comments/reactions — it currently cannot, by design of the foreign keys, pending the owner's product decision on account-deletion handling.
+- Do not treat historical `app_config` seed entries as the live source of truth where a dedicated table is authoritative.
+- Do not design a posting UI that allows anonymous writes.
+- Do not assume a user's Supabase account can be deleted while dependent content still exists; the current foreign-key policy prevents that.
 
 ### 24.10 Schema additions made after the original technical review (2026-09-04 to 2026-09-08)
 
-- **`user_roles.status`** (`pending` / `active` / `suspended`) added. Default per-role status is config-driven via `app_config`'s `default_account_status` (currently `active` for all 4 roles, same "open now, tighten later" posture as the auto-publish config). `current_user_rank()` was extended to return `0` for any non-active status — since nearly every RLS policy in the schema already calls this one function, suspension cascades everywhere automatically without touching other policies. Deliberately scoped to only gate *creating* new posts/comments/reactions/tags; editing or removing existing content stays ungated for now.
-- **`posts.author_display_name`** added. Derived server-side from `auth.users` metadata (`full_name` → `name` → email-prefix → `"Member"` fallback) at post-creation time, frozen afterward like `created_at`, never trusted from the client. This means the posts list/reading pages never need a separate profile lookup or join to show who wrote something.
-- **Pagination index corrected:** `idx_posts_status_published` was `(status, published_at desc)`; rebuilt as `(status, published_at desc, id desc)` to add the `id` tiebreaker that correct cursor/keyset pagination requires (without it, two posts sharing an identical `published_at` could be skipped or duplicated across pages).
-- A production incident was found and fixed during this period: `bottom_nav.js` had been accidentally overwritten with CSS content when changes were manually applied to GitHub, breaking the nav/account widget entirely. Fixed by restoring the untouched, syntax-verified JavaScript. See Section 21 for the process note this produced.
+- **`user_roles.status`** (`pending` / `active` / `suspended`) added, with default status controlled by `app_config`. `current_user_rank()` returns `0` for non-active roles so creation of new posts/comments/reactions/tags is gated consistently.
+- **`posts.author_display_name`** added and derived server-side from user metadata at post creation, then frozen.
+- **Pagination index corrected:** `idx_posts_status_published` now includes `id desc` as a deterministic cursor tiebreaker.
+- A production incident involving accidental CSS content in `bottom_nav.js` was found and fixed by restoring the JavaScript.
 
 ---
 
@@ -677,25 +703,25 @@ The database foundation for "Supabase-backed data and user-generated content" ab
 
 ### 25.1 Architecture
 
-- `posts.html` — markup and page-specific styles only (following the same "local styles until something earns extraction" approach as `home_ip.html`).
-- `posts.js` — all data-fetching and rendering, deliberately kept in its own file and internally organised as: CONFIG → DATA LAYER → UTIL → RENDER LAYER → STATE → INIT/EVENTS. The data layer returns plain post objects and knows nothing about the DOM; the render layer takes plain data and knows nothing about Supabase. This split is what makes extending the page later (e.g. adding tags to a tile) a small, localised change — confirmed in practice while designing the tag-extension example: it touches one line in a `select()` and a few lines in the one rendering function, nothing else.
-- Uses its own Supabase client instance (`sbPosts`), configured with constants named distinctly from `bottom_nav.js`'s own `SUPABASE_URL`/`SUPABASE_KEY` — both files load as plain scripts sharing one global scope, so reusing those exact names would crash with a redeclaration error. (This was caught and fixed during the build, not a hypothetical.)
+- `posts.html` — markup and page-specific styles.
+- `posts.js` — data-fetching and rendering, organised as CONFIG → DATA LAYER → UTIL → RENDER LAYER → STATE → INIT/EVENTS.
+- Uses its own Supabase client instance (`sbPosts`) with names distinct from the bottom navigation globals.
 
 ### 25.2 Settled v1 behaviour
 
-- Lands on **ಎಲ್ಲಾ** (all categories) by default; a homepage category card (once linked) would pre-filter.
-- Category filtering is **client-side state only for v1** — no URL/query-string reflection. Deferred, not rejected; revisit if a shareable filtered view becomes a real need.
-- An empty category **falls back to recent-across-all** rather than showing a dead filtered screen; a genuinely empty database shows an honest "nothing here yet" message.
-- Tiles show **only** title, a short excerpt, and a relative posted date — deliberately minimal for v1. No tags, no like/comment counts, no featured styling on tiles yet (all schema-ready, UI-deferred).
-- **Excerpt truncation** is space/whitespace-aware, not raw character-slicing — extends to the next word break past ~20 characters, with a hard length ceiling as a safety net, and trims trailing punctuation before the "…". This specifically avoids breaking Kannada grapheme clusters (a single visual Kannada letter can be built from multiple underlying character codes; cutting at an arbitrary character position can slice through one). Built as one function (`buildExcerpt`), intended to be reused by the future snapshot-image share feature so the two never drift out of sync.
-- **Pagination is cursor/keyset-based** (an explicit "Load more" button, not infinite scroll — chosen for accessibility, footer-reachability, and because long-form community content doesn't benefit from an endless-scroll pattern the way short social content does), matching the corrected index in Section 24.10.
-- **Errors stay on the page** — a plain message with a retry action, never an automatic redirect. This was extended during the build to also cover the case where the Supabase library itself fails to load (not just query failures), so every failure mode gets the same honest treatment rather than a silent blank page.
-- A signed-in author's own **non-published posts** appear in a small, separately-labelled section (not merged into the main feed), since mixing them into the cursor-paginated feed would break the pagination math (a draft/pending post has no `published_at` yet).
-- The "+ write" button and a dedicated "my posts" page are both explicitly out of scope for v1 (no `write.html` exists yet).
+- Lands on **ಎಲ್ಲಾ** by default.
+- Category filtering is client-side state only for v1.
+- An empty category falls back to recent-across-all; a genuinely empty database shows an honest empty state.
+- Tiles show title, short excerpt and relative posted date only.
+- Excerpt truncation is whitespace-aware and avoids arbitrary Kannada character slicing.
+- Pagination is cursor/keyset-based with an explicit **Load more** button.
+- Errors stay on the page with a retry action.
+- A signed-in author's own non-published posts appear in a separate section.
+- `+ write` and a dedicated "my posts" page remain out of scope for v1.
 
-### 25.3 Verified, not just assumed
+### 25.3 Verification
 
-Rendered and tested locally (structure, styling, and failure-path behaviour) before handoff — a real redeclaration bug and a real CSS specificity bug (`display:block` on `.load-more` was overriding the browser's own `hidden`-attribute behaviour) were both found this way and fixed, not left for the owner to discover live. The actual live Supabase data fetch still needs confirming against the real deployed site, since that requires real network access this environment doesn't have.
+Rendered and tested locally for structure, styling and failure-path behaviour before handoff. A real redeclaration bug and a CSS specificity issue affecting the `hidden` attribute were found and fixed. Live Supabase data fetching still needs confirmation against the deployed site where network access is available.
 
 ---
 
@@ -703,25 +729,109 @@ Rendered and tested locally (structure, styling, and failure-path behaviour) bef
 
 **Status: fully settled in discussion. No file exists yet.**
 
-- A separate real page (`post.html?id=...`), not a same-page panel swap — chosen specifically because a shared link must work for someone who has never opened OneHaveri before; a real URL gets correct back/refresh/bookmark behaviour for free, and matches the plain-static-files hosting already in use.
-- Internally modular by design: the page is a set of named regions (main content, comments, related-posts, etc.), each self-contained, so a future left/right panel can be added as a new region without touching existing ones — same self-containment principle already proven by `bottom_nav.js`/`partners.js`.
-- **Author-edit icon:** shown when `post.author_id` matches the signed-in user's own id — a free, local comparison, no extra query.
-- **Admin/moderation icons:** based on the signed-in user's own role, fetched once per session (not once per post) and cached — reuses the same role lookup that will gate other future UI decisions too.
-- **v1 feature staging**, each shipping as a visible-but-inert shell now so its layout doesn't need to be redesigned later:
-  - **Like button** — visible, disabled, wired later.
-  - **Comments** — read-only in v1 (existing comments display; no add-comment box yet).
-  - **Related posts** — an empty, clearly-labelled placeholder section with a code comment marking where the future fetch/render logic goes.
-  - **Share** — plain "copy link" only in v1; the snapshot-image card is a deliberate fast-follow, not v1.
-- **Not-found / no-access:** a plain "post not found" message, same back-to-posts link as everything else — deliberately not distinguishing "doesn't exist" from "exists but you can't see it," to avoid leaking that distinction.
-- **Back navigation:** an explicit, always-present on-page "back to all posts" link — relying on the browser's native back button alone doesn't work for someone arriving via a shared link, since there's nothing in their browser history to go back to.
+- A separate real page (`post.html?id=...`) is preferred over a same-page panel so shared links, refresh and bookmarks work naturally.
+- Internally modular by named regions so future panels can be added without disturbing existing regions.
+- Author-edit controls are based on comparing the post author with the signed-in user's id.
+- Admin/moderation controls are based on the signed-in user's role, fetched once per session and cached.
+- v1 feature staging: visible-but-inert Like shell, read-only Comments, Related Posts placeholder, and copy-link Share.
+- Not-found/no-access uses a generic message rather than distinguishing those cases.
+- An explicit back-to-posts link is always present.
 
-### Snapshot-image share feature (designed, not built, not scheduled for v1 of `post.html`)
+Snapshot-image sharing, read-aloud, translated audio and server-side video export remain future ideas rather than current implementation.
 
-- Deliberately **truncation, not summarisation** — a fixed-size card (title + ~25-30 word excerpt + author + "read the full story" line) works identically regardless of how long the underlying post is, the same way a Twitter/news-app share card never shows the full article. Reuses `posts.js`'s `buildExcerpt` utility rather than a second, separately-maintained truncation routine.
-- Real AI summarisation was considered and deferred: not free (a real per-request LLM cost), and the sane way to keep that cost flat regardless of virality would be computing it once at publish time and caching it, not on every share click — not needed unless truncated excerpts start feeling clumsy in practice.
+---
 
-### Other future ideas explored and deliberately not pursued for now
+## 27. Recent progress since the previous README checkpoint (2026-09-09 → 2026-10-01)
 
-- **Read-it-aloud (TTS):** the browser API is free and universal; feasible as a same-language read-aloud feature.
-- **Translated audio (EN↔KN):** investigated and found **not actually free/simple on mobile** — Chrome/Edge's on-device Translator API explicitly does not work on mobile devices, which rules it out for a mobile-first audience regardless of Kannada language support.
-- **Insta-story-style video export:** the "how does the client know when a server-side job is done" half is solvable cheaply with a small jobs table plus Supabase Realtime (already available, not yet used anywhere). The actual video-rendering compute is not something Cloudflare Workers/Pages Functions can do well (tight CPU-time limits, no real video-codec tooling) — would need real backend infrastructure. Parked as a "maybe later, once there's budget/tooling" idea, not a near-term feature.
+This section is intentionally a **delta record**. Earlier README history is retained above; future tools/persons should add new work here or update the relevant current-state section rather than rewriting historical decisions.
+
+### 27.1 Community Portals homepage module
+
+The in-progress homepage now contains a **Community Portals** module intended as a compact entry point for useful Haveri-facing services and initiatives.
+
+Current portal slots:
+
+- **Blood Bank Portal**
+- **Skills & Jobs**
+- **Schools & Education**
+- **Community Initiatives**
+
+A Haveri landscape artwork is used as the shared visual treatment for the portal area. The section was also compacted so it remains useful without consuming excessive vertical space, particularly on smaller screens.
+
+### 27.2 Portal artwork assets
+
+Portal artwork is now stored under:
+
+```text
+assets/portal/images/
+├── blood-bank.png
+├── skills-jobs.png
+├── schools.png
+├── community.png
+└── portal-landscape.png
+```
+
+The repository also contains the directory placeholder used before the artwork was added. The current implementation uses the PNG assets rather than relying on the older inline SVG artwork for the portal visuals.
+
+### 27.3 Portal CSS modularisation
+
+The portal component was deliberately modularised without introducing a generic data-driven renderer or unnecessary JavaScript.
+
+The stable homepage stylesheet entry point is:
+
+- `portal_images.css`
+
+It imports:
+
+- `assets/portal/css/portal-container.css` — shared portal container/grid/card geometry, responsive behaviour and common artwork treatment.
+- `assets/portal/css/portal-blood-bank.css` — Blood Bank-specific styling and artwork mapping.
+- `assets/portal/css/portal-skills-jobs.css` — Skills & Jobs-specific styling and artwork mapping.
+- `assets/portal/css/portal-schools.css` — Schools & Education-specific styling and artwork mapping.
+- `assets/portal/css/portal-community.css` — Community Initiatives-specific styling and artwork mapping.
+
+Each portal's CSS is scoped to that portal's card. This establishes a clear editing boundary: changing one portal's accent, tint, artwork or visual details should not require editing the other portal styles.
+
+### 27.4 Portal JavaScript decision
+
+No portal-specific JavaScript was added in this phase because the current portals do not require interactive behaviour beyond normal links/presentation.
+
+If a portal later needs actual behaviour, its JavaScript should be isolated to that portal rather than adding unrelated logic to shared homepage or bottom-navigation code.
+
+### 27.5 Legacy portal styling boundary
+
+The modular CSS layer was added conservatively to avoid a risky rewrite of `home_ip.html`. Existing inline portal CSS remains in the working page as a legacy baseline, while the new external rules take ownership of the portal-specific visual layer. Legacy inline SVG artwork is suppressed for the portal artwork slots so the new PNG assets are the active visual source.
+
+This is intentional: the current boundary is modular and safe, but a future cleanup may physically remove obsolete inline portal CSS once the rendered behaviour has been independently verified and there is a reason to do so.
+
+### 27.6 Verification status for this delta
+
+Source-level verification was performed against the repository after the portal modularisation:
+
+- Correct repository: `theshivu-dev/onehaveri.in`, branch `main`.
+- All four portal CSS files exist and are referenced through `portal_images.css`.
+- All five portal PNG assets exist.
+- Each portal-specific stylesheet maps only to its own portal artwork.
+- Shared container CSS owns common responsive/card geometry and the landscape artwork.
+- Legacy SVG portal artwork is hidden by the new artwork rules.
+- `home_ip.html` continues to reference the stable `portal_images.css` entry point.
+
+No browser/live rendered verification was performed during this delta; visual confirmation against the deployed page remains a separate check.
+
+### 27.7 Working principle established by this change
+
+For the small, known set of Community Portals, prefer **explicit per-portal CSS boundaries over an over-engineered generic renderer**. Share only genuine common geometry/responsive rules. Keep portal-specific presentation isolated. Add portal-specific JS only when a portal actually needs behaviour.
+
+---
+
+## 28. Handover rule for future contributors
+
+When continuing OneHaveri work:
+
+1. Read this README first.
+2. Check the current repository state rather than assuming this document is newer than the code.
+3. Pay particular attention to the **Recent progress** section for changes made after the previous README checkpoint.
+4. If another tool/person has changed the repository since this README was updated, inspect the current files and append only the missing delta.
+5. Do not delete historical decisions merely because a newer implementation exists; update the relevant current-state section and preserve useful reasoning where it helps prevent regressions.
+6. Do not claim browser, deployment, Supabase or other verification unless it was actually performed.
+
+> **The repository is the implementation source of truth; this README is the shared high-level engineering memory and handover record.**

@@ -1,0 +1,20 @@
+/* ================================================================
+   OneHaveri — Blood Bank Portal
+   ----------------------------------------------------------------
+   Only Blood Bank identity/artwork belongs here. Do not put shared
+   portal layout rules in this file.
+   ================================================================ */
+
+.portal-directory .portal-card.portal-card--blood{
+  --portal-accent:#B72C25;
+  --portal-tint:#FBE3DE;
+  background:linear-gradient(155deg,#FFF2EE,#FBECE7);
+}
+
+.portal-directory .portal-card.portal-card--blood .portal-art{
+  background-image:url("../../portal/images/blood-bank.png") !important;
+}
+
+.portal-directory .portal-card.portal-card--blood .portal-save-note{
+  color:#B72C25;
+}

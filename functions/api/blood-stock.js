@@ -8,9 +8,7 @@
 const STATE_CODE = 29;   // Karnataka
 const DISTRICT_ID = 564; // Haveri
 const CACHE_SECONDS = 900; // 15 minutes
-const UPSTREAM_TIMEOUT_MS = 12000;
-const UPSTREAM_RETRIES = 3;
-const UPSTREAM_RETRY_DELAY_MS = 750;
+const UPSTREAM_TIMEOUT_MS = 8000;
 
 const COMPONENTS = {
   11: 'Whole Blood',
@@ -67,109 +65,85 @@ function sumQuantities(groups) {
   return Object.values(groups).reduce((sum, qty) => sum + qty, 0);
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function shouldRetryStatus(status) {
-  return status === 502 || status === 503 || status === 504 || status === 522;
-}
-
 async function fetchComponent(code) {
   const url =
     `https://eraktkosh.mohfw.gov.in/eraktkoshPortal/eraktkosh/blood-availability` +
     `?stateCode=${STATE_CODE}&districtId=${DISTRICT_ID}&componentId=${code}`;
 
-  let lastError = null;
-  const attempts = [];
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+  const diagnostic = {
+    phase: 'fetch',
+    attempt: 1,
+    upstreamUrl: url
+  };
 
-  for (let attempt = 1; attempt <= UPSTREAM_RETRIES; attempt += 1) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
-    const attemptInfo = { attempt };
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9,en-IN;q=0.8',
+        'Referer': 'https://eraktkosh.mohfw.gov.in/eraktkoshPortal/',
+        'User-Agent': 'Mozilla/5.0 (compatible; oneHaveriBot/1.0; +https://onehaveri.in)'
+      },
+      signal: controller.signal
+    });
 
-    try {
-      attemptInfo.phase = 'fetch';
+    diagnostic.httpStatus = res.status;
+    diagnostic.ok = res.ok;
 
-      const res = await fetch(url, {
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Accept-Language': 'en-US,en;q=0.9,en-IN;q=0.8',
-          'Referer': 'https://eraktkosh.mohfw.gov.in/eraktkoshPortal/',
-          'User-Agent': 'Mozilla/5.0 (compatible; oneHaveriBot/1.0; +https://onehaveri.in)'
-        },
-        signal: controller.signal
-      });
-
-      attemptInfo.httpStatus = res.status;
-      attemptInfo.ok = res.ok;
-
-      if (res.ok) {
-        attemptInfo.phase = 'json';
-        const data = await res.json();
-        attemptInfo.phase = 'validated';
-        attemptInfo.result = 'success';
-        attempts.push(attemptInfo);
-
-        if (!Array.isArray(data)) {
-          const formatError = new Error('eRaktKosh returned an unexpected response format');
-          formatError.diagnostic = {
-            phase: 'json-validation',
-            attempts
-          };
-          throw formatError;
-        }
-
-        return data;
-      }
-
-      lastError = new Error(`eRaktKosh returned HTTP ${res.status}`);
-      attemptInfo.result = 'http-error';
-      attemptInfo.retryable = shouldRetryStatus(res.status);
-      attempts.push(attemptInfo);
-
-      if (!shouldRetryStatus(res.status) || attempt === UPSTREAM_RETRIES) {
-        lastError.diagnostic = {
-          phase: 'upstream-http',
-          attempts
-        };
-        throw lastError;
-      }
-    } catch (error) {
-      if (!attempts.includes(attemptInfo)) {
-        if (error && error.name === 'AbortError') {
-          lastError = new Error(`eRaktKosh request timed out after ${UPSTREAM_TIMEOUT_MS / 1000}s`);
-          attemptInfo.result = 'timeout';
-        } else {
-          lastError = error;
-          attemptInfo.result = 'network-or-runtime-error';
-        }
-        attemptInfo.errorName = error && error.name ? error.name : 'Error';
-        attemptInfo.errorMessage = error && error.message ? error.message : String(error);
-        attempts.push(attemptInfo);
-      }
-
-      if (attempt === UPSTREAM_RETRIES) {
-        if (!lastError) lastError = new Error('eRaktKosh request failed');
-        lastError.diagnostic = lastError.diagnostic || {
-          phase: 'fetch',
-          attempts
-        };
-        throw lastError;
-      }
-    } finally {
-      clearTimeout(timeoutId);
+    if (!res.ok) {
+      diagnostic.phase = 'upstream-http';
+      diagnostic.result = 'http-error';
+      throw Object.assign(
+        new Error(`eRaktKosh returned HTTP ${res.status}`),
+        { diagnostic }
+      );
     }
 
-    await sleep(UPSTREAM_RETRY_DELAY_MS * attempt);
-  }
+    diagnostic.phase = 'json';
+    const data = await res.json();
 
-  const fallbackError = lastError || new Error('eRaktKosh request failed');
-  fallbackError.diagnostic = fallbackError.diagnostic || {
-    phase: 'fetch',
-    attempts
-  };
-  throw fallbackError;
+    if (!Array.isArray(data)) {
+      diagnostic.phase = 'json-validation';
+      diagnostic.result = 'unexpected-format';
+      throw Object.assign(
+        new Error('eRaktKosh returned an unexpected response format'),
+        { diagnostic }
+      );
+    }
+
+    diagnostic.phase = 'validated';
+    diagnostic.result = 'success';
+    diagnostic.itemCount = data.length;
+
+    return data;
+  } catch (error) {
+    if (error && error.diagnostic) throw error;
+
+    if (error && error.name === 'AbortError') {
+      diagnostic.phase = 'fetch';
+      diagnostic.result = 'timeout';
+      diagnostic.errorName = error.name;
+      diagnostic.errorMessage = `Request timed out after ${UPSTREAM_TIMEOUT_MS / 1000}s`;
+      throw Object.assign(
+        new Error(diagnostic.errorMessage),
+        { diagnostic }
+      );
+    }
+
+    diagnostic.phase = 'fetch';
+    diagnostic.result = 'network-or-runtime-error';
+    diagnostic.errorName = error && error.name ? error.name : 'Error';
+    diagnostic.errorMessage = error && error.message ? error.message : String(error);
+
+    throw Object.assign(
+      new Error(diagnostic.errorMessage),
+      { diagnostic }
+    );
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 function buildComponentDataset(code, hospitals) {
@@ -195,7 +169,7 @@ function buildComponentDataset(code, hospitals) {
 
     if (hasStock) banksWithStock += 1;
 
-    Object.entries(allGroups).forEach(([group, qty]) => {
+    Object.entries(allGroups).forEach(([group]) => {
       if (!Object.prototype.hasOwnProperty.call(availableTotals, group)) {
         availableTotals[group] = 0;
       }
@@ -262,8 +236,7 @@ export async function onRequestGet(context) {
     return response;
   } catch (error) {
     const diagnostic = error && error.diagnostic ? error.diagnostic : {
-      phase: 'unknown',
-      attempts: []
+      phase: 'unknown'
     };
 
     return jsonResponse({

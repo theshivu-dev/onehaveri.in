@@ -81,12 +81,16 @@ async function fetchComponent(code) {
     `?stateCode=${STATE_CODE}&districtId=${DISTRICT_ID}&componentId=${code}`;
 
   let lastError = null;
+  const attempts = [];
 
   for (let attempt = 1; attempt <= UPSTREAM_RETRIES; attempt += 1) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+    const attemptInfo = { attempt };
 
     try {
+      attemptInfo.phase = 'fetch';
+
       const res = await fetch(url, {
         headers: {
           'Accept': 'application/json, text/plain, */*',
@@ -97,27 +101,60 @@ async function fetchComponent(code) {
         signal: controller.signal
       });
 
+      attemptInfo.httpStatus = res.status;
+      attemptInfo.ok = res.ok;
+
       if (res.ok) {
+        attemptInfo.phase = 'json';
         const data = await res.json();
+        attemptInfo.phase = 'validated';
+        attemptInfo.result = 'success';
+        attempts.push(attemptInfo);
+
         if (!Array.isArray(data)) {
-          throw new Error('eRaktKosh returned an unexpected response format');
+          const formatError = new Error('eRaktKosh returned an unexpected response format');
+          formatError.diagnostic = {
+            phase: 'json-validation',
+            attempts
+          };
+          throw formatError;
         }
+
         return data;
       }
 
       lastError = new Error(`eRaktKosh returned HTTP ${res.status}`);
+      attemptInfo.result = 'http-error';
+      attemptInfo.retryable = shouldRetryStatus(res.status);
+      attempts.push(attemptInfo);
 
       if (!shouldRetryStatus(res.status) || attempt === UPSTREAM_RETRIES) {
+        lastError.diagnostic = {
+          phase: 'upstream-http',
+          attempts
+        };
         throw lastError;
       }
     } catch (error) {
-      if (error && error.name === 'AbortError') {
-        lastError = new Error(`eRaktKosh request timed out after ${UPSTREAM_TIMEOUT_MS / 1000}s`);
-      } else {
-        lastError = error;
+      if (!attempts.includes(attemptInfo)) {
+        if (error && error.name === 'AbortError') {
+          lastError = new Error(`eRaktKosh request timed out after ${UPSTREAM_TIMEOUT_MS / 1000}s`);
+          attemptInfo.result = 'timeout';
+        } else {
+          lastError = error;
+          attemptInfo.result = 'network-or-runtime-error';
+        }
+        attemptInfo.errorName = error && error.name ? error.name : 'Error';
+        attemptInfo.errorMessage = error && error.message ? error.message : String(error);
+        attempts.push(attemptInfo);
       }
 
       if (attempt === UPSTREAM_RETRIES) {
+        if (!lastError) lastError = new Error('eRaktKosh request failed');
+        lastError.diagnostic = lastError.diagnostic || {
+          phase: 'fetch',
+          attempts
+        };
         throw lastError;
       }
     } finally {
@@ -127,7 +164,12 @@ async function fetchComponent(code) {
     await sleep(UPSTREAM_RETRY_DELAY_MS * attempt);
   }
 
-  throw lastError || new Error('eRaktKosh request failed');
+  const fallbackError = lastError || new Error('eRaktKosh request failed');
+  fallbackError.diagnostic = fallbackError.diagnostic || {
+    phase: 'fetch',
+    attempts
+  };
+  throw fallbackError;
 }
 
 function buildComponentDataset(code, hospitals) {
@@ -219,12 +261,18 @@ export async function onRequestGet(context) {
     context.waitUntil(cache.put(cacheKey, response.clone()));
     return response;
   } catch (error) {
+    const diagnostic = error && error.diagnostic ? error.diagnostic : {
+      phase: 'unknown',
+      attempts: []
+    };
+
     return jsonResponse({
       generatedAt: new Date().toISOString(),
       source: 'eRaktKosh',
       componentId: Number(componentId),
       component: COMPONENTS[componentId],
-      error: String(error && error.message ? error.message : error)
+      error: String(error && error.message ? error.message : error),
+      diagnostic
     }, 502, 0);
   }
 }

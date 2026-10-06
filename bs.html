@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Haveri Blood Stock — e-RaktKosh API Test</title>
+<style>
+  :root { color-scheme: light; --red:#8d0012; --bg:#f6f7f8; --card:#fff; --muted:#667085; --ok:#087443; --bad:#b42318; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:#182230; }
+  header { background:var(--red); color:#fff; padding:20px 16px; }
+  header h1 { margin:0 0 5px; font-size:22px; }
+  header p { margin:0; opacity:.9; font-size:13px; }
+  main { max-width:1100px; margin:20px auto; padding:0 14px 40px; }
+  .card { background:var(--card); border:1px solid #e4e7ec; border-radius:12px; padding:16px; margin-bottom:14px; box-shadow:0 2px 8px rgba(16,24,40,.04); }
+  .grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+  label { display:block; font-size:12px; color:var(--muted); margin-bottom:5px; }
+  select,input,button { width:100%; min-height:42px; border:1px solid #d0d5dd; border-radius:8px; padding:9px 11px; font:inherit; background:#fff; }
+  button { background:var(--red); color:#fff; border-color:var(--red); font-weight:700; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--red); }
+  button:disabled { opacity:.6; cursor:wait; }
+  .actions { display:flex; gap:10px; margin-top:12px; }
+  .actions button { flex:1; }
+  .status { padding:11px 12px; border-radius:8px; background:#f2f4f7; font-size:14px; white-space:pre-wrap; }
+  .status.ok { background:#ecfdf3; color:var(--ok); }
+  .status.bad { background:#fef3f2; color:var(--bad); }
+  .table-wrap { overflow:auto; }
+  table { width:100%; border-collapse:collapse; min-width:850px; }
+  th,td { text-align:left; vertical-align:top; padding:11px 9px; border-bottom:1px solid #eaecf0; font-size:13px; }
+  th { background:#f9fafb; }
+  .qty { color:var(--ok); font-weight:700; white-space:pre-line; }
+  .muted { color:var(--muted); }
+  details summary { cursor:pointer; font-weight:700; }
+  pre { overflow:auto; background:#101828; color:#f2f4f7; padding:12px; border-radius:8px; font-size:12px; }
+  .pill { display:inline-block; border-radius:999px; padding:3px 8px; background:#f2f4f7; font-size:12px; }
+  @media (max-width:700px) {
+    .grid { grid-template-columns:1fr 1fr; }
+    .actions { flex-direction:column; }
+  }
+  @media (max-width:480px) {
+    .grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Haveri Blood Stock — New e-RaktKosh API</h1>
+  <p>Direct browser-to-government-API communication test. No server, framework, or Supabase.</p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="grid">
+      <div>
+        <label for="state">State code</label>
+        <input id="state" value="29">
+      </div>
+      <div>
+        <label for="district">Haveri district ID</label>
+        <input id="district" value="564">
+      </div>
+      <div>
+        <label for="component">Blood component</label>
+        <select id="component">
+          <option value="12">Packed Red Blood Cells</option>
+          <option value="11">Whole Blood</option>
+          <option value="13">Fresh Frozen Plasma</option>
+          <option value="14">Platelet Concentrate</option>
+          <option value="15">Cryoprecipitate</option>
+          <option value="16">Single Donor Platelet</option>
+          <option value="17">Single Donor Plasma</option>
+          <option value="18">Cryo Poor Plasma</option>
+        </select>
+      </div>
+      <div>
+        <label for="group">Blood group</label>
+        <select id="group">
+          <option value="">All blood groups</option>
+          <option value="1">A+</option>
+          <option value="2">A-</option>
+          <option value="3">B+</option>
+          <option value="4">B-</option>
+          <option value="5">O+</option>
+          <option value="6">O-</option>
+          <option value="7">AB+</option>
+          <option value="8">AB-</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="searchBtn">Test New API & Load Stock</button>
+      <button id="rawBtn" class="secondary">Show Raw Response</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div id="status" class="status">Ready. Click “Test New API & Load Stock”.</div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin-top:0">Results <span id="count" class="pill">0 centres</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Blood Centre</th>
+            <th>Category</th>
+            <th>Availability</th>
+            <th>Last Updated</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody id="results">
+          <tr><td colspan="6" class="muted">No request made yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>Request details / debugging</summary>
+      <pre id="request">No request yet.</pre>
+    </details>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>Raw API response</summary>
+      <pre id="raw">No response yet.</pre>
+    </details>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+const API_BASE =
+  "https://eraktkosh.mohfw.gov.in/eraktkoshPortal/eraktkosh/blood-availability";
+
+let lastResponse = null;
+
+const $ = id => document.getElementById(id);
+
+function buildUrl() {
+  const params = new URLSearchParams();
+
+  params.set("stateCode", $("state").value.trim());
+  params.set("districtId", $("district").value.trim());
+  params.set("componentId", $("component").value);
+
+  // The current government UI omits bloodGroupId when "All" is selected.
+  const group = $("group").value;
+  if (group) params.set("bloodGroupId", group);
+
+  return API_BASE + "?" + params.toString();
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function parseContact(contact) {
+  const text = String(contact ?? "");
+  const phone = (text.match(/Phone:\s*([^,]+)/i) || [,""])[1].trim();
+  const email = (text.match(/Email:\s*([^,\s]+)/i) || [,""])[1].trim();
+  return { phone, email };
+}
+
+function getComponentName() {
+  return $("component").selectedOptions[0].textContent;
+}
+
+function getAvailability(item) {
+  const componentName = getComponentName();
+  const components = item && item.components ? item.components : {};
+  const component = components[componentName];
+
+  if (!component) {
+    // Defensive fallback: some responses may use a slightly different key.
+    const firstKey = Object.keys(components)[0];
+    return firstKey ? components[firstKey] : null;
+  }
+  return component;
+}
+
+function render(rows) {
+  const tbody = $("results");
+  $("count").textContent = `${rows.length} centre${rows.length === 1 ? "" : "s"}`;
+
+  if (!rows.length) {
+    tbody.innerHTML =
+      '<tr><td colspan="6" class="muted">No blood-centre records returned by the API.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((item, index) => {
+    const contact = parseContact(item.hospitalcontact);
+    const availability = getAvailability(item);
+
+    const available = availability?.available_WithQty || "";
+    const unavailable = availability?.not_available_WithQty || "";
+
+    let availabilityHtml = "";
+    if (available) {
+      availabilityHtml += `<div class="qty">${escapeHtml(available)}</div>`;
+    } else {
+      availabilityHtml += '<span class="muted">No available stock reported</span>';
+    }
+
+    if (unavailable) {
+      availabilityHtml +=
+        `<details style="margin-top:6px"><summary>Not available / zero</summary>` +
+        `<div class="muted" style="white-space:pre-line;margin-top:5px">${escapeHtml(unavailable)}</div></details>`;
+    }
+
+    return `
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <strong>${escapeHtml(item.hospitalname || "Unnamed blood centre")}</strong><br>
+          <span class="muted">${escapeHtml(item.hospitaladd || "")}</span>
+          ${contact.phone ? `<br><span class="muted">Phone: ${escapeHtml(contact.phone)}</span>` : ""}
+          ${contact.email ? `<br><span class="muted">Email: ${escapeHtml(contact.email)}</span>` : ""}
+          ${item.hospitalCode ? `<br><span class="muted">Code: ${escapeHtml(item.hospitalCode)}</span>` : ""}
+        </td>
+        <td>${escapeHtml(item.hospitalType || "—")}</td>
+        <td>${availabilityHtml}</td>
+        <td>${escapeHtml(item.entrydate || "—")}</td>
+        <td>${escapeHtml(item.type || "—")}</td>
+      </tr>`;
+  }).join("");
+}
+
+async function loadStock() {
+  const button = $("searchBtn");
+  button.disabled = true;
+
+  const url = buildUrl();
+  $("request").textContent =
+    `GET ${url}\n\nOrigin: ${location.origin}\nMode: cors`;
+
+  $("status").className = "status";
+  $("status").textContent = "Calling e-RaktKosh…";
+  $("results").innerHTML =
+    '<tr><td colspan="6" class="muted">Loading…</td></tr>';
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Accept": "application/json"
+      },
+      cache: "no-store"
+    });
+
+    $("status").textContent =
+      `HTTP ${response.status} ${response.statusText}\n` +
+      `Response URL: ${response.url}`;
+
+    if (!response.ok) {
+      throw new Error(`Government API returned HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    lastResponse = data;
+
+    $("raw").textContent = JSON.stringify(data, null, 2);
+
+    if (!Array.isArray(data)) {
+      throw new Error(
+        "Unexpected response shape: expected a JSON array of blood-centre records."
+      );
+    }
+
+    render(data);
+
+    $("status").className = "status ok";
+    $("status").textContent =
+      `SUCCESS — direct browser request worked.\n` +
+      `HTTP ${response.status}; received ${data.length} centre record(s).\n` +
+      `This confirms a server-side proxy is NOT required for this request.`;
+
+  } catch (error) {
+    lastResponse = null;
+    $("raw").textContent = String(error?.stack || error);
+
+    $("status").className = "status bad";
+    $("status").textContent =
+      `REQUEST FAILED\n\n${error?.message || error}\n\n` +
+      `If this says “blocked by CORS policy”, the API is reachable but the browser is refusing the cross-origin response.`;
+
+    $("results").innerHTML =
+      '<tr><td colspan="6" class="muted">Request failed. See status and debugging sections above.</td></tr>';
+
+    console.error("e-RaktKosh request failed:", error);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function showRaw() {
+  const raw = $("raw").textContent;
+  if (!raw || raw === "No response yet.") {
+    alert("Run the API test first.");
+    return;
+  }
+  document.querySelector("details:last-child").open = true;
+  $("raw").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+$("searchBtn").addEventListener("click", loadStock);
+$("rawBtn").addEventListener("click", showRaw);
+</script>
+</body>
+</html>

@@ -9,6 +9,8 @@ const STATE_CODE = 29;   // Karnataka
 const DISTRICT_ID = 564; // Haveri
 const CACHE_SECONDS = 900; // 15 minutes
 const UPSTREAM_TIMEOUT_MS = 12000;
+const UPSTREAM_RETRIES = 3;
+const UPSTREAM_RETRY_DELAY_MS = 750;
 
 const COMPONENTS = {
   11: 'Whole Blood',
@@ -65,40 +67,67 @@ function sumQuantities(groups) {
   return Object.values(groups).reduce((sum, qty) => sum + qty, 0);
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function shouldRetryStatus(status) {
+  return status === 502 || status === 503 || status === 504 || status === 522;
+}
+
 async function fetchComponent(code) {
   const url =
     `https://eraktkosh.mohfw.gov.in/eraktkoshPortal/eraktkosh/blood-availability` +
     `?stateCode=${STATE_CODE}&districtId=${DISTRICT_ID}&componentId=${code}`;
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+  let lastError = null;
 
-  try {
-    const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; oneHaveriBot/1.0; +https://onehaveri.in)'
-      },
-      signal: controller.signal
-    });
+  for (let attempt = 1; attempt <= UPSTREAM_RETRIES; attempt += 1) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
 
-    if (!res.ok) {
-      throw new Error(`eRaktKosh returned HTTP ${res.status}`);
+    try {
+      const res = await fetch(url, {
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Accept-Language': 'en-US,en;q=0.9,en-IN;q=0.8',
+          'Referer': 'https://eraktkosh.mohfw.gov.in/eraktkoshPortal/',
+          'User-Agent': 'Mozilla/5.0 (compatible; oneHaveriBot/1.0; +https://onehaveri.in)'
+        },
+        signal: controller.signal
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (!Array.isArray(data)) {
+          throw new Error('eRaktKosh returned an unexpected response format');
+        }
+        return data;
+      }
+
+      lastError = new Error(`eRaktKosh returned HTTP ${res.status}`);
+
+      if (!shouldRetryStatus(res.status) || attempt === UPSTREAM_RETRIES) {
+        throw lastError;
+      }
+    } catch (error) {
+      if (error && error.name === 'AbortError') {
+        lastError = new Error(`eRaktKosh request timed out after ${UPSTREAM_TIMEOUT_MS / 1000}s`);
+      } else {
+        lastError = error;
+      }
+
+      if (attempt === UPSTREAM_RETRIES) {
+        throw lastError;
+      }
+    } finally {
+      clearTimeout(timeoutId);
     }
 
-    const data = await res.json();
-    if (!Array.isArray(data)) {
-      throw new Error('eRaktKosh returned an unexpected response format');
-    }
-
-    return data;
-  } catch (error) {
-    if (error && error.name === 'AbortError') {
-      throw new Error(`eRaktKosh request timed out after ${UPSTREAM_TIMEOUT_MS / 1000}s`);
-    }
-    throw error;
-  } finally {
-    clearTimeout(timeoutId);
+    await sleep(UPSTREAM_RETRY_DELAY_MS * attempt);
   }
+
+  throw lastError || new Error('eRaktKosh request failed');
 }
 
 function buildComponentDataset(code, hospitals) {

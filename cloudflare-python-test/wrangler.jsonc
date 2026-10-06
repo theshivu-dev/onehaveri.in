@@ -1,0 +1,7 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "onehaveri-eraktkosh-python-test",
+  "main": "src/entry.py",
+  "compatibility_date": "2026-10-06",
+  "compatibility_flags": ["python_workers"]
+}

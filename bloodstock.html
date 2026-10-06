@@ -5,23 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Haveri Blood Bank Stock — oneHaveri.in</title>
 <style>
-  :root { --red: #a71d2a; --lightred: #f8d7d7; --green: #1a7f37; }
+  :root { --red: #a71d2a; --lightred: #f8d7d7; --green: #1a7f37; --amber: #9a6700; }
   * { box-sizing: border-box; }
   body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 20px; color: #222; background: #fafafa; }
   h1 { color: var(--red); font-size: 24px; margin-bottom: 4px; }
   h2 { font-size: 17px; color: #333; margin-top: 30px; }
   .subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
   .refresh-link { font-size: 13px; cursor: pointer; color: #1a5fb4; text-decoration: underline; }
-  .status-line { font-size: 13px; color: #777; margin-bottom: 15px; }
+  .status-line { font-size: 13px; color: #777; margin-bottom: 15px; min-height: 18px; }
 
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
   .component-block {
     background: #fff; border: 1px solid #ddd; border-radius: 6px;
-    padding: 14px 16px; margin-bottom: 14px;
+    padding: 14px 16px; min-height: 92px;
   }
-  .component-block h3 { margin: 0 0 10px; font-size: 15px; color: var(--red); }
-  .group-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .component-block h3 { margin: 0 0 8px; font-size: 15px; color: #444; font-weight: normal; }
+  .bank-count { font-size: 22px; font-weight: bold; color: var(--red); }
+  .bank-count.available { color: var(--green); }
+  .summary-detail { font-size: 12px; color: #666; margin-top: 6px; }
+  .summary-error { color: var(--amber); font-size: 13px; margin-top: 8px; }
+  .group-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .group-chip {
-    border: 1px solid #ddd; border-radius: 20px; padding: 4px 12px; font-size: 13px;
+    border: 1px solid #ddd; border-radius: 20px; padding: 3px 9px; font-size: 12px;
     background: #f6f6f6;
   }
   .group-chip .qty { font-weight: bold; margin-left: 4px; }
@@ -31,20 +36,32 @@
 
   .filter-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 15px; flex-wrap: wrap; }
   .filter-bar label { font-size: 14px; font-weight: bold; }
-  .filter-bar select, .filter-bar input[type=text] { padding: 6px 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+  .filter-bar select, .filter-bar input[type=text] { padding: 7px 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
 
-  table { border-collapse: collapse; width: 100%; background: #fff; }
+  .table-wrap { overflow-x: auto; border: 1px solid #ddd; background: #fff; }
+  table { border-collapse: collapse; width: 100%; min-width: 1100px; background: #fff; }
   th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; font-size: 14px; }
-  th { background: var(--red); color: #fff; }
+  th { background: var(--red); color: #fff; white-space: nowrap; }
   tr.govt { background: var(--lightred); }
   .bank-address { font-size: 12.5px; color: #555; }
   .bank-contact { font-size: 12.5px; color: #555; margin-top: 4px; }
-  .groups-cell { font-size: 12.5px; }
+  .availability { font-weight: bold; white-space: nowrap; }
+  .availability.available { color: var(--green); }
+  .availability.not-available { color: var(--red); }
+  .groups-cell { font-size: 12.5px; min-width: 190px; }
   .groups-cell .g-ok { color: var(--green); font-weight: bold; }
   .groups-cell .g-none { color: #999; }
   .loading, .error-box { padding: 20px; text-align: center; color: #777; }
   .error-box { color: var(--red); }
-  .source-note { font-size: 12px; color: #777; margin-top: 18px; }
+  .source-note { font-size: 12px; color: #777; margin-top: 18px; line-height: 1.5; }
+  .source-note a { color: #1a5fb4; }
+
+  @media (max-width: 700px) {
+    body { padding: 12px; }
+    h1 { font-size: 21px; }
+    .filter-bar { align-items: flex-start; flex-direction: column; gap: 6px; }
+    .filter-bar select, .filter-bar input[type=text] { width: 100%; max-width: 360px; }
+  }
 </style>
 </head>
 <body>
@@ -56,8 +73,8 @@
 </div>
 <div class="status-line" id="statusLine">Loading…</div>
 
-<h2>At a Glance — Total units available in Haveri district, by component &amp; blood group</h2>
-<div id="summaryBlocks"></div>
+<h2>At a Glance — Banks currently showing stock, by component</h2>
+<div id="summaryBlocks" class="summary-grid"></div>
 
 <h2>Full Results — by Blood Bank</h2>
 <div class="filter-bar">
@@ -66,10 +83,18 @@
     <option value="">All Components</option>
   </select>
 
+  <label for="statusFilter">Status:</label>
+  <select id="statusFilter" onchange="applyFilters()">
+    <option value="">Any</option>
+    <option value="Available">Available</option>
+    <option value="Not Available">Not Available</option>
+  </select>
+
   <label for="searchBox">Search bank name:</label>
-  <input type="text" id="searchBox" placeholder="e.g. Ranebennuru" onkeyup="applyFilters()">
+  <input type="text" id="searchBox" placeholder="e.g. Ranebennuru" oninput="applyFilters()">
 </div>
 
+<div class="table-wrap">
 <table id="resultsTable">
   <thead>
     <tr>
@@ -77,126 +102,124 @@
       <th>Blood Bank</th>
       <th>Category</th>
       <th>Component</th>
+      <th>Availability</th>
       <th>Blood Group — Units Available</th>
       <th>Last Updated</th>
       <th>Type</th>
     </tr>
   </thead>
   <tbody id="resultsBody">
-    <tr><td colspan="7" class="loading">Loading…</td></tr>
+    <tr><td colspan="8" class="loading">Loading…</td></tr>
   </tbody>
 </table>
+</div>
 
 <p class="source-note">
-  Data sourced live from eRaktKosh (Govt. of India), fetched directly by your browser each time you load this page.
-  Update frequency on the government side depends on how often each blood bank updates its own stock records.
+  Data is retrieved from eRaktKosh through OneHaveri's server-side service. The government source is the
+  <a href="https://eraktkosh.mohfw.gov.in/" target="_blank" rel="noopener">eRaktKosh portal</a>.
+  The “Last Updated” value shown for each bank is the timestamp supplied by eRaktKosh. “Last checked” below
+  refers to when OneHaveri retrieved the component data.
 </p>
 
 <script>
 const COMPONENTS = {
-  11: 'Whole Blood', 12: 'Packed Red Blood Cells', 13: 'Fresh Frozen Plasma',
-  14: 'Single Donor Platelet', 16: 'Platelet Rich Plasma', 17: 'Cryoprecipitate',
-  18: 'Single Donor Plasma', 19: 'Plasma', 20: 'Platelet Concentrate',
-  21: 'Cryo Poor Plasma', 23: 'Random Donor Platelets', 28: 'Sagm Packed Red Blood Cells',
-  29: 'Irradiated RBC', 30: 'Leukoreduced Rbc'
+  11: 'Whole Blood',
+  12: 'Packed Red Blood Cells',
+  13: 'Fresh Frozen Plasma',
+  14: 'Single Donor Platelet',
+  16: 'Platelet Rich Plasma',
+  17: 'Cryoprecipitate',
+  18: 'Single Donor Plasma',
+  19: 'Plasma',
+  20: 'Platelet Concentrate',
+  21: 'Cryo Poor Plasma',
+  23: 'Random Donor Platelets',
+  28: 'Sagm Packed Red Blood Cells',
+  29: 'Irradiated RBC',
+  30: 'Leukoreduced Rbc'
 };
 
 const componentFilterEl = document.getElementById('componentFilter');
-Object.values(COMPONENTS).forEach(label => {
+Object.entries(COMPONENTS).forEach(([id, label]) => {
   const opt = document.createElement('option');
-  opt.value = label; opt.textContent = label;
+  opt.value = label;
+  opt.textContent = label;
   componentFilterEl.appendChild(opt);
 });
 
-function parseContact(raw) {
-  raw = raw || '';
-  const phoneMatch = raw.match(/Phone:\s*([^,]+)/i);
-  const emailMatch = raw.match(/Email:\s*([^\s,]+)/i);
-  let phone = phoneMatch ? phoneMatch[1].trim() : null;
-  let email = emailMatch ? emailMatch[1].trim() : null;
-  if (phone === '-' || phone === '0' || phone === '') phone = null;
-  if (email === '-' || email === '') email = null;
-  return { phone, email };
-}
+const componentResults = [];
+const componentErrors = [];
+let allRows = [];
 
-// "B+Ve : 74, O-Ve : 4" -> { "B+Ve": 74, "O-Ve": 4 }
-function parseGroupQtyString(str) {
-  const map = {};
-  if (!str) return map;
-  str.split(',').forEach(part => {
-    const m = part.trim().match(/^(.+?)\s*:\s*(\d+)$/);
-    if (m) map[m[1].trim()] = parseInt(m[2], 10);
-  });
-  return map;
-}
-
-// NOTE: Live cross-origin fetch straight to the eRaktKosh new portal is
-// blocked by a server-side CORS header bug, which browsers reject regardless
-// of origin. So instead, this calls our own Cloudflare Pages Function at
-// /api/blood-stock (see functions/api/blood-stock.js), which fetches
-// eRaktKosh server-side (no CORS involved there) and hands back clean JSON
-// from our own domain — same-origin, so the browser has no objection.
-async function buildDataset() {
-  const res = await fetch('/api/blood-stock', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Could not load /api/blood-stock: ' + res.status);
-  const json = await res.json();
-  return {
-    rows: json.rows || [],
-    componentTotals: json.componentTotals || {},
-    generatedAt: json.generatedAt || null
-  };
-}
-
-function renderSummary(componentTotals) {
-  const container = document.getElementById('summaryBlocks');
-  container.innerHTML = '';
-  const labelsWithData = Object.keys(componentTotals);
-
-  if (!labelsWithData.length) {
-    container.innerHTML = '<p style="color:#777;">No component data available right now.</p>';
-    return;
-  }
-
-  labelsWithData.forEach(label => {
-    const groups = componentTotals[label];
-    const block = document.createElement('div');
-    block.className = 'component-block';
-    const chips = Object.entries(groups)
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([group, qty]) => `
-        <span class="group-chip ${qty > 0 ? 'has-stock' : 'no-stock'}">
-          ${group}<span class="qty">${qty}</span>
-        </span>
-      `).join('');
-    block.innerHTML = `<h3>${label}</h3><div class="group-chip-row">${chips}</div>`;
-    container.appendChild(block);
-  });
-}
-
-function escapeHtml(str) {
+function escapeHtml(value) {
   const div = document.createElement('div');
-  div.textContent = str == null ? '' : str;
+  div.textContent = value == null ? '' : String(value);
   return div.innerHTML;
 }
 
 function renderGroupsCell(groups) {
-  return Object.entries(groups)
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([group, qty]) => `<span class="${qty > 0 ? 'g-ok' : 'g-none'}">${escapeHtml(group)}: ${qty}</span>`)
-    .join(', ');
+  const entries = Object.entries(groups || {}).sort((a, b) => a[0].localeCompare(b[0]));
+  if (!entries.length) return '<span class="g-none">No group quantities reported</span>';
+  return entries.map(([group, qty]) =>
+    `<span class="${qty > 0 ? 'g-ok' : 'g-none'}">${escapeHtml(group)}: ${qty}</span>`
+  ).join(', ');
 }
 
-function renderTable(rows) {
+function renderSummary() {
+  const container = document.getElementById('summaryBlocks');
+  container.innerHTML = '';
+
+  Object.entries(COMPONENTS).forEach(([id, label]) => {
+    const result = componentResults.find(item => String(item.componentId) === id);
+    const error = componentErrors.find(item => String(item.componentId) === id);
+    const block = document.createElement('div');
+    block.className = 'component-block';
+
+    if (error) {
+      block.innerHTML = `
+        <h3>${escapeHtml(label)}</h3>
+        <div class="summary-error">Temporarily unavailable</div>
+        <div class="summary-detail">The government source did not respond for this component.</div>
+      `;
+      container.appendChild(block);
+      return;
+    }
+
+    const totalBanks = result ? result.totalBanks : 0;
+    const banksWithStock = result ? result.banksWithStock : 0;
+    const availableTotals = result ? result.availableTotals : {};
+    const groupEntries = Object.entries(availableTotals).sort((a, b) => a[0].localeCompare(b[0]));
+
+    block.innerHTML = `
+      <h3>${escapeHtml(label)}</h3>
+      <div class="bank-count ${banksWithStock > 0 ? 'available' : ''}">${banksWithStock} / ${totalBanks} banks</div>
+      <div class="summary-detail">currently showing stock</div>
+      <div class="group-chip-row">
+        ${groupEntries.map(([group, qty]) => `
+          <span class="group-chip ${qty > 0 ? 'has-stock' : 'no-stock'}">
+            ${escapeHtml(group)}<span class="qty">${qty}</span>
+          </span>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function renderTable() {
   const body = document.getElementById('resultsBody');
-  if (!rows.length) {
-    body.innerHTML = '<tr><td colspan="7" class="error-box">No data available right now. Try refreshing, or check eRaktKosh directly.</td></tr>';
+
+  if (!allRows.length) {
+    body.innerHTML = '<tr><td colspan="8" class="error-box">No blood-bank data is available right now. Try refreshing, or check eRaktKosh directly.</td></tr>';
     return;
   }
-  body.innerHTML = rows.map(r => `
+
+  body.innerHTML = allRows.map((r, index) => `
     <tr class="${/govt/i.test(r.category) ? 'govt' : ''}"
         data-component="${escapeHtml(r.component)}"
-        data-bank="${escapeHtml(r.bankName.toLowerCase())}">
-      <td>${r.sno}</td>
+        data-bank="${escapeHtml((r.bankName || '').toLowerCase())}"
+        data-status="${escapeHtml(r.availability)}">
+      <td>${index + 1}</td>
       <td>
         <strong>${escapeHtml(r.bankName)}</strong>
         <div class="bank-address">${escapeHtml(r.bankAddress)}</div>
@@ -207,6 +230,9 @@ function renderTable(rows) {
       </td>
       <td>${escapeHtml(r.category)}</td>
       <td>${escapeHtml(r.component)}</td>
+      <td class="availability ${r.availability === 'Available' ? 'available' : 'not-available'}">
+        ${escapeHtml(r.availability)}
+      </td>
       <td class="groups-cell">${renderGroupsCell(r.groups)}</td>
       <td>${escapeHtml(r.lastUpdated)}</td>
       <td>${escapeHtml(r.type)}</td>
@@ -216,32 +242,72 @@ function renderTable(rows) {
 
 function applyFilters() {
   const component = document.getElementById('componentFilter').value;
+  const status = document.getElementById('statusFilter').value;
   const search = document.getElementById('searchBox').value.trim().toLowerCase();
 
   document.querySelectorAll('#resultsTable tbody tr').forEach(row => {
     if (!row.dataset.component) return;
     const matchesComponent = !component || row.dataset.component === component;
+    const matchesStatus = !status || row.dataset.status === status;
     const matchesSearch = !search || row.dataset.bank.includes(search);
-    row.style.display = (matchesComponent && matchesSearch) ? '' : 'none';
+    row.style.display = (matchesComponent && matchesStatus && matchesSearch) ? '' : 'none';
   });
+}
+
+async function fetchComponent(componentId) {
+  const res = await fetch(`/api/blood-stock?componentId=${encodeURIComponent(componentId)}`, { cache: 'no-store' });
+  let json = null;
+  try { json = await res.json(); } catch (_) {}
+
+  if (!res.ok) {
+    throw new Error(json && json.error ? json.error : `HTTP ${res.status}`);
+  }
+  return json;
 }
 
 async function loadData() {
   const statusLine = document.getElementById('statusLine');
-  statusLine.innerHTML = 'Loading…';
-  try {
-    const data = await buildDataset();
-    renderSummary(data.componentTotals);
-    renderTable(data.rows);
-    const genTime = data.generatedAt ? new Date(data.generatedAt).toLocaleString() : 'unknown';
-    statusLine.innerHTML = 'Data last refreshed by the site: ' + genTime +
-      ' — <span class="refresh-link" onclick="location.reload()">Reload page</span>';
-  } catch (e) {
-    statusLine.innerHTML = 'Failed to load data — <span class="refresh-link" onclick="location.reload()">Try again</span>';
-    document.getElementById('resultsBody').innerHTML =
-      '<tr><td colspan="7" class="error-box">Could not load blood stock data right now. Please try again shortly.</td></tr>';
-    console.error(e);
+  const componentIds = Object.keys(COMPONENTS);
+  const startedAt = new Date();
+
+  componentResults.length = 0;
+  componentErrors.length = 0;
+  allRows = [];
+  renderSummary();
+
+  for (let i = 0; i < componentIds.length; i += 1) {
+    const componentId = componentIds[i];
+    const label = COMPONENTS[componentId];
+    statusLine.textContent = `Loading ${label} (${i + 1}/${componentIds.length})…`;
+
+    try {
+      const result = await fetchComponent(componentId);
+      componentResults.push(result);
+      allRows.push(...(result.rows || []));
+      renderSummary();
+      renderTable();
+    } catch (error) {
+      componentErrors.push({ componentId, error: String(error && error.message ? error.message : error) });
+      renderSummary();
+      renderTable();
+      console.error(`Blood stock component ${componentId} failed`, error);
+    }
   }
+
+  const checkedAt = new Date();
+  const durationSeconds = Math.round((checkedAt - startedAt) / 1000);
+  const successCount = componentResults.length;
+  const failureCount = componentErrors.length;
+
+  statusLine.innerHTML =
+    `Last checked by OneHaveri: ${escapeHtml(checkedAt.toLocaleString())}` +
+    ` — ${successCount}/${componentIds.length} components loaded in ${durationSeconds}s` +
+    (failureCount ? `; ${failureCount} temporarily unavailable` : '') +
+    ` — <span class="refresh-link" onclick="loadData()">Refresh now</span>`;
+
+  renderSummary();
+  renderTable();
+  applyFilters();
 }
 
 loadData();

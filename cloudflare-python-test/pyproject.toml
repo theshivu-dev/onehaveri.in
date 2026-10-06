@@ -2,9 +2,7 @@
 name = "onehaveri-eraktkosh-python-test"
 version = "0.1.0"
 requires-python = ">=3.13"
-
-[dependency-groups]
-dev = [
+dependencies = [
   "workers-py>=1.9",
   "workers-runtime-sdk",
 ]
